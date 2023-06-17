@@ -131,7 +131,38 @@ section {
 .home-content p {
   font-size: 1.6rem;
 }
+.home-content h3 span,
+.home-content h1 span {
+  color: var(--text-color);
+  animation-timing-function: linear;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  display: inline-block;
 
+}
+.bounce{
+  animation-name: bounce;
+}
+@keyframes bounce {
+    20%,
+    50%,
+    80%,
+    to {
+        transform: scale(1, 1);
+    }
+    40% {
+        transform: scale(1.75, 0.65);
+    }
+    45% {
+        transform: scale(1.75, 0.65);
+    }
+    70% {
+        transform: scale(1.25, 0.75);
+    }
+    90% {
+        transform: scale(1.15, 0.85);
+    }
+}
 .home-content .social-media a{
   display: inline-flex;
   justify-content: center;

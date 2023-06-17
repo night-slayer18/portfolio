@@ -58,3 +58,20 @@ ScrollReveal().reveal('.home-content , .heading', { origin: 'top' });
 ScrollReveal().reveal('.home-img img , .services-container, .portfolio-box', { origin: 'bottom' });
 ScrollReveal().reveal('.home-content h1 , .about-img img', { origin: 'left' });
 ScrollReveal().reveal('.home-content h3 , .home-content p , .about-content', { origin: 'right' });
+
+
+document.querySelectorAll(".home-content h3 span, .home-content h1 span").forEach((element) => {
+  element.addEventListener("mouseover", (e) => bounce(e.target));
+});
+
+function bounce(letter) {
+  if (!letter.classList.contains("bounce")) {
+      letter.classList.add("bounce");
+      setTimeout(
+          function () {
+              letter.classList.remove("bounce");
+          },
+          1000
+      );
+  }
+}
