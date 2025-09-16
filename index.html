@@ -1,228 +1,507 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" type="image/png" href="images/webicon.png">
-  <title>NiGhTsLaYeR</title>
-  <!-- box icon -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Samanuai - Senior Developer</title>
+    <meta
+      name="description"
+      content="Full-Stack Developer specializing in modern web applications and AI integration"
+    />
+    <meta name="theme-color" content="#667eea" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Samanuai" />
 
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://samanuai.dev/" />
+    <meta property="og:title" content="Samanuai - Senior Developer" />
+    <meta
+      property="og:description"
+      content="Senior Full-Stack Developer specializing in modern web applications and AI integration"
+    />
+    <meta
+      property="og:image"
+      content="https://samanuai.dev/images/og-image.jpg"
+    />
 
-  <!-- custom css -->
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-  <!-- header design -->
-  <header class="header">
-    <a href="#" class="logo">Portfolio.</a>
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://samanuai.dev/" />
+    <meta property="twitter:title" content="Samanuai - Senior Developer" />
+    <meta
+      property="twitter:description"
+      content="Senior Full-Stack Developer specializing in modern web applications and AI integration"
+    />
+    <meta
+      property="twitter:image"
+      content="https://samanuai.dev/images/og-image.jpg"
+    />
 
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>"
+    />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Preloader -->
+    <div class="preloader">
+      <div class="preloader-content">
+        <div class="code-animation">
+          <span>&lt;</span>
+          <span>S</span>
+          <span>a</span>
+          <span>m</span>
+          <span>a</span>
+          <span>n</span>
+          <span>u</span>
+          <span>a</span>
+          <span>i</span>
+          <span>/&gt;</span>
+        </div>
+        <div class="loading-bar">
+          <div class="loading-progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
     <nav class="navbar">
-      <a href="#home" class="active">Home</a>
-      <a href="#about">About</a>
-      <a href="#services">Skills</a>
-      <a href="#portfolio">Projects</a>
-      <a href="#contact">Contact</a>
+      <div class="nav-container">
+        <a href="#home" class="nav-logo">
+          <span class="logo-bracket">&lt;</span>
+          <span class="logo-text">Samanuai</span>
+          <span class="logo-bracket">/&gt;</span>
+        </a>
+
+        <ul class="nav-menu">
+          <li><a href="#home" class="nav-link" data-text="Home">Home</a></li>
+          <li><a href="#about" class="nav-link" data-text="About">About</a></li>
+          <li>
+            <a href="#contact" class="nav-link" data-text="Contact">Contact</a>
+          </li>
+        </ul>
+
+        <div class="nav-actions">
+          <button class="theme-toggle" aria-label="Toggle theme">
+            <i class="fas fa-sun light-icon"></i>
+            <i class="fas fa-moon dark-icon"></i>
+          </button>
+          <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
     </nav>
 
-    <div class="bx bx-moon" id="darkMode-icon"></div>
-
-    <div class="bx bx-menu" id="menu-icon"></div>
-  </header>
-
-  <!-- home section design  -->
-
-  <section class="home" id="home">
-    <div class="home-content">
-      <h3>
-        <span>H</span><span>e</span><span>l</span><span>l</span><span>o</span><span>,</span> 
-        <span>I</span> 
-        <span>a</span><span>m</span>
-      </h3>
-      <h1><span>S</span><span>a</span><span>m</span><span>a</span><span>n</span><span>u</span><span>a</span><span>i</span></h1>
-      <p>Experienced front-end web and app developer specializing in designing and implementing captivating user interfaces.</p>
-
-      <div class="social-media">
-        <a href="https://github.com/night-slayer18"><i class='bx bxl-github' ></i></a>
-        <a href="https://twitter.com/NiGhTsL93934079"><i class="bx bxl-twitter"></i></a>
-        <a href="https://www.instagram.com/_n_i_g_h_t__s_l_a_y_e_r_/"><i class="bx bxl-instagram-alt"></i></a>
-        <a href="https://www.linkedin.com/in/samanuaia257/"><i class="bx bxl-linkedin"></i></a>
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=samanuaia257@gmail.com&body=my-text" id=""><i class='bx bxl-gmail' ></i></a>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-bg">
+        <canvas id="hero-canvas"></canvas>
       </div>
 
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <p class="hero-greeting">
+              <span class="greeting-text">Hello World! 👋</span>
+              <span class="terminal-cursor">|</span>
+            </p>
 
-      <a href="resume/resume.pdf" class="btn" download="resume.pdf">Download Resume</a>
-    </div>
+            <h1 class="hero-title">
+              <span class="title-line">I'm</span>
+              <span class="title-name">Samanuai</span>
+              <span class="title-role">Full Stack Developer</span>
+            </h1>
 
-    <div class="profession-container">
-      <div class="profession-box">
-        <div class="profession" style="--i:0">
-          <i class='bx bx-code-block'></i>
-          <h3>Web Developer</h3>
-        </div>
-        <div class="profession" style="--i:1">
-          <i class='bx bx-game' ></i>
-          <h3> &nbsp;  &nbsp;  &nbsp; Gamer  &nbsp;  &nbsp;  &nbsp; </h3>
-        </div>
-        <div class="profession" style="--i:2">
-          <i class='bx bxl-play-store' ></i>
-          <h3>App Developer</h3>
-        </div>
-        <div class="profession" style="--i:3">
-          <i class='bx bx-code-alt'></i>
-          <h3>Programmer</h3>
-        </div>
+            <p class="hero-description">
+              Crafting digital experiences with cutting-edge technologies.
+              Specialized in full-stack development, AI integration, and modern
+              web architectures.
+            </p>
 
-        <div class="circle"></div>
-      </div>
+            <div class="hero-cta">
+              <a href="#contact" class="btn btn-primary">
+                <span>Let's Connect</span>
+                <i class="fas fa-paper-plane"></i>
+              </a>
+            </div>
 
-      <div class="overlay"></div>
-    </div>
+            <div class="social-links">
+              <a
+                href="https://github.com/night-slayer18"
+                target="_blank"
+                aria-label="GitHub"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/samanuaia257/"
+                target="_blank"
+                aria-label="LinkedIn"
+              >
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a
+                href="https://twitter.com/NiGhTsL93934079"
+                target="_blank"
+                aria-label="Twitter"
+              >
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/_n_i_g_h_t__s_l_a_y_e_r_/"
+                target="_blank"
+                aria-label="Instagram"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+            </div>
+          </div>
 
-    <div class="home-img">
-      <img src="images/home.png" alt="">
-    </div> 
-  </section>
+          <div class="hero-visual">
+            <div class="code-editor">
+              <div class="editor-header">
+                <div class="editor-controls">
+                  <span class="control red"></span>
+                  <span class="control yellow"></span>
+                  <span class="control green"></span>
+                </div>
+                <div class="editor-title">main.ts</div>
+              </div>
+              <div class="editor-content">
+                <pre id="typing-code"><code class="language-typescript">
+interface Developer {
+    name: string;
+    role: string;
+    skills: string[];
+} 
 
-  <!-- about section design -->
+const profile: Developer = {
+    name: "Samanuai",
+    role: "Senior Developer",
+    skills: [
+        "Full-Stack Development",
+        "AI Integration",
+        "Cloud Architecture",
+        "DevOps"
+    ]
+};</code></pre>
+              </div>
+            </div>
+            <div class="editor-spacing"></div>
 
-  <section class="about" id="about">
-    <div class="about-img">
-      <img src="images/about.png" alt="">
-    </div>
-
-    <div class="about-content">
-      <h2 class="heading">About <span> Me</span></h2>
-      <h3>Transforming ideas into elegant lines of code.</h3>
-      <p>Creative, ambitious, self-assured, hardworking, and responsible personality seeking a career in software engineering. I'm looking forward to broaden my knowledge and gain work experience in a variety of technical fields. I'm a team player who wishes to work in a reputable organization that will allow me to further develop my skills and expertise.</p>
-
-      <a href="#" class="btn">Read More</a>
-    </div>
-  </section>
-
-  <!-- Services section design -->
-  <section class="services" id="services">
-    <h2 class="heading">
-      My <span>Skills</span>
-    </h2>
-    <div class="services-container">
-      <div class="services-box">
-        <i class='bx bx-code-block'></i>
-        <h3>Front End Web Development</h3>
-        <p>Proficient in HTML and CSS, crafting visually appealing websites with clean code, responsive designs, and intuitive user experiences.</p>
-        <a href="#" class="btn">Read More</a>
-      </div>
-      <div class="services-box">
-        <i class='bx bxl-play-store' ></i>
-        <h3>Front End App Development</h3>
-        <p>Skilled in Java and Kotlin languages, creating dynamic front-end apps with clean code, smooth functionality, and seamless user interactions.</p>
-        <a href="#" class="btn">Read More</a>
-      </div>
-      <div class="services-box">
-        <i class='bx bx-server' ></i>
-        <h3>Back End Development</h3>
-        <p>Experienced in Golang and MongoDB, building robust back-end systems with efficient code, seamless data management, and scalable architecture.</p>
-        <a href="#" class="btn">Read More</a>
-      </div>
-      <div class="services-box">
-        <i class='bx bx-code-alt'></i>
-        <h3>Competitive Programming</h3>
-        <p>Proficient in C, C++, Python, and Java, excelling in competitive programming with efficient algorithms, logical problem-solving, and precise coding.</p>
-        <a href="#" class="btn">Read More</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- portfolio section design  -->
-  <section class="portfolio" id="portfolio">
-    <h2 class="heading">Latest <span>Projects</span></h2>
-
-    <div class="portfolio-container">
-      <div class="portfolio-box">
-        <img src="images/thumbnail.png" alt="">
-        <div class="portfolio-layer">
-          <h4>ChatBot-AI </h4>
-          <p> AI chatbot: ChatGPT + RASA in Java/Kotlin, Retrofit for authentication, Go backend integrated with MongoDB as the database.</p>
-          <a href="#"><i class='bx bx-link-external'></i></a>
+            <div class="floating-elements">
+              <div class="tech-icon" data-tech="React">
+                <i class="fab fa-react"></i>
+              </div>
+              <div class="tech-icon" data-tech="JavaScript">
+                <i class="fab fa-js"></i>
+              </div>
+              <div class="tech-icon" data-tech="Node.js">
+                <i class="fab fa-node-js"></i>
+              </div>
+              <div class="tech-icon" data-tech="Python">
+                <i class="fab fa-python"></i>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="portfolio-box">
-        <img src="images/thumbnail.png" alt="">
-        <div class="portfolio-layer">
-          <h4>Alexa Integration App </h4>
-          <p> An app developed used Kotlin for neurodivergent student training, featuring text-based interaction with Alexa and a dedicated learning section.</p>
-          <a href="#"><i class='bx bx-link-external'></i></a>
+
+      <div class="scroll-indicator">
+        <span>Scroll to explore</span>
+        <div class="mouse">
+          <div class="wheel"></div>
         </div>
       </div>
-      <div class="portfolio-box">
-        <img src="images/thumbnail.png" alt="">
-        <div class="portfolio-layer">
-          <h4>Youtube Clone</h4>
-          <p>YouTube clone developed using HTML and CSS only a familiar video-sharing platform and user-friendly web application.</p>
-          <a href="#"><i class='bx bx-link-external'></i></a>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">About Me</h2>
+          <p class="section-subtitle">
+            Get to know the developer behind the code
+          </p>
+        </div>
+
+        <div class="about-content">
+          <div class="about-text">
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-number" data-count="50">0</span>
+                <span class="stat-label">Projects Completed</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" data-count="3">0</span>
+                <span class="stat-label">Years Experience</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" data-count="15">0</span>
+                <span class="stat-label">Technologies</span>
+              </div>
+            </div>
+
+            <div class="about-description">
+              <p>
+                I'm a full-stack developer specializing in building scalable, high-performance
+                software with clean architecture principles. My expertise spans across modern web technologies,
+                AI integration, and multi-tenant systems. I'm an active open-source contributor with
+                multiple published projects and research work in AI chatbots.
+              </p>
+              <p>
+                My technical foundation includes TypeScript/Go/Kotlin ecosystems, from developing
+                enterprise-grade database management tools to AI-powered chatbots. I have a proven track
+                record in creating developer tools and frameworks that solve real-world problems.
+                My work has been recognized through an IEEE publication for AI chatbot implementation
+                in academic systems.
+              </p>
+            </div>
+
+            <div class="about-highlights">
+              <div class="highlight-item">
+                <i class="fas fa-code"></i>
+                <div>
+                  <h4>Clean Code Advocate</h4>
+                  <p>Writing maintainable, scalable code is my priority</p>
+                </div>
+              </div>
+              <div class="highlight-item">
+                <i class="fas fa-lightbulb"></i>
+                <div>
+                  <h4>Innovation Focused</h4>
+                  <p>Always exploring the latest technologies and trends</p>
+                </div>
+              </div>
+              <div class="highlight-item">
+                <i class="fas fa-users"></i>
+                <div>
+                  <h4>Team Player</h4>
+                  <p>Collaborative approach to problem-solving</p>
+                </div>
+              </div>
+            </div>
+
+            <a href="resume/resume.pdf" class="btn btn-primary" download>
+              <i class="fas fa-download"></i>
+              <span>Download Resume</span>
+            </a>
+          </div>
+
+          <div class="about-visual">
+            <div class="profile-card">
+              <div class="card-glow"></div>
+              <div class="profile-image">
+                <div class="image-placeholder">
+                  <i class="fas fa-user-tie"></i>
+                </div>
+              </div>
+              <div class="profile-info">
+                <h3>Samanuai</h3>
+                <p>Senior Full-Stack Developer</p>
+                <div class="profile-status">
+                  <span class="status-dot"></span>
+                  <span>Available for opportunities</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="portfolio-box">
-        <img src="images/thumbnail.png" alt="">
-        <div class="portfolio-layer">
-          <h4>Login | Signup - Golang</h4>
-          <p>A Login and Signup backend server using Golang connected to MongoDB database</p>
-          <a href="#"><i class='bx bx-link-external'></i></a>
+    </section>
+
+
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Get In Touch</h2>
+          <p class="section-subtitle">Let's discuss your next project</p>
+        </div>
+
+        <div class="contact-content">
+          <div class="contact-info">
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="contact-details">
+                <h4>Email</h4>
+                <p>samanuaia257@gmail.com</p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="contact-details">
+                <h4>Location</h4>
+                <p>Kanayannur, Kerala, IN</p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="contact-details">
+                <h4>Response Time</h4>
+                <p>Within 24 hours</p>
+              </div>
+            </div>
+          </div>
+
+          <form class="contact-form" id="contact-form">
+            <div class="form-group">
+              <input type="tel" id="phone" name="phone" />
+              <label for="phone">Phone Number (Optional)</label>
+            </div>
+
+            <div class="form-group">
+              <input type="text" id="subject" name="subject" required />
+              <label for="subject">Subject</label>
+            </div>
+
+            <div class="form-group">
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                required
+              ></textarea>
+              <label for="message">Your Message</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              <span class="btn-text">Send Message</span>
+              <span class="btn-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                Sending...
+              </span>
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
         </div>
       </div>
-      <div class="portfolio-box">
-        <img src="images/thumbnail.png" alt="">
-        <div class="portfolio-layer">
-          <h4>ML Project</h4>
-          <p>Efficient MNIST digit classification using TensorFlow's Convolutional Neural Network (CNN) for accurate and reliable handwritten digit recognition.</p>
-          <a href="#"><i class='bx bx-link-external'></i></a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <a href="#home" class="footer-logo">
+              <span class="logo-bracket">&lt;</span>
+              <span class="logo-text">Samanuai</span>
+              <span class="logo-bracket">/&gt;</span>
+            </a>
+            <p>
+              Senior Full-Stack Developer crafting digital experiences with
+              passion and precision.
+            </p>
+          </div>
+
+          <div class="footer-links">
+            <div class="footer-column">
+              <h4>Navigation</h4>
+              <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-column">
+              <h4>Services</h4>
+              <ul>
+                <li><a href="#about">Web Development</a></li>
+                <li><a href="#about">Mobile Apps</a></li>
+                <li><a href="#about">AI Integration</a></li>
+                <li><a href="#contact">Consultation</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-column">
+              <h4>Connect</h4>
+              <div class="footer-social">
+                <a
+                  href="https://github.com/night-slayer18"
+                  target="_blank"
+                  aria-label="GitHub"
+                >
+                  <i class="fab fa-github"></i>
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/samanuai/"
+                  target="_blank"
+                  aria-label="LinkedIn"
+                >
+                  <i class="fab fa-linkedin"></i>
+                </a>
+                <a
+                  href="https://twitter.com/NiGhTsL93934079"
+                  target="_blank"
+                  aria-label="Twitter"
+                >
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a
+                  href="https://www.instagram.com/_n_i_g_h_t__s_l_a_y_e_r_/"
+                  target="_blank"
+                  aria-label="Instagram"
+                >
+                  <i class="fab fa-instagram"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2025 Samanuai. All rights reserved.</p>
+          <div class="footer-bottom-links">
+            <a href="#" onclick="return false;">Privacy Policy</a>
+            <a href="#" onclick="return false;">Terms of Service</a>
+          </div>
         </div>
       </div>
-      <div class="portfolio-box">
-        <img src="images/thumbnail.png" alt="">
-        <div class="portfolio-layer">
-          <h4>QR Scanner</h4>
-          <p>QR code scanner app: Scan any QR or barcode, display results as a pop-up notification for quick and convenient access to information.</p>
-          <a href="#"><i class='bx bx-link-external'></i></a>
-        </div>
-      </div>
-    </div>
-  </section>
+    </footer>
 
-  <!-- contact section design  -->
+    <!-- Back to Top -->
+    <button class="back-to-top" aria-label="Back to top">
+      <i class="fas fa-chevron-up"></i>
+    </button>
 
-  <section class="contact" id="contact">
-    <h2 class="heading">Contact <span>Me!</span></h2>
-
-    <form action="#">
-      <div class="input-box">
-        <input type="text" placeholder="Full Name">
-        <input type="email" placeholder="Email Address">
-      </div>
-      <div class="input-box">
-        <input type="number" placeholder="Mobile Number">
-        <input type="text" placeholder="Email Subject">
-      </div>
-      <textarea name="" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
-      <input type="submit" value="Send Message" class="btn">
-    </form>
-  </section>
-
-  <!-- footer design  -->
-  <footer class="footer">
-    <div class="footer-text">
-      <p>Copyright &copy; 2023 by <a href="https://www.linkedin.com/in/samanuaia257/">NiGhTsLaYeR</a> | All Rights Reserved.</p>
-    </div>
-    <div class="footer-iconTop">
-      <a href="#home"><i class='bx bxs-chevrons-up'></i></a>
-    </div>
-  </footer>
-
-  <!-- scroll reveal  -->
-  <script src="https://unpkg.com/scrollreveal"></script>
-
-  <!-- custom js -->
-  <script src = "js/script.js"></script>
-</body>
+    <!-- JavaScript -->
+    <script src="js/script.js"></script>
+  </body>
 </html>
