@@ -559,18 +559,19 @@ body {
 .hero {
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
   overflow: hidden;
   padding-top: 80px;
-  padding-bottom: var(--spacing-3xl);
+  padding-bottom: 100px; /* Space for scroll indicator */
 }
 
 @media (max-width: 768px) {
   .hero {
     min-height: 100vh;
     padding-top: 70px;
-    padding-bottom: var(--spacing-3xl);
+    padding-bottom: 80px;
   }
 }
 
@@ -594,7 +595,10 @@ body {
   gap: var(--spacing-3xl);
   align-items: center;
   width: 100%;
-  margin-bottom: var(--spacing-3xl);
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
 }
 
 @media (max-width: 1024px) {
@@ -602,7 +606,13 @@ body {
     grid-template-columns: 1fr;
     gap: var(--spacing-2xl);
     text-align: center;
-    margin-bottom: var(--spacing-2xl);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    padding: 0 var(--spacing-md);
+    gap: var(--spacing-xl);
   }
 }
 
@@ -749,6 +759,23 @@ body {
   border: 1px solid var(--border-color);
   position: relative;
   max-width: 100%;
+  margin-bottom: var(--spacing-lg); /* Ensure space below */
+}
+
+@media (max-width: 768px) {
+  .code-editor {
+    max-width: calc(100vw - 2rem);
+    margin: 0 auto var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .code-editor {
+    max-width: calc(100vw - 1rem);
+    margin: 0 auto var(--spacing-md);
+    max-height: 280px;
+    overflow: hidden;
+  }
 }
 
 .editor-header {
@@ -914,7 +941,7 @@ body {
   color: var(--text-muted);
   font-size: 0.9rem;
   animation: fadeInUp 1s ease 1s both;
-  z-index: 1;
+  z-index: 10;
 }
 
 @media (max-width: 1024px) {
@@ -928,6 +955,26 @@ body {
   .scroll-indicator {
     bottom: var(--spacing-md);
     font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .scroll-indicator {
+    bottom: var(--spacing-sm);
+    font-size: 0.75rem;
+  }
+}
+
+/* Hide scroll indicator on very short screens */
+@media (max-height: 600px) {
+  .scroll-indicator {
+    display: none;
+  }
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .scroll-indicator {
+    display: none;
   }
 }
 
@@ -1636,12 +1683,6 @@ body {
     font-size: clamp(1.8rem, 6vw, 2rem);
   }
 
-  .code-editor {
-    margin: 0 calc(-1 * var(--spacing-sm));
-    max-height: 250px;
-    overflow: hidden;
-  }
-
   .social-links a {
     width: 45px;
     height: 45px;
@@ -1668,11 +1709,11 @@ body {
   
   .hero {
     min-height: 100vh;
-    padding-bottom: var(--spacing-2xl);
+    padding-bottom: 60px;
   }
   
-  .scroll-indicator {
-    bottom: var(--spacing-sm);
+  .hero-content {
+    gap: var(--spacing-md);
   }
 }
 
@@ -1735,8 +1776,8 @@ textarea:focus-visible {
 /* Landscape phone optimizations */
 @media screen and (max-height: 500px) and (orientation: landscape) {
   .hero {
-    min-height: auto;
-    padding: var(--spacing-xl) 0;
+    min-height: 100vh;
+    padding-bottom: var(--spacing-lg);
   }
 
   .scroll-indicator {
@@ -1745,16 +1786,17 @@ textarea:focus-visible {
 
   .hero-content {
     gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-lg);
   }
   
   .hero-visual {
-    max-height: 300px;
+    max-height: 250px;
     overflow: hidden;
   }
   
   .code-editor {
-    transform: scale(0.9);
+    transform: scale(0.85);
+    transform-origin: center;
+    max-height: 200px;
   }
 }
 
