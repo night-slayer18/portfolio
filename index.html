@@ -3,74 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Samanuai - Senior Developer</title>
+    <title id="meta-title">Loading...</title>
     <meta
+      id="meta-description"
       name="description"
-      content="Full-Stack Developer specializing in modern web applications and AI integration"
+      content="Loading..."
     />
-    <meta name="theme-color" content="#667eea" />
+    <meta id="meta-theme-color" name="theme-color" content="#667eea" />
     <meta name="robots" content="index, follow" />
-    <meta name="author" content="Samanuai" />
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://samanuai.dev/" />
-    <meta property="og:title" content="Samanuai - Senior Developer" />
+    <meta id="meta-author" name="author" content="Loading..." />
+    <meta id="og-type" property="og:type" content="website" />
+    <meta id="og-url" property="og:url" content="" />
+    <meta id="og-title" property="og:title" content="Loading..." />
     <meta
+      id="og-description"
       property="og:description"
-      content="Senior Full-Stack Developer specializing in modern web applications and AI integration"
+      content="Loading..."
     />
     <meta
+      id="og-image"
       property="og:image"
-      content="https://samanuai.dev/images/og-image.jpg"
+      content=""
     />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://samanuai.dev/" />
-    <meta property="twitter:title" content="Samanuai - Senior Developer" />
+    <meta id="twitter-card" property="twitter:card" content="summary_large_image" />
+    <meta id="twitter-url" property="twitter:url" content="" />
+    <meta id="twitter-title" property="twitter:title" content="Loading..." />
     <meta
+      id="twitter-description"
       property="twitter:description"
-      content="Senior Full-Stack Developer specializing in modern web applications and AI integration"
+      content="Loading..."
     />
     <meta
+      id="twitter-image"
       property="twitter:image"
-      content="https://samanuai.dev/images/og-image.jpg"
+      content=""
     />
-
-    <!-- Favicon -->
     <link
       rel="icon"
       type="image/svg+xml"
       href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>"
     />
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-
-    <!-- Icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-
-    <!-- CSS -->
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <!-- Cursor -->
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
-
-    <!-- Preloader -->
     <div class="preloader">
       <div class="preloader-content">
-        <div class="code-animation">
+        <div class="code-animation" id="preloader-text">
           <span>&lt;</span>
           <span>S</span>
           <span>a</span>
@@ -87,103 +77,52 @@
         </div>
       </div>
     </div>
-
-    <!-- Navigation -->
     <nav class="navbar">
       <div class="nav-container">
         <a href="#home" class="nav-logo">
           <span class="logo-bracket">&lt;</span>
-          <span class="logo-text">Samanuai</span>
+          <span class="logo-text" id="nav-logo-text">Loading...</span>
           <span class="logo-bracket">/&gt;</span>
         </a>
-
-        <ul class="nav-menu">
-          <li><a href="#home" class="nav-link" data-text="Home">Home</a></li>
-          <li><a href="#about" class="nav-link" data-text="About">About</a></li>
-          <li>
-            <a href="#contact" class="nav-link" data-text="Contact">Contact</a>
-          </li>
-        </ul>
-
         <div class="nav-actions">
           <button class="theme-toggle" aria-label="Toggle theme">
             <i class="fas fa-sun light-icon"></i>
             <i class="fas fa-moon dark-icon"></i>
           </button>
-          <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
         </div>
       </div>
     </nav>
-
-    <!-- Hero Section -->
     <section id="home" class="hero">
       <div class="hero-bg">
         <canvas id="hero-canvas"></canvas>
       </div>
-
       <div class="container">
         <div class="hero-content">
           <div class="hero-text">
             <p class="hero-greeting">
-              <span class="greeting-text">Hello World! 👋</span>
+              <span class="greeting-text" id="hero-greeting">Loading...</span>
               <span class="terminal-cursor">|</span>
             </p>
-
             <h1 class="hero-title">
-              <span class="title-line">I'm</span>
-              <span class="title-name">Samanuai</span>
-              <span class="title-role">Full Stack Developer</span>
+              <span class="title-line" id="hero-title-prefix">Loading...</span>
+              <span class="title-name" id="hero-title-name">Loading...</span>
+              <span class="title-role" id="hero-title-role">Loading...</span>
             </h1>
-
-            <p class="hero-description">
-              Crafting digital experiences with cutting-edge technologies.
-              Specialized in full-stack development, AI integration, and modern
-              web architectures.
+            <p class="hero-description" id="hero-description">
+              Loading...
             </p>
-
             <div class="hero-cta">
-              <a href="#contact" class="btn btn-primary">
-                <span>Let's Connect</span>
-                <i class="fas fa-paper-plane"></i>
+              <a href="#projects" class="btn btn-primary" id="hero-cta-link">
+                <span id="hero-cta-text">View My Work</span>
+                <i id="hero-cta-icon" class="fas fa-arrow-down"></i>
+              </a>
+              <a href="resume/resume.pdf" class="btn btn-secondary" download id="resume-link">
+                <i class="fas fa-download"></i>
+                <span>Resume</span>
               </a>
             </div>
-
-            <div class="social-links">
-              <a
-                href="https://github.com/night-slayer18"
-                target="_blank"
-                aria-label="GitHub"
-              >
-                <i class="fab fa-github"></i>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/samanuaia257/"
-                target="_blank"
-                aria-label="LinkedIn"
-              >
-                <i class="fab fa-linkedin"></i>
-              </a>
-              <a
-                href="https://twitter.com/NiGhTsL93934079"
-                target="_blank"
-                aria-label="Twitter"
-              >
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a
-                href="https://www.instagram.com/_n_i_g_h_t__s_l_a_y_e_r_/"
-                target="_blank"
-                aria-label="Instagram"
-              >
-                <i class="fab fa-instagram"></i>
-              </a>
-            </div>
+            <div class="social-links" id="social-links"></div>
           </div>
-
           <div class="hero-visual">
             <div class="code-editor">
               <div class="editor-header">
@@ -192,48 +131,17 @@
                   <span class="control yellow"></span>
                   <span class="control green"></span>
                 </div>
-                <div class="editor-title">main.ts</div>
+                <div class="editor-title" id="code-editor-filename">main.ts</div>
               </div>
               <div class="editor-content">
-                <pre id="typing-code"><code class="language-typescript">
-interface Developer {
-    name: string;
-    role: string;
-    skills: string[];
-} 
-
-const profile: Developer = {
-    name: "Samanuai",
-    role: "Senior Developer",
-    skills: [
-        "Full-Stack Development",
-        "AI Integration",
-        "Cloud Architecture",
-        "DevOps"
-    ]
-};</code></pre>
+                <pre id="typing-code"><code class="language-typescript" id="code-editor-content"></code></pre>
               </div>
             </div>
             <div class="editor-spacing"></div>
-
-            <div class="floating-elements">
-              <div class="tech-icon" data-tech="React">
-                <i class="fab fa-react"></i>
-              </div>
-              <div class="tech-icon" data-tech="JavaScript">
-                <i class="fab fa-js"></i>
-              </div>
-              <div class="tech-icon" data-tech="Node.js">
-                <i class="fab fa-node-js"></i>
-              </div>
-              <div class="tech-icon" data-tech="Python">
-                <i class="fab fa-python"></i>
-              </div>
-            </div>
+            <div class="floating-elements" id="tech-icons"></div>
           </div>
         </div>
       </div>
-
       <div class="scroll-indicator">
         <span>Scroll to explore</span>
         <div class="mouse">
@@ -241,267 +149,44 @@ const profile: Developer = {
         </div>
       </div>
     </section>
-
-    <!-- About Section -->
-    <section id="about" class="about">
+    <section id="projects" class="projects">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">About Me</h2>
+          <h2 class="section-title">Featured Projects</h2>
           <p class="section-subtitle">
-            Get to know the developer behind the code
+            Open-source projects and tools I've built
           </p>
         </div>
-
-        <div class="about-content">
-          <div class="about-text">
-            <div class="stats-grid">
-              <div class="stat-item">
-                <span class="stat-number" data-count="50">0</span>
-                <span class="stat-label">Projects Completed</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-number" data-count="3">0</span>
-                <span class="stat-label">Years Experience</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-number" data-count="15">0</span>
-                <span class="stat-label">Technologies</span>
-              </div>
-            </div>
-
-            <div class="about-description">
-              <p>
-                I'm a full-stack developer specializing in building scalable, high-performance
-                software with clean architecture principles. My expertise spans across modern web technologies,
-                AI integration, and multi-tenant systems. I'm an active open-source contributor with
-                multiple published projects and research work in AI chatbots.
-              </p>
-              <p>
-                My technical foundation includes TypeScript/Go/Kotlin ecosystems, from developing
-                enterprise-grade database management tools to AI-powered chatbots. I have a proven track
-                record in creating developer tools and frameworks that solve real-world problems.
-                My work has been recognized through an IEEE publication for AI chatbot implementation
-                in academic systems.
-              </p>
-            </div>
-
-            <div class="about-highlights">
-              <div class="highlight-item">
-                <i class="fas fa-code"></i>
-                <div>
-                  <h4>Clean Code Advocate</h4>
-                  <p>Writing maintainable, scalable code is my priority</p>
-                </div>
-              </div>
-              <div class="highlight-item">
-                <i class="fas fa-lightbulb"></i>
-                <div>
-                  <h4>Innovation Focused</h4>
-                  <p>Always exploring the latest technologies and trends</p>
-                </div>
-              </div>
-              <div class="highlight-item">
-                <i class="fas fa-users"></i>
-                <div>
-                  <h4>Team Player</h4>
-                  <p>Collaborative approach to problem-solving</p>
-                </div>
-              </div>
-            </div>
-
-            <a href="resume/resume.pdf" class="btn btn-primary" download>
-              <i class="fas fa-download"></i>
-              <span>Download Resume</span>
-            </a>
-          </div>
-
-          <div class="about-visual">
-            <div class="profile-card">
-              <div class="card-glow"></div>
-              <div class="profile-image">
-                <div class="image-placeholder">
-                  <i class="fas fa-user-tie"></i>
-                </div>
-              </div>
-              <div class="profile-info">
-                <h3>Samanuai</h3>
-                <p>Senior Full-Stack Developer</p>
-                <div class="profile-status">
-                  <span class="status-dot"></span>
-                  <span>Available for opportunities</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="projects-grid" id="projects-grid"></div>
+        <div class="projects-cta">
+          <a href="https://github.com/night-slayer18" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            <i class="fab fa-github"></i>
+            <span>View All on GitHub</span>
+          </a>
         </div>
       </div>
     </section>
-
-
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
+    <section id="contact" class="contact-minimal">
       <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Get In Touch</h2>
-          <p class="section-subtitle">Let's discuss your next project</p>
-        </div>
-
-        <div class="contact-content">
-          <div class="contact-info">
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="fas fa-envelope"></i>
-              </div>
-              <div class="contact-details">
-                <h4>Email</h4>
-                <p>samanuaia257@gmail.com</p>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="fas fa-map-marker-alt"></i>
-              </div>
-              <div class="contact-details">
-                <h4>Location</h4>
-                <p>Kanayannur, Kerala, IN</p>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="fas fa-clock"></i>
-              </div>
-              <div class="contact-details">
-                <h4>Response Time</h4>
-                <p>Within 24 hours</p>
-              </div>
-            </div>
-          </div>
-
-          <form class="contact-form" id="contact-form">
-            <div class="form-group">
-              <input type="tel" id="phone" name="phone" />
-              <label for="phone">Phone Number (Optional)</label>
-            </div>
-
-            <div class="form-group">
-              <input type="text" id="subject" name="subject" required />
-              <label for="subject">Subject</label>
-            </div>
-
-            <div class="form-group">
-              <textarea
-                id="message"
-                name="message"
-                rows="5"
-                required
-              ></textarea>
-              <label for="message">Your Message</label>
-            </div>
-
-            <button type="submit" class="btn btn-primary">
-              <span class="btn-text">Send Message</span>
-              <span class="btn-loading">
-                <i class="fas fa-spinner fa-spin"></i>
-                Sending...
-              </span>
-              <i class="fas fa-paper-plane"></i>
-            </button>
-          </form>
-        </div>
+        <h2 class="section-title">Let's Connect</h2>
+        <p class="contact-subtitle" id="contact-subtitle">
+          Open to opportunities and collaborations
+        </p>
+        <div class="contact-links" id="contact-links"></div>
       </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer-minimal">
       <div class="container">
         <div class="footer-content">
-          <div class="footer-brand">
-            <a href="#home" class="footer-logo">
-              <span class="logo-bracket">&lt;</span>
-              <span class="logo-text">Samanuai</span>
-              <span class="logo-bracket">/&gt;</span>
-            </a>
-            <p>
-              Senior Full-Stack Developer crafting digital experiences with
-              passion and precision.
-            </p>
-          </div>
-
-          <div class="footer-links">
-            <div class="footer-column">
-              <h4>Navigation</h4>
-              <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-              </ul>
-            </div>
-
-            <div class="footer-column">
-              <h4>Services</h4>
-              <ul>
-                <li><a href="#about">Web Development</a></li>
-                <li><a href="#about">Mobile Apps</a></li>
-                <li><a href="#about">AI Integration</a></li>
-                <li><a href="#contact">Consultation</a></li>
-              </ul>
-            </div>
-
-            <div class="footer-column">
-              <h4>Connect</h4>
-              <div class="footer-social">
-                <a
-                  href="https://github.com/night-slayer18"
-                  target="_blank"
-                  aria-label="GitHub"
-                >
-                  <i class="fab fa-github"></i>
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/samanuai/"
-                  target="_blank"
-                  aria-label="LinkedIn"
-                >
-                  <i class="fab fa-linkedin"></i>
-                </a>
-                <a
-                  href="https://twitter.com/NiGhTsL93934079"
-                  target="_blank"
-                  aria-label="Twitter"
-                >
-                  <i class="fab fa-twitter"></i>
-                </a>
-                <a
-                  href="https://www.instagram.com/_n_i_g_h_t__s_l_a_y_e_r_/"
-                  target="_blank"
-                  aria-label="Instagram"
-                >
-                  <i class="fab fa-instagram"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="footer-bottom">
-          <p>&copy; 2025 Samanuai. All rights reserved.</p>
-          <div class="footer-bottom-links">
-            <a href="#" onclick="return false;">Privacy Policy</a>
-            <a href="#" onclick="return false;">Terms of Service</a>
-          </div>
+          <p id="footer-copyright">© 2025 Samanuai. All rights reserved.</p>
+          <div class="footer-social" id="footer-social"></div>
         </div>
       </div>
     </footer>
-
-    <!-- Back to Top -->
     <button class="back-to-top" aria-label="Back to top">
       <i class="fas fa-chevron-up"></i>
     </button>
-
-    <!-- JavaScript -->
+    <script src="js/config.js"></script>
     <script src="js/script.js"></script>
   </body>
 </html>
