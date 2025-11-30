@@ -1,6 +1,6 @@
 'use strict';
 const app = {
-  theme: localStorage.getItem('theme') || 'light',
+  theme: localStorage.getItem('theme') || 'dark',
   isScrolling: false,
   mobile: window.innerWidth <= 768,
   reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
