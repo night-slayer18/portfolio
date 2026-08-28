@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-08-28T22:02:00Z",
+  "generated_at": "2026-08-28T16:45:14.951247+00:00",
   "profile": {
     "login": "night-slayer18",
     "name": "Samanuai A",
     "avatar_url": "https://avatars.githubusercontent.com/u/83979018?v=4",
-    "bio": "Founder @OpenSyntaxHQ",
+    "bio": "Founder @OpenSyntaxHQ ",
     "company": "Founder @OpenSyntaxHQ",
-    "location": "Kochi, Kerala 🇮🇳",
-    "public_repos": 32,
+    "location": "Kochi, Kerala",
+    "public_repos": 30,
     "followers": 30,
     "following": 21,
     "created_at": "2021-05-10T18:14:03Z"
@@ -17,12 +17,36 @@
     "total_forks": 12,
     "total_repos": 32,
     "top_languages": [
-      { "name": "TypeScript", "count": 10, "color": "#3178c6" },
-      { "name": "Go", "count": 6, "color": "#00add8" },
-      { "name": "Python", "count": 4, "color": "#3572A5" },
-      { "name": "Java", "count": 3, "color": "#b07219" },
-      { "name": "Shell", "count": 2, "color": "#89e051" },
-      { "name": "SQL", "count": 1, "color": "#336791" }
+      {
+        "name": "TypeScript",
+        "count": 8,
+        "color": "#3178c6"
+      },
+      {
+        "name": "Go",
+        "count": 5,
+        "color": "#00add8"
+      },
+      {
+        "name": "Python",
+        "count": 4,
+        "color": "#3572A5"
+      },
+      {
+        "name": "Java",
+        "count": 3,
+        "color": "#b07219"
+      },
+      {
+        "name": "CSS",
+        "count": 2,
+        "color": "#563d7c"
+      },
+      {
+        "name": "PLpgSQL",
+        "count": 1,
+        "color": "#336791"
+      }
     ],
     "contribution_streak": 274,
     "total_contributions": 1420
@@ -38,39 +62,134 @@
       "stargazers_count": 47,
       "forks_count": 10,
       "language": "TypeScript",
-      "topics": ["algorithms", "cli", "data-structures", "leetcode"],
+      "topics": [
+        "algorithms",
+        "cli",
+        "data-structures",
+        "leetcode"
+      ],
       "updated_at": "2026-08-27T10:21:54Z",
-      "featured": true
+      "featured": true,
+      "isOpenSyntax": false
+    },
+    {
+      "name": "brokr-platform",
+      "full_name": "night-slayer18/brokr-platform",
+      "org": "night-slayer18",
+      "description": "Multi-tenant Kafka management platform with Spring Boot backend and GraphQL API",
+      "html_url": "https://github.com/night-slayer18/brokr-platform",
+      "homepage": "",
+      "stargazers_count": 2,
+      "forks_count": 1,
+      "language": "Java",
+      "topics": [
+        "brokr",
+        "developer-tools",
+        "graphql",
+        "java",
+        "kafka"
+      ],
+      "updated_at": "2025-12-13T13:08:31Z",
+      "featured": false,
+      "isOpenSyntax": false
     },
     {
       "name": "tweak",
       "full_name": "OpenSyntaxHQ/tweak",
       "org": "OpenSyntaxHQ",
-      "description": "Fast CLI + TUI for text processing: encoding, hashing, transforms, and more. Packaged with Homebrew tap support.",
+      "description": "Fast CLI + TUI for text processing: encoding, hashing, transforms, and more.",
       "html_url": "https://github.com/OpenSyntaxHQ/tweak",
-      "homepage": "https://github.com/OpenSyntaxHQ/tweak",
+      "homepage": "",
       "stargazers_count": 1,
       "forks_count": 0,
       "language": "Go",
-      "topics": ["cli", "tui", "text-processing", "golang", "opensyntax"],
-      "updated_at": "2026-08-28T09:12:00Z",
+      "topics": [
+        "cli",
+        "cross-platform",
+        "crypto",
+        "developer-tools",
+        "devutils"
+      ],
+      "updated_at": "2026-05-02T07:55:52Z",
       "featured": true,
+      "isOpenSyntax": true
+    },
+    {
+      "name": "npx_card",
+      "full_name": "night-slayer18/npx_card",
+      "org": "night-slayer18",
+      "description": "A personalised npx card",
+      "html_url": "https://github.com/night-slayer18/npx_card",
+      "homepage": "https://www.npmjs.com/package/night-slayer18",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "topics": [
+        "javascript",
+        "nodejs",
+        "npx",
+        "npx-card"
+      ],
+      "updated_at": "2024-06-09T12:16:14Z",
+      "featured": false,
+      "isOpenSyntax": false
+    },
+    {
+      "name": "OpenSyntaxHQ",
+      "full_name": "OpenSyntaxHQ/OpenSyntaxHQ",
+      "org": "OpenSyntaxHQ",
+      "description": "Engineer-first open source tools and reference implementations for building scalable, maintainable software.",
+      "html_url": "https://github.com/OpenSyntaxHQ/OpenSyntaxHQ",
+      "homepage": "https://opensyntaxhq.github.io/OpenSyntaxHQ/",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "language": "TypeScript",
+      "topics": [
+        "community",
+        "developer-tools",
+        "open-source",
+        "opensyntax"
+      ],
+      "updated_at": "2026-01-30T18:21:55Z",
+      "featured": false,
       "isOpenSyntax": true
     },
     {
       "name": "autodocs",
       "full_name": "OpenSyntaxHQ/autodocs",
       "org": "OpenSyntaxHQ",
-      "description": "Engineer-first documentation generator that turns your TypeScript codebase into beautiful, interactive, searchable documentation.",
+      "description": "Engineer-first documentation generator that turns your TypeScript code into beautiful, interactive docs.",
       "html_url": "https://github.com/OpenSyntaxHQ/autodocs",
-      "homepage": "https://github.com/OpenSyntaxHQ/autodocs",
+      "homepage": "",
       "stargazers_count": 1,
       "forks_count": 0,
       "language": "TypeScript",
-      "topics": ["docs-generator", "typescript", "developer-tools", "opensyntax"],
-      "updated_at": "2026-08-28T08:30:00Z",
+      "topics": [
+        "autodocs",
+        "cli",
+        "documentation-generator"
+      ],
+      "updated_at": "2026-03-23T18:39:21Z",
       "featured": false,
       "isOpenSyntax": true
+    },
+    {
+      "name": "gitgotchi",
+      "full_name": "night-slayer18/gitgotchi",
+      "org": "night-slayer18",
+      "description": "GitGotchi \u2014 a playful virtual pet that reflects your GitHub activity, turning commits, issues, and PRs into actions that grow and care for your Gotchi.",
+      "html_url": "https://github.com/night-slayer18/gitgotchi",
+      "homepage": "https://github.com/marketplace/actions/gitgotchi-profile-pet",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "language": "TypeScript",
+      "topics": [
+        "gitgotchi",
+        "pet"
+      ],
+      "updated_at": "2026-08-28T10:56:44Z",
+      "featured": false,
+      "isOpenSyntax": false
     },
     {
       "name": "runtime",
@@ -82,122 +201,95 @@
       "stargazers_count": 0,
       "forks_count": 0,
       "language": "Go",
-      "topics": ["bubbletea", "cli", "golang", "tui", "developer-tools"],
+      "topics": [
+        "bubbletea",
+        "cli",
+        "csv-viewer",
+        "database-explorer",
+        "go"
+      ],
       "updated_at": "2026-08-23T08:53:02Z",
-      "featured": false
+      "featured": false,
+      "isOpenSyntax": false
     },
     {
       "name": "spring-specter-mcp",
       "full_name": "night-slayer18/spring-specter-mcp",
       "org": "night-slayer18",
-      "description": "Spring Boot–based Model Context Protocol (MCP) server that builds a runtime-aware graph of Java/Spring applications for architecture analysis, observability, governance, and AI-assisted remediation.",
+      "description": "Spring-Specter MCP is a Spring Boot\u2013based Model Context Protocol server that builds a runtime-aware graph of Java/Spring applications for architecture analysis, observability, governance, and AI-assisted remediation.",
       "html_url": "https://github.com/night-slayer18/spring-specter-mcp",
       "homepage": "",
       "stargazers_count": 0,
       "forks_count": 1,
       "language": "Java",
-      "topics": ["mcp", "spring-boot", "java", "architecture-graph", "ai-tools"],
+      "topics": [
+        "dependency-graph",
+        "maven",
+        "mcp",
+        "spring-boot"
+      ],
       "updated_at": "2026-05-19T16:27:00Z",
-      "featured": false
-    },
-    {
-      "name": "gitgotchi",
-      "full_name": "night-slayer18/gitgotchi",
-      "org": "night-slayer18",
-      "description": "GitGotchi — a playful virtual pet that reflects your GitHub activity, turning commits, issues, and PRs into actions that grow and care for your Gotchi.",
-      "html_url": "https://github.com/night-slayer18/gitgotchi",
-      "homepage": "https://github.com/marketplace/actions/gitgotchi-profile-pet",
-      "stargazers_count": 1,
-      "forks_count": 0,
-      "language": "TypeScript",
-      "topics": ["gitgotchi", "github-actions", "interactive-pet", "typescript"],
-      "updated_at": "2026-08-28T10:56:44Z",
-      "featured": false
-    },
-    {
-      "name": "brokr-platform",
-      "full_name": "night-slayer18/brokr-platform",
-      "org": "night-slayer18",
-      "description": "Multi-tenant Kafka management platform with Spring Boot backend, GraphQL API, and real-time streaming observability.",
-      "html_url": "https://github.com/night-slayer18/brokr-platform",
-      "homepage": "https://github.com/night-slayer18/brokr-platform",
-      "stargazers_count": 2,
-      "forks_count": 1,
-      "language": "Java",
-      "topics": ["kafka", "spring-boot", "graphql", "multi-tenant"],
-      "updated_at": "2026-04-12T14:15:00Z",
-      "featured": false
-    },
-    {
-      "name": "goforge",
-      "full_name": "night-slayer18/goforge",
-      "org": "night-slayer18",
-      "description": "GoForge is a CLI tool for bootstrapping scalable Go projects using clean architecture principles and enterprise standards.",
-      "html_url": "https://github.com/night-slayer18/goforge",
-      "homepage": "https://pkg.go.dev/github.com/night-slayer18/goforge",
-      "stargazers_count": 0,
-      "forks_count": 0,
-      "language": "Go",
-      "topics": ["cli", "golang", "clean-architecture", "scaffolding"],
-      "updated_at": "2026-01-18T23:44:07Z",
-      "featured": false
-    },
-    {
-      "name": "multibridge",
-      "full_name": "night-slayer18/multibridge",
-      "org": "night-slayer18",
-      "description": "MultiBridge is a multi-tenant database connection manager supporting PostgreSQL, MySQL, MongoDB, and Cassandra in isolated tenant contexts.",
-      "html_url": "https://github.com/night-slayer18/multibridge",
-      "homepage": "",
-      "stargazers_count": 0,
-      "forks_count": 0,
-      "language": "TypeScript",
-      "topics": ["multi-tenant", "database-manager", "typescript", "postgresql"],
-      "updated_at": "2026-02-10T11:20:00Z",
-      "featured": false
-    },
-    {
-      "name": "neon",
-      "full_name": "OpenSyntaxHQ/neon",
-      "org": "OpenSyntaxHQ",
-      "description": "OpenSyntaxHQ ecosystem utilities and developer tooling toolkit in Python.",
-      "html_url": "https://github.com/OpenSyntaxHQ/neon",
-      "homepage": "https://github.com/OpenSyntaxHQ/neon",
-      "stargazers_count": 1,
-      "forks_count": 0,
-      "language": "Python",
-      "topics": ["python", "opensyntax", "developer-tools"],
-      "updated_at": "2026-08-20T17:05:00Z",
       "featured": false,
-      "isOpenSyntax": true
+      "isOpenSyntax": false
     },
     {
       "name": "HSQL",
       "full_name": "night-slayer18/HSQL",
       "org": "night-slayer18",
-      "description": "🐘 HSQL (HyperText Structured Query Language): PostgreSQL is your browser. Render UI with SQL, not JS. Because databases should do everything.",
+      "description": "\ud83d\udc18 HSQL(HyperText Structured Query Language): PostgreSQL is your browser. Render UI with SQL, not JS. Because databases should do everything.",
       "html_url": "https://github.com/night-slayer18/HSQL",
-      "homepage": "",
+      "homepage": "https://hsql.vercel.app",
       "stargazers_count": 0,
       "forks_count": 0,
       "language": "PLpgSQL",
-      "topics": ["sql", "postgresql", "experimental", "database-ui"],
-      "updated_at": "2026-06-15T09:40:00Z",
-      "featured": false
+      "topics": [
+        "plpgsql",
+        "postgresql",
+        "ui-framework",
+        "web-framework"
+      ],
+      "updated_at": "2025-12-30T15:43:09Z",
+      "featured": false,
+      "isOpenSyntax": false
+    },
+    {
+      "name": "multibridge",
+      "full_name": "night-slayer18/multibridge",
+      "org": "night-slayer18",
+      "description": "MultiBridge is a multi-tenant database connection manager that supports PostgreSQL, MySQL, MongoDB, and Cassandra. It provides utilities for managing tenant-specific database connections and executing queries in a tenant-aware context.",
+      "html_url": "https://github.com/night-slayer18/multibridge",
+      "homepage": "",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "TypeScript",
+      "topics": [
+        "cassandra",
+        "mongodb",
+        "mysql",
+        "postgresql"
+      ],
+      "updated_at": "2025-12-06T13:12:01Z",
+      "featured": false,
+      "isOpenSyntax": false
     },
     {
       "name": "ugit",
       "full_name": "night-slayer18/ugit",
       "org": "night-slayer18",
-      "description": "A minimal Git implementation in Python demonstrating core version control concepts including object storage, tree hashes, staging, and commit history.",
+      "description": "A minimal Git implementation in Python demonstrating core version control concepts including object storage, staging, and commit history.",
       "html_url": "https://github.com/night-slayer18/ugit",
-      "homepage": "",
+      "homepage": "https://pypi.org/project/ugit-cli/",
       "stargazers_count": 0,
       "forks_count": 0,
       "language": "Python",
-      "topics": ["git-internals", "python", "systems-programming"],
-      "updated_at": "2026-03-05T19:12:00Z",
-      "featured": false
+      "topics": [
+        "cli",
+        "git",
+        "python"
+      ],
+      "updated_at": "2025-11-14T18:34:14Z",
+      "featured": false,
+      "isOpenSyntax": false
     }
   ]
 }
