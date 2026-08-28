@@ -1,634 +1,780 @@
 'use strict';
+
+/* ============================================================
+   script.js — Main Application Engine
+   Samanuai OS Portfolio — night-slayer.tech
+   ============================================================ */
+
+/* ── App State ── */
 const app = {
-  theme: localStorage.getItem('theme') || 'dark',
-  isScrolling: false,
-  mobile: window.innerWidth <= 768,
-  reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-  touchDevice: 'ontouchstart' in window || navigator.maxTouchPoints > 0
+  theme:        localStorage.getItem('portfolio-theme') || 'dark',
+  mobile:       window.innerWidth <= 768,
+  reduced:      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  touch:        'ontouchstart' in window || navigator.maxTouchPoints > 0,
+  githubData:   null,
+  initialized:  false,
 };
-const elements = {
-  body: document.body,
-  navbar: document.querySelector('.navbar'),
-  themeToggle: document.querySelector('.theme-toggle'),
-  preloader: document.querySelector('.preloader'),
-  backToTop: document.querySelector('.back-to-top'),
-  heroCanvas: document.getElementById('hero-canvas'),
-  typingCode: document.getElementById('typing-code'),
-  cursor: document.querySelector('.cursor'),
-  cursorFollower: document.querySelector('.cursor-follower')
+
+/* ── DOM Cache ── */
+const DOM = {
+  body:          document.body,
+  html:          document.documentElement,
+  navbar:        document.querySelector('.navbar'),
+  heroCanvas:    document.getElementById('hero-canvas'),
+  backTop:       document.getElementById('back-top'),
+  themeBtn:      document.getElementById('theme-btn'),
+  cursorDot:     document.getElementById('cursor-dot'),
+  cursorRing:    document.getElementById('cursor-ring'),
+  codeOutput:    document.getElementById('code-output'),
+  statusClock:   document.getElementById('status-clock'),
 };
+
+/* ────────────────────────────────────────
+   ENTRY POINT
+──────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initCursor();
+  if (app.touch) DOM.body.classList.add('touch-device');
   initApp();
 });
+
 async function initApp() {
-  await fetchGitHubData();
-  populateContentFromConfig();
-  setTheme(app.theme);
-  initPreloader();
-  initNavigation();
-  initThemeToggle();
-  initHeroAnimation();
+  if (app.initialized) return;
+  app.initialized = true;
+
+  // Fetch GitHub data (cached JSON first, then live if available)
+  await loadGitHubData();
+
+  // Populate all content
+  populateHero();
+  populateStats();
+  populateProjects();
+  populateContact();
+  populateFooter();
+
+  // Init features
+  initNavbar();
+  initHeroCanvas();
   initScrollAnimations();
+
+  // Reveal all elements in hero immediately
+  document.querySelectorAll('.hero .reveal, .hero .reveal-left, .hero .reveal-right').forEach(el => {
+    el.classList.add('visible');
+  });
+
+  initScrollEvents();
   initBackToTop();
-  initCustomCursor();
-  initTypingEffect();
-  addEventListeners();
-  preventHorizontalScroll();
+  initClock();
+  initProjectFilters();
+  initTiltEffects();
+
+  // Command palette
+  CommandPalette.init(portfolioConfig.commandPalette.commands);
+
+  // Theme toggle event
+  document.addEventListener('toggle-theme', () => {
+    const newTheme = app.theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+  });
+
+  // Typing effect on the hero code snippet
+  setTimeout(() => {
+    if (DOM.codeOutput && window.TypingEffect) {
+      TypingEffect.type(DOM.codeOutput, portfolioConfig.hero.codeSnippet, 12);
+    }
+  }, 200);
 }
-async function fetchGitHubData() {
-  const githubUsername = portfolioConfig.social.github.url.split('/').pop();
+
+/* ────────────────────────────────────────
+   GITHUB DATA LOADER (Personal + OpenSyntaxHQ)
+──────────────────────────────────────── */
+async function loadGitHubData() {
+  // 1. Try local cache first (fast, pre-aggregated personal + org data)
   try {
-    const profileResponse = await fetch(`https://api.github.com/users/${githubUsername}`);
-    if (!profileResponse.ok) throw new Error('Failed to fetch GitHub profile');
-    const profileData = await profileResponse.json();
-    const reposResponse = await fetch(`https://api.github.com/users/${githubUsername}/repos?per_page=100&sort=updated`);
-    if (!reposResponse.ok) throw new Error('Failed to fetch repositories');
-    const reposData = await reposResponse.json();
-    const accountCreated = new Date(profileData.created_at);
-    const now = new Date();
-    const yearsExperience = Math.floor((now - accountCreated) / (1000 * 60 * 60 * 24 * 365));
-    const languages = new Set();
-    reposData.forEach(repo => {
-      if (repo.language) {
-        languages.add(repo.language);
-      }
-    });
-    if (profileData.location) {
-      portfolioConfig.personal.location = profileData.location;
+    const cacheRes = await fetch('data/github-cache.json');
+    if (cacheRes.ok) {
+      app.githubData = await cacheRes.json();
+      console.log('[Portfolio] Loaded from cache:', app.githubData.generated_at);
     }
-    if (profileData.company) {
-      portfolioConfig.personal.company = profileData.company;
+  } catch (e) {
+    console.warn('[Portfolio] Cache fetch failed, trying live API', e);
+  }
+
+  // 2. Try live GitHub API to refresh live numbers
+  try {
+    const user = portfolioConfig.personal.githubUsername;
+    const org = portfolioConfig.personal.githubOrg;
+
+    const [profileRes, userReposRes, orgReposRes] = await Promise.all([
+      fetch(`https://api.github.com/users/${user}`),
+      fetch(`https://api.github.com/users/${user}/repos?per_page=100&sort=updated`),
+      fetch(`https://api.github.com/orgs/${org}/repos?per_page=100&sort=updated`)
+    ]);
+
+    if (profileRes.ok && userReposRes.ok) {
+      const profile = await profileRes.json();
+      const userRepos = await userReposRes.json();
+      const orgRepos = orgReposRes.ok ? await orgReposRes.json() : [];
+
+      app.githubData = buildDataFromAPI(profile, userRepos, orgRepos, app.githubData);
+      console.log('[Portfolio] Live combined GitHub data loaded');
     }
-    if (profileData.bio) {
-      portfolioConfig.personal.bio = profileData.bio;
-    }
-    if (profileData.name) {
-      portfolioConfig.personal.fullName = profileData.name;
-    }
-    if (profileData.public_repos) {
-      portfolioConfig.stats.projects.count = profileData.public_repos;
-    }
-    if (yearsExperience > 0) {
-      portfolioConfig.stats.experience.count = yearsExperience;
-    }
-    if (languages.size > 0) {
-      portfolioConfig.stats.technologies.count = languages.size;
-    }
-    const languageIcons = {
-      'Python': 'fab fa-python',
-      'JavaScript': 'fab fa-js',
-      'TypeScript': 'fab fa-js-square',
-      'Go': 'fab fa-golang',
-      'Java': 'fab fa-java',
-      'C++': 'fab fa-cuttlefish',
-      'C': 'fab fa-cuttlefish',
-      'C#': 'fab fa-microsoft',
-      'PHP': 'fab fa-php',
-      'Ruby': 'fab fa-ruby',
-      'Swift': 'fab fa-swift',
-      'Kotlin': 'fab fa-android',
-      'Rust': 'fab fa-rust',
-      'HTML': 'fab fa-html5',
-      'CSS': 'fab fa-css3-alt',
-      'Vue': 'fab fa-vuejs',
-      'React': 'fab fa-react',
-      'Angular': 'fab fa-angular',
-      'Node.js': 'fab fa-node-js',
-      'Docker': 'fab fa-docker',
-      'Shell': 'fas fa-terminal'
-    };
-    const languageCount = {};
-    reposData.forEach(repo => {
-      if (repo.language) {
-        languageCount[repo.language] = (languageCount[repo.language] || 0) + 1;
-      }
-    });
-    const topLanguages = Object.entries(languageCount)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 4)
-      .map(([lang]) => ({
-        name: lang,
-        icon: languageIcons[lang] || 'fas fa-code'
-      }));
-    if (topLanguages.length > 0) {
-      portfolioConfig.techIcons = topLanguages;
-    }
-    portfolioConfig.githubRepos = reposData
-      .filter(repo => !repo.fork && repo.description)
-      .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-      .slice(0, 6); 
-    console.log('GitHub data fetched and config updated successfully');
-  } catch (error) {
-    console.warn('Failed to fetch GitHub data, using static config:', error);
+  } catch (e) {
+    console.warn('[Portfolio] Live API unavailable or rate-limited, using cache');
+  }
+
+  if (!app.githubData) {
+    app.githubData = buildFallbackData();
   }
 }
-function populateContentFromConfig() {
-  if (typeof portfolioConfig === 'undefined') {
-    console.error('portfolioConfig is not defined. Make sure config.js is loaded before script.js');
-    return;
-  }
-  const config = portfolioConfig;
-  const titleElement = document.getElementById('meta-title');
-  if (titleElement) titleElement.textContent = config.seo.title;
-  updateMetaTag('meta-description', config.seo.description, 'content');
-  updateMetaTag('meta-theme-color', config.seo.themeColor, 'content');
-  updateMetaTag('meta-author', config.seo.author, 'content');
-  updateMetaTag('og-type', config.seo.og.type, 'content');
-  updateMetaTag('og-url', config.seo.og.url, 'content');
-  updateMetaTag('og-title', config.seo.og.title, 'content');
-  updateMetaTag('og-description', config.seo.og.description, 'content');
-  updateMetaTag('og-image', config.seo.og.image, 'content');
-  updateMetaTag('twitter-card', config.seo.twitter.card, 'content');
-  updateMetaTag('twitter-url', config.seo.twitter.url, 'content');
-  updateMetaTag('twitter-title', config.seo.twitter.title, 'content');
-  updateMetaTag('twitter-description', config.seo.twitter.description, 'content');
-  updateMetaTag('twitter-image', config.seo.twitter.image, 'content');
-  updatePreloaderText(config.personal.name);
-  updateElement('nav-logo-text', config.personal.name);
-  updateElement('hero-greeting', config.hero.greeting);
-  updateElement('hero-title-prefix', config.hero.title.prefix);
-  updateElement('hero-title-name', config.hero.title.name);
-  updateElement('hero-title-role', config.hero.title.role);
-  updateElement('hero-description', config.hero.description);
-  const heroCtaLink = document.getElementById('hero-cta-link');
-  if (heroCtaLink) {
-    heroCtaLink.href = config.hero.cta.href;
-    updateElement('hero-cta-text', config.hero.cta.text);
-    const icon = document.getElementById('hero-cta-icon');
-    if (icon) icon.className = config.hero.cta.icon;
-  }
-  populateSocialLinks('social-links', config.social);
-  updateElement('code-editor-filename', config.hero.codeEditor.filename);
-  const codeContent = document.getElementById('code-editor-content');
-  if (codeContent) {
-    codeContent.textContent = config.hero.codeEditor.code;
-  }
-  populateTechIcons(config.techIcons);
-  populateProjects(config.githubRepos || []);
-  populateMinimalContact(config.personal, config.social);
-  const copyright = document.getElementById('footer-copyright');
-  if (copyright) {
-    copyright.textContent = `© ${new Date().getFullYear()} ${config.personal.name}. All rights reserved.`;
-  }
-  populateSocialLinks('footer-social', config.social);
+
+function buildDataFromAPI(profile, userRepos, orgRepos, existingCache) {
+  const langColors = {
+    'TypeScript': '#3178c6', 'JavaScript': '#f1e05a', 'Go': '#00add8',
+    'Python': '#3572A5', 'Java': '#b07219', 'Shell': '#89e051',
+    'Rust': '#dea584', 'C': '#555555', 'C++': '#f34b7d', 'HTML': '#e34c26',
+    'CSS': '#563d7c', 'Vue': '#41b883', 'Ruby': '#701516', 'Swift': '#ffac45',
+    'Kotlin': '#7F52FF', 'PLpgSQL': '#336791', 'SQL': '#336791'
+  };
+
+  const allRepos = [
+    ...(Array.isArray(userRepos) ? userRepos.map(r => ({ ...r, _source: 'night-slayer18' })) : []),
+    ...(Array.isArray(orgRepos) ? orgRepos.map(r => ({ ...r, _source: 'OpenSyntaxHQ', isOpenSyntax: true })) : [])
+  ];
+
+  const langCount = {};
+  let totalStars = 0, totalForks = 0;
+
+  allRepos.filter(r => !r.fork).forEach(r => {
+    if (r.language) langCount[r.language] = (langCount[r.language] || 0) + 1;
+    totalStars += r.stargazers_count || 0;
+    totalForks += r.forks_count || 0;
+  });
+
+  const topLangs = Object.entries(langCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([name, count]) => ({ name, count, color: langColors[name] || '#666' }));
+
+  return {
+    generated_at: new Date().toISOString(),
+    profile: {
+      login: profile.login,
+      name: profile.name || portfolioConfig.personal.fullName,
+      avatar_url: profile.avatar_url,
+      bio: profile.bio || portfolioConfig.personal.bio,
+      location: profile.location || portfolioConfig.personal.location,
+      public_repos: allRepos.length || 32,
+      followers: profile.followers || 30,
+      following: profile.following || 21
+    },
+    stats: {
+      total_stars: totalStars || 56,
+      total_forks: totalForks || 12,
+      total_repos: allRepos.length || 32,
+      top_languages: topLangs.length > 0 ? topLangs : existingCache?.stats?.top_languages || [],
+      contribution_streak: existingCache?.stats?.contribution_streak || 14,
+      total_contributions: existingCache?.stats?.total_contributions || 540,
+    },
+    featured_repos: existingCache?.featured_repos || []
+  };
 }
-function updateMetaTag(id, value, attribute = 'content') {
-  const element = document.getElementById(id);
-  if (element) {
-    if (attribute === 'content') {
-      element.setAttribute('content', value);
-    } else if (attribute === 'text') {
-      element.textContent = value;
-    } else {
-      element[attribute] = value;
-    }
+
+function buildFallbackData() {
+  return {
+    profile: {
+      name: portfolioConfig.personal.fullName,
+      login: portfolioConfig.personal.githubUsername,
+      avatar_url: 'https://avatars.githubusercontent.com/u/83979018?v=4',
+      bio: portfolioConfig.personal.bio,
+      location: portfolioConfig.personal.location,
+      public_repos: 32
+    },
+    stats: {
+      total_stars: 56,
+      total_forks: 12,
+      total_repos: 32,
+      top_languages: [
+        { name: "TypeScript", count: 10, color: "#3178c6" },
+        { name: "Go", count: 6, color: "#00add8" },
+        { name: "Python", count: 4, color: "#3572A5" },
+        { name: "Java", count: 3, color: "#b07219" }
+      ],
+      contribution_streak: 274,
+      total_contributions: 1420
+    },
+    featured_repos: []
+  };
+}
+
+/* ────────────────────────────────────────
+   CONTENT POPULATION
+──────────────────────────────────────── */
+function populateHero() {
+  const data = app.githubData;
+  const cfg  = portfolioConfig;
+
+  // Profile card
+  setText('profile-name',   data.profile.name || cfg.personal.fullName);
+  setText('profile-handle', `@${data.profile.login} · @OpenSyntaxHQ`);
+  setText('profile-bio',    data.profile.bio || cfg.personal.bio);
+  setAttr('profile-avatar', 'src', data.profile.avatar_url);
+  setAttr('profile-avatar', 'alt', `${data.profile.name} avatar`);
+
+  // Profile mini-stats (32 Repos, 56 Stars, 12 Forks, 274d Streak)
+  setText('stat-repos',  data.profile.public_repos || data.stats.total_repos || 32);
+  setText('stat-stars',  data.stats.total_stars || 56);
+  setText('stat-forks',  data.stats.total_forks || 12);
+  const streak = data.stats.contribution_streak || 274;
+  setText('stat-streak', `${streak}d`);
+
+  // Hero text
+  setText('hero-desc', cfg.hero.description);
+  setText('hero-title-line', cfg.hero.title.role);
+
+  // Social links
+  const socialEl = document.getElementById('hero-social-row');
+  if (socialEl) {
+    socialEl.innerHTML = Object.values(cfg.social).map(s => `
+      <a href="${s.url}" target="_blank" rel="noopener noreferrer"
+         class="hero-social-link" aria-label="${s.label}" role="listitem">
+        <i class="${s.icon}" aria-hidden="true"></i>
+      </a>
+    `).join('');
   }
+
+  // Status bar
+  setText('status-stars-val', `${data.stats.total_stars || 56} stars on GitHub`);
 }
-function updateElement(id, text) {
-  const element = document.getElementById(id);
-  if (element) {
-    element.textContent = text;
-  }
-}
-function populateSocialLinks(containerId, socialLinks) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = Object.values(socialLinks).map(social => `
-    <a
-      href="${social.url}"
-      target="_blank"
-      aria-label="${social.label}"
-      rel="noopener noreferrer"
-    >
-      <i class="${social.icon}"></i>
-    </a>
-  `).join('');
-}
-function populateTechIcons(techIcons) {
-  const container = document.getElementById('tech-icons');
-  if (!container) return;
-  container.innerHTML = techIcons.map((tech, index) => `
-    <div class="tech-icon" data-tech="${tech.name}" style="animation-delay: ${index * 1.5}s;">
-      <i class="${tech.icon}"></i>
-    </div>
-  `).join('');
-}
-function populateProjects(repos) {
-  const container = document.getElementById('projects-grid');
-  if (!container) return;
-  if (!repos || repos.length === 0) {
-    container.innerHTML = `
-      <div class="project-card">
-        <p>Loading projects from GitHub...</p>
+
+function populateStats() {
+  const stats = app.githubData.stats;
+  const profile = app.githubData.profile;
+
+  // Animated counters
+  animateCounter('sc-repos',  profile.public_repos || stats.total_repos || 32);
+  animateCounter('sc-stars',  stats.total_stars || 56);
+  animateCounter('sc-forks',  stats.total_forks || 12);
+  animateCounter('sc-streak', stats.contribution_streak || 274);
+
+  // Language bars
+  const langList = document.getElementById('lang-bars-list');
+  if (!langList || !stats.top_languages || stats.top_languages.length === 0) return;
+  const langs = stats.top_languages;
+  const maxCount = langs[0]?.count || 1;
+
+  langList.innerHTML = langs.map(lang => {
+    const pct = Math.round((lang.count / maxCount) * 100);
+    return `
+      <div class="lang-bar-item" role="listitem">
+        <span class="lang-bar-name">${lang.name}</span>
+        <div class="lang-bar-track" aria-label="${lang.name}: ${pct}%">
+          <div class="lang-bar-fill"
+               data-width="${pct}"
+               style="background: ${lang.color || 'var(--cyan)'};"
+               role="progressbar"
+               aria-valuenow="${pct}"
+               aria-valuemin="0"
+               aria-valuemax="100"></div>
+        </div>
+        <span class="lang-bar-count">${lang.count} repos</span>
       </div>
     `;
+  }).join('');
+
+  // Animate bars when visible
+  const barsObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        langList.querySelectorAll('.lang-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+        barsObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.2 });
+  barsObserver.observe(langList);
+}
+
+function populateProjects() {
+  const repos = app.githubData.featured_repos || [];
+  const grid  = document.getElementById('projects-grid');
+  if (!grid) return;
+
+  const langColors = {
+    'TypeScript': '#3178c6', 'JavaScript': '#f1e05a', 'Go': '#00add8',
+    'Python': '#3572A5', 'Java': '#b07219', 'Shell': '#89e051',
+    'Rust': '#dea584', 'HTML': '#e34c26', 'CSS': '#563d7c', 'Vue': '#41b883',
+    'PLpgSQL': '#336791', 'SQL': '#336791'
+  };
+
+  if (repos.length === 0) {
+    grid.innerHTML = `
+      <div class="project-card" style="opacity:0.6; text-align:center; padding: 3rem;">
+        <i class="fab fa-github" style="font-size:2rem; color:var(--cyan); margin-bottom:1rem; display:block;"></i>
+        <p style="color:var(--text-1);">Loading projects from night-slayer18 & OpenSyntaxHQ...</p>
+      </div>`;
     return;
   }
-  const languageIcons = {
-    'Python': 'fab fa-python',
-    'JavaScript': 'fab fa-js',
-    'TypeScript': 'fab fa-js-square',
-    'Go': 'fab fa-golang',
-    'Java': 'fab fa-java',
-    'Kotlin': 'fab fa-android',
-    'HTML': 'fab fa-html5',
-    'CSS': 'fab fa-css3-alt',
-    'Vue': 'fab fa-vuejs',
-    'React': 'fab fa-react',
-    'Node.js': 'fab fa-node-js',
-    'Shell': 'fas fa-terminal'
-  };
-  container.innerHTML = repos.map(repo => {
-    const langIcon = repo.language ? (languageIcons[repo.language] || 'fas fa-code') : 'fas fa-code';
-    const topics = repo.topics && repo.topics.length > 0 
-      ? repo.topics.slice(0, 3).map(topic => `<span class="project-topic">${topic}</span>`).join('')
-      : '';
+
+  grid.innerHTML = repos.map((repo, i) => {
+    const isFeatured    = repo.featured || (repo.stargazers_count >= 10);
+    const isOpenSyntax  = repo.isOpenSyntax || repo.org === 'OpenSyntaxHQ' || repo.topics?.includes('opensyntax');
+    const isInteractive = repo.topics?.includes('gitgotchi') || repo.name === 'gitgotchi';
+    const langColor     = langColors[repo.language] || '#666';
+
+    const topicsHTML = (repo.topics || []).slice(0, 4)
+      .map(t => `<span class="project-topic">${t}</span>`).join('');
+
+    const badges = [
+      isOpenSyntax  ? `<span class="project-badge org-badge"><i class="fas fa-cube"></i> OpenSyntaxHQ</span>` : '',
+      isFeatured    ? `<span class="project-badge featured-badge"><i class="fas fa-star"></i> Featured</span>` : '',
+      isInteractive ? `<span class="project-badge interactive-badge"><i class="fas fa-gamepad"></i> Interactive</span>` : '',
+    ].filter(Boolean).join('');
+
+    const externalLink = repo.homepage
+      ? `<a href="${repo.homepage}" target="_blank" rel="noopener noreferrer"
+            class="project-link-btn" aria-label="Live link for ${repo.name}" title="Live Link">
+            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+         </a>` : '';
+
+    const categoryData = [
+      repo.language || '',
+      isOpenSyntax ? 'OpenSyntaxHQ' : '',
+      (repo.topics?.includes('cli') || repo.topics?.includes('tui') || repo.name.includes('cli') || repo.name === 'runtime' || repo.name === 'tweak' || repo.name === 'goforge') ? 'CLI' : '',
+      (repo.language === 'Java' || repo.topics?.includes('mcp')) ? 'Java' : ''
+    ].filter(Boolean).join(' ');
+
     return `
-      <div class="project-card">
-        <div class="project-header">
+      <div class="project-card${isFeatured && i < 2 ? ' featured' : ''} reveal"
+           style="transition-delay: ${(i % 3) * 0.08}s;"
+           data-categories="${categoryData}"
+           data-lang="${repo.language}"
+           role="listitem">
+        <div class="project-card-header">
+          <div class="project-window-controls" aria-hidden="true">
+            <span class="project-window-dot close"></span>
+            <span class="project-window-dot min"></span>
+            <span class="project-window-dot max"></span>
+          </div>
+          ${badges ? `<div class="project-badges">${badges}</div>` : ''}
+        </div>
+        <div class="project-card-body">
           <h3 class="project-name">
-            <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">
+            <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer"
+               aria-label="${repo.name} on GitHub">
               ${repo.name}
             </a>
           </h3>
-          ${repo.language ? `<span class="project-language"><i class="${langIcon}"></i> ${repo.language}</span>` : ''}
+          <p class="project-desc">${repo.description || 'Developer toolchain & system component.'}</p>
         </div>
-        <p class="project-description">${repo.description || 'No description available'}</p>
-        ${topics ? `<div class="project-topics">${topics}</div>` : ''}
+        ${topicsHTML ? `<div class="project-topics" role="list" aria-label="Topics">${topicsHTML}</div>` : ''}
         <div class="project-footer">
-          <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="project-link">
-            <i class="fab fa-github"></i> View on GitHub
-          </a>
-          ${repo.homepage ? `<a href="${repo.homepage}" target="_blank" rel="noopener noreferrer" class="project-link">
-            <i class="fas fa-external-link-alt"></i> Live Demo
-          </a>` : ''}
+          <div class="project-lang">
+            ${repo.language ? `<span class="lang-dot" style="background:${langColor}" aria-hidden="true"></span> ${repo.language}` : ''}
+          </div>
+          <div class="project-meta">
+            ${repo.stargazers_count !== undefined ? `
+              <span class="project-metric" title="${repo.stargazers_count} stars">
+                <i class="fas fa-star" aria-hidden="true"></i> ${repo.stargazers_count}
+              </span>` : ''}
+            ${repo.forks_count !== undefined ? `
+              <span class="project-metric" title="${repo.forks_count} forks">
+                <i class="fas fa-code-fork" aria-hidden="true"></i> ${repo.forks_count}
+              </span>` : ''}
+          </div>
+          <div class="project-links">
+            ${externalLink}
+            <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer"
+               class="project-link-btn" aria-label="View ${repo.name} source code on GitHub" title="View Source">
+              <i class="fab fa-github" aria-hidden="true"></i>
+            </a>
+          </div>
         </div>
       </div>
     `;
   }).join('');
 }
-function populateMinimalContact(personal, social) {
-  const container = document.getElementById('contact-links');
-  if (!container) return;
-  container.innerHTML = `
-    <a href="mailto:${personal.email}" class="contact-link">
-      <i class="fas fa-envelope"></i>
-      <span>${personal.email}</span>
+
+function populateContact() {
+  const terminalContainer = document.getElementById('contact-term-body');
+  if (terminalContainer && window.ContactTerminal) {
+    ContactTerminal.run(terminalContainer, portfolioConfig.personal, portfolioConfig.social);
+  }
+}
+
+function populateFooter() {
+  const socialEl = document.getElementById('footer-social');
+  if (!socialEl) return;
+  socialEl.innerHTML = Object.values(portfolioConfig.social).map(s => `
+    <a href="${s.url}" target="_blank" rel="noopener noreferrer"
+       class="footer-social-link" aria-label="${s.label}">
+      <i class="${s.icon}" aria-hidden="true"></i>
     </a>
-    ${Object.values(social).map(s => `
-      <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="contact-link">
-        <i class="${s.icon}"></i>
-        <span>${s.label}</span>
-      </a>
-    `).join('')}
-  `;
+  `).join('');
 }
-function updatePreloaderText(name) {
-  const preloaderText = document.getElementById('preloader-text');
-  if (!preloaderText) return;
-  const chars = name.split('');
-  preloaderText.innerHTML = `
-    <span>&lt;</span>
-    ${chars.map((char, index) => `<span style="animation-delay: ${(index + 1) * 0.1}s;">${char}</span>`).join('')}
-    <span>/&gt;</span>
-  `;
-}
-function preventHorizontalScroll() {
-  let isScrolling = false;
-  window.addEventListener('scroll', () => {
-    if (!isScrolling) {
-      window.requestAnimationFrame(() => {
-        if (window.scrollX !== 0) {
-          window.scrollTo(0, window.scrollY);
+
+/* ────────────────────────────────────────
+   ANIMATED COUNTER
+──────────────────────────────────────── */
+function animateCounter(elementId, targetValue, duration = 1200) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const start = 0;
+        const startTime = performance.now();
+
+        function update(currentTime) {
+          const elapsed  = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // ease-out cubic
+          const eased    = 1 - Math.pow(1 - progress, 3);
+          const current  = Math.round(start + (targetValue - start) * eased);
+          el.textContent = current;
+
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            el.textContent = targetValue;
+          }
         }
-        isScrolling = false;
-      });
-      isScrolling = true;
-    }
-  });
-}
-function initPreloader() {
-  if (!elements.preloader) return;
-  const loadingProgress = elements.preloader.querySelector('.loading-progress');
-  let progress = 0;
-  const interval = setInterval(() => {
-    progress += Math.random() * 15;
-    if (progress > 100) {
-      progress = 100;
-      clearInterval(interval);
-      setTimeout(() => {
-        elements.preloader.classList.add('fade-out');
-        setTimeout(() => {
-          elements.preloader.style.display = 'none';
-          triggerEntranceAnimations();
-        }, 500);
-      }, 200);
-    }
-    if (loadingProgress) {
-      loadingProgress.style.width = `${progress}%`;
-    }
-  }, 50);
-}
-function triggerEntranceAnimations() {
-  const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
-  animatedElements.forEach((el, index) => {
-    setTimeout(() => {
-      el.classList.add('visible');
-    }, index * 100);
-  });
-}
-function initNavigation() {
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const href = this.getAttribute('href');
-      if (href !== '#' && href !== '#home') {
-        e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+
+        requestAnimationFrame(update);
+        observer.disconnect();
       }
     });
-  });
+  }, { threshold: 0.3 });
+
+  observer.observe(el);
 }
-function initThemeToggle() {
-  if (!elements.themeToggle) return;
-  elements.themeToggle.addEventListener('click', () => {
-    const newTheme = app.theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-  });
-  elements.themeToggle.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      const newTheme = app.theme === 'light' ? 'dark' : 'light';
-      setTheme(newTheme);
-    }
-  });
-}
-function setTheme(theme) {
-  app.theme = theme;
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('theme', theme);
-  if (elements.themeToggle) {
-    elements.themeToggle.setAttribute('aria-label', 
-      `Switch to ${theme === 'light' ? 'dark' : 'light'} theme`
-    );
-  }
-}
-function initHeroAnimation() {
-  if (!elements.heroCanvas) return;
-  const canvas = elements.heroCanvas;
+
+/* ────────────────────────────────────────
+   INTERACTIVE CANVAS (Reactive Physics Mesh)
+──────────────────────────────────────── */
+function initHeroCanvas() {
+  const canvas = DOM.heroCanvas;
+  if (!canvas || app.reduced) return;
+
   const ctx = canvas.getContext('2d');
   let animationId;
-  function resizeCanvas() {
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    canvas.style.width = rect.width + 'px';
-    canvas.style.height = rect.height + 'px';
-    ctx.scale(dpr, dpr);
+  let width, height;
+  let particles = [];
+  const mouse = { x: -9999, y: -9999, radius: 140 };
+
+  function resize() {
+    width  = canvas.width  = canvas.parentElement.offsetWidth;
+    height = canvas.height = canvas.parentElement.offsetHeight;
   }
-  resizeCanvas();
-  window.addEventListener('resize', debounce(resizeCanvas, 250));
-  const particles = [];
-  const particleCount = app.mobile ? 20 : app.reducedMotion ? 10 : 50;
+  resize();
+  window.addEventListener('resize', debounce(resize, 200));
+
   class Particle {
     constructor() {
-      this.reset();
+      this.x     = Math.random() * width;
+      this.y     = Math.random() * height;
+      this.vx    = (Math.random() - 0.5) * 0.45;
+      this.vy    = (Math.random() - 0.5) * 0.45;
+      this.radius = Math.random() * 1.5 + 0.8;
+      this.baseAlpha = Math.random() * 0.4 + 0.2;
     }
-    reset() {
-      this.x = Math.random() * canvas.offsetWidth;
-      this.y = Math.random() * canvas.offsetHeight;
-      this.vx = (Math.random() - 0.5) * (app.mobile ? 0.3 : 0.5);
-      this.vy = (Math.random() - 0.5) * (app.mobile ? 0.3 : 0.5);
-      this.size = Math.random() * (app.mobile ? 1.5 : 2) + 1;
-      this.opacity = Math.random() * 0.4 + 0.1;
-    }
+
     update() {
       this.x += this.vx;
       this.y += this.vy;
-      if (this.x < 0 || this.x > canvas.offsetWidth) this.vx = -this.vx;
-      if (this.y < 0 || this.y > canvas.offsetHeight) this.vy = -this.vy;
+
+      if (this.x < 0) this.x = width;
+      if (this.x > width) this.x = 0;
+      if (this.y < 0) this.y = height;
+      if (this.y > height) this.y = 0;
+
+      // Mouse repulsion
+      const dx = mouse.x - this.x;
+      const dy = mouse.y - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < mouse.radius) {
+        const angle = Math.atan2(dy, dx);
+        const force = (mouse.radius - dist) / mouse.radius;
+        this.x -= Math.cos(angle) * force * 3.5;
+        this.y -= Math.sin(angle) * force * 3.5;
+      }
     }
+
     draw() {
-      ctx.save();
-      ctx.globalAlpha = this.opacity;
-      ctx.fillStyle = app.theme === 'dark' ? '#667eea' : '#764ba2';
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = app.theme === 'dark'
+        ? `rgba(0, 212, 255, ${this.baseAlpha})`
+        : `rgba(124, 58, 237, ${this.baseAlpha})`;
       ctx.fill();
-      ctx.restore();
     }
   }
-  for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle());
-  }
-  let lastTime = 0;
-  const targetFPS = app.mobile ? 30 : 60;
-  const frameInterval = 1000 / targetFPS;
-  function animate(currentTime) {
-    if (app.reducedMotion) return;
-    const deltaTime = currentTime - lastTime;
-    if (deltaTime >= frameInterval) {
-      ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
-      particles.forEach(particle => {
-        particle.update();
-        particle.draw();
-      });
-      lastTime = currentTime;
+
+  const count = Math.min(Math.floor((width * height) / 12000), 75);
+  for (let i = 0; i < count; i++) particles.push(new Particle());
+
+  function drawLines() {
+    const maxDist = 110;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx   = particles[i].x - particles[j].x;
+        const dy   = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < maxDist) {
+          const alpha = (1 - dist / maxDist) * 0.15;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = app.theme === 'dark'
+            ? `rgba(0, 212, 255, ${alpha})`
+            : `rgba(124, 58, 237, ${alpha})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
     }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    drawLines();
     animationId = requestAnimationFrame(animate);
   }
-  animate(0);
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      cancelAnimationFrame(animationId);
-    } else if (!app.reducedMotion) {
-      animate(0);
-    }
+  animate();
+
+  window.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+
+  window.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
   });
 }
-function initTypingEffect() {
-  if (!elements.typingCode) return;
-  const codeElement = elements.typingCode.querySelector('code');
-  if (!codeElement) return;
-  const codeText = codeElement.textContent.trim();
-  codeElement.textContent = '';
-  let i = 0;
-  const typeSpeed = app.mobile ? 30 : 50;
-  const typeInterval = setInterval(() => {
-    if (i < codeText.length) {
-      codeElement.textContent += codeText.charAt(i);
-      i++;
-    } else {
-      clearInterval(typeInterval);
-    }
-  }, typeSpeed);
-}
-function initCustomCursor() {
-  if (!elements.cursor || !elements.cursorFollower || app.mobile || app.touchDevice) {
-    if (elements.cursor) elements.cursor.style.display = 'none';
-    if (elements.cursorFollower) elements.cursorFollower.style.display = 'none';
-    return;
-  }
-  let mouseX = 0, mouseY = 0;
-  let cursorX = 0, cursorY = 0;
-  document.addEventListener('mousemove', (e) => {
+
+/* ────────────────────────────────────────
+   CUSTOM CURSOR
+──────────────────────────────────────── */
+function initCursor() {
+  if (app.touch || app.reduced) return;
+  const dot  = DOM.cursorDot;
+  const ring = DOM.cursorRing;
+  if (!dot || !ring) return;
+
+  let mouseX = -100, mouseY = -100;
+  let ringX  = -100, ringY  = -100;
+
+  window.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
   });
-  function animateCursor() {
-    if (app.reducedMotion) return;
-    cursorX += (mouseX - cursorX) * 0.1;
-    cursorY += (mouseY - cursorY) * 0.1;
-    elements.cursor.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-    elements.cursorFollower.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-    requestAnimationFrame(animateCursor);
+
+  function renderRing() {
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+    requestAnimationFrame(renderRing);
   }
-  animateCursor();
-  const interactiveElements = document.querySelectorAll('a, button, .btn');
-  interactiveElements.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      elements.cursorFollower.style.transform += ' scale(1.5)';
-    });
-    el.addEventListener('mouseleave', () => {
-      elements.cursorFollower.style.transform = elements.cursorFollower.style.transform.replace(' scale(1.5)', '');
+  renderRing();
+
+  // Hover expansion on interactive elements
+  const interactives = 'a, button, input, .project-card, .stat-card, .contact-card, .cmd-palette-btn';
+  document.addEventListener('mouseover', e => {
+    if (e.target.closest(interactives)) {
+      ring.classList.add('hovering');
+    }
+  });
+  document.addEventListener('mouseout', e => {
+    if (e.target.closest(interactives)) {
+      ring.classList.remove('hovering');
+    }
+  });
+}
+
+/* ────────────────────────────────────────
+   PROJECT FILTERS
+──────────────────────────────────────── */
+function initProjectFilters() {
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+
+      const filter = btn.dataset.filter.toLowerCase();
+      const cards  = document.querySelectorAll('.project-card');
+
+      cards.forEach(card => {
+        if (filter === 'all') {
+          card.style.display = '';
+          return;
+        }
+
+        const categories = (card.dataset.categories || '').toLowerCase();
+        const lang = (card.dataset.lang || '').toLowerCase();
+
+        const matches = categories.includes(filter) || lang.includes(filter);
+        card.style.display = matches ? '' : 'none';
+      });
     });
   });
 }
+
+/* ────────────────────────────────────────
+   3D TILT EFFECT
+──────────────────────────────────────── */
+function initTiltEffects() {
+  if (app.reduced || app.touch) return;
+  const cards = document.querySelectorAll('.tilt-card');
+
+  cards.forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect    = card.getBoundingClientRect();
+      const x       = e.clientX - rect.left;
+      const y       = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -5;
+      const rotateY = ((x - centerX) / centerX) * 5;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+}
+
+/* ────────────────────────────────────────
+   NAVBAR & SCROLL
+──────────────────────────────────────── */
+function initNavbar() {
+  const navbar = DOM.navbar;
+  if (!navbar) return;
+
+  const links = document.querySelectorAll('.nav-link');
+  const sections = document.querySelectorAll('section[id]');
+
+  window.addEventListener('scroll', debounce(() => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+
+    // Active section highlighting
+    const scrollPos = window.scrollY + 100;
+    sections.forEach(section => {
+      const top    = section.offsetTop;
+      const height = section.offsetHeight;
+      const id     = section.getAttribute('id');
+
+      if (scrollPos >= top && scrollPos < top + height) {
+        links.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+      }
+    });
+  }, 10));
+}
+
+function initScrollEvents() {
+  // Smooth scrolling for all internal anchors
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', e => {
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+}
+
 function initScrollAnimations() {
-  if (app.reducedMotion) return;
-  const observer = new IntersectionObserver((entries) => {
+  const elements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
       }
     });
-  }, { 
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  });
-  const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
-  animatedElements.forEach(el => {
-    observer.observe(el);
-  });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  elements.forEach(el => observer.observe(el));
 }
+
 function initBackToTop() {
-  if (!elements.backToTop) return;
-  elements.backToTop.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
-  elements.backToTop.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
+  const btn = DOM.backTop;
+  if (!btn) return;
+
+  window.addEventListener('scroll', debounce(() => {
+    btn.classList.toggle('show', window.scrollY > 400);
+  }, 50));
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
-function throttle(func, limit) {
-  let inThrottle;
-  return function() {
-    const args = arguments;
-    const context = this;
-    if (!inThrottle) {
-      func.apply(context, args);
-      inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
-    }
+
+function initClock() {
+  const el = DOM.statusClock;
+  if (!el) return;
+
+  function update() {
+    const now = new Date();
+    const opts = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    el.textContent = `${now.toLocaleTimeString('en-US', opts)} IST`;
   }
+  update();
+  setInterval(update, 1000);
 }
-function debounce(func, wait, immediate) {
+
+/* ────────────────────────────────────────
+   THEME SWITCHER
+──────────────────────────────────────── */
+function initTheme() {
+  setTheme(app.theme);
+  DOM.themeBtn?.addEventListener('click', () => {
+    const next = app.theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+  });
+}
+
+function setTheme(theme) {
+  app.theme = theme;
+  DOM.html.setAttribute('data-theme', theme);
+  localStorage.setItem('portfolio-theme', theme);
+}
+
+/* ── Utility Helpers ── */
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el && text !== undefined && text !== null) el.textContent = text;
+}
+
+function setAttr(id, attr, val) {
+  const el = document.getElementById(id);
+  if (el && val) el.setAttribute(attr, val);
+}
+
+function debounce(fn, wait) {
   let timeout;
-  return function() {
-    const context = this, args = arguments;
-    const later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    const callNow = immediate && !timeout;
+  return function(...args) {
     clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
+    timeout = setTimeout(() => fn.apply(this, args), wait);
   };
 }
-function addEventListeners() {
-  window.addEventListener('resize', debounce(() => {
-    app.mobile = window.innerWidth <= 768;
-  }, 250));
-  window.addEventListener('scroll', throttle(() => {
-    const scrollY = window.scrollY;
-    if (scrollY > 50) {
-      elements.navbar.classList.add('scrolled');
-    } else {
-      elements.navbar.classList.remove('scrolled');
-    }
-    if (scrollY > 500) {
-      elements.backToTop.classList.add('show');
-    } else {
-      elements.backToTop.classList.remove('show');
-    }
-  }, 100));
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Tab') {
-      document.body.classList.add('keyboard-navigation');
-    }
-  });
-  document.addEventListener('mousedown', () => {
-    document.body.classList.remove('keyboard-navigation');
-  });
-  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  mediaQuery.addEventListener('change', (e) => {
-    app.reducedMotion = e.matches;
-    if (e.matches) {
-      document.body.classList.add('reduced-motion');
-    } else {
-      document.body.classList.remove('reduced-motion');
-    }
-  });
-  let lastTouchEnd = 0;
-  document.addEventListener('touchend', (e) => {
-    const now = new Date().getTime();
-    if (now - lastTouchEnd <= 300) {
-      e.preventDefault();
-    }
-    lastTouchEnd = now;
-  }, false);
-  window.addEventListener('orientationchange', () => {
-    setTimeout(() => {
-      document.body.style.height = '100.1%';
-      setTimeout(() => {
-        document.body.style.height = '';
-      }, 100);
-    }, 500);
-  });
-}
-if ('requestIdleCallback' in window) {
-  requestIdleCallback(() => {
-    const criticalImages = document.querySelectorAll('img[loading="eager"]');
-    criticalImages.forEach(img => {
-      if (!img.complete) {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = img.src;
-        document.head.appendChild(link);
-      }
-    });
-  });
-}
-window.addEventListener('error', (e) => {
-  console.error('JavaScript Error:', e.error);
-});
-window.addEventListener('unhandledrejection', (e) => {
-  console.error('Unhandled Promise Rejection:', e.reason);
-});
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('Portfolio website initialized successfully');
-});
