@@ -1,192 +1,420 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="meta-title">Loading...</title>
-    <meta
-      id="meta-description"
-      name="description"
-      content="Loading..."
-    />
-    <meta id="meta-theme-color" name="theme-color" content="#667eea" />
-    <meta name="robots" content="index, follow" />
-    <meta id="meta-author" name="author" content="Loading..." />
-    <meta id="og-type" property="og:type" content="website" />
-    <meta id="og-url" property="og:url" content="" />
-    <meta id="og-title" property="og:title" content="Loading..." />
-    <meta
-      id="og-description"
-      property="og:description"
-      content="Loading..."
-    />
-    <meta
-      id="og-image"
-      property="og:image"
-      content=""
-    />
-    <meta id="twitter-card" property="twitter:card" content="summary_large_image" />
-    <meta id="twitter-url" property="twitter:url" content="" />
-    <meta id="twitter-title" property="twitter:title" content="Loading..." />
-    <meta
-      id="twitter-description"
-      property="twitter:description"
-      content="Loading..."
-    />
-    <meta
-      id="twitter-image"
-      property="twitter:image"
-      content=""
-    />
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
-    <div class="preloader">
-      <div class="preloader-content">
-        <div class="code-animation" id="preloader-text">
-          <span>&lt;</span>
-          <span>S</span>
-          <span>a</span>
-          <span>m</span>
-          <span>a</span>
-          <span>n</span>
-          <span>u</span>
-          <span>a</span>
-          <span>i</span>
-          <span>/&gt;</span>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="meta-title">Samanuai — Full-Stack Developer & CLI Architect | Founder @OpenSyntaxHQ</title>
+  <meta id="meta-desc" name="description"
+    content="Founder @OpenSyntaxHQ. Building high-performance CLI/TUI suites, developer platforms, and distributed systems in Go, TypeScript, Java, and Python." />
+  <meta id="meta-author" name="author" content="Samanuai A" />
+  <meta name="theme-color" content="#00d4ff" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- OG -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://night-slayer.tech" />
+  <meta id="og-title" property="og:title" content="Samanuai — Full-Stack Developer & CLI Architect" />
+  <meta id="og-desc" property="og:description"
+    content="Founder @OpenSyntaxHQ. Building high-performance CLI/TUI suites, developer platforms, and distributed systems." />
+  <meta property="og:image" content="https://night-slayer.tech/images/og-image.jpg" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://night-slayer.tech" />
+  <meta name="twitter:title" content="Samanuai — Full-Stack Developer & CLI Architect" />
+  <meta name="twitter:description"
+    content="Founder @OpenSyntaxHQ. Building high-performance CLI/TUI suites, developer platforms, and distributed systems." />
+  <meta name="twitter:image" content="https://night-slayer.tech/images/og-image.jpg" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://night-slayer.tech" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23080c12'/><text y='72' x='10' font-size='70' fill='%2300d4ff' font-family='monospace'>&gt;_</text></svg>" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- ────────────────────────────────────────
+         NAVBAR
+    ──────────────────────────────────────── -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo" aria-label="Home">
+        <span class="logo-bracket">&lt;</span>
+        <span class="logo-text" id="nav-logo-name">Samanuai</span>
+        <span class="logo-bracket">/</span>
+        <span class="logo-bracket">&gt;</span>
+      </a>
+      <div class="nav-center" role="list">
+        <a href="#home" class="nav-link" role="listitem">home</a>
+        <a href="#stats" class="nav-link" role="listitem">stats</a>
+        <a href="#projects" class="nav-link" role="listitem">projects</a>
+        <a href="#contact" class="nav-link" role="listitem">connect</a>
+      </div>
+      <div class="nav-actions">
+        <button class="cmd-palette-btn" id="cmd-palette-btn" aria-label="Open command palette"
+          aria-keyshortcuts="Control+K Meta+K">
+          <i class="fas fa-search" aria-hidden="true"></i>
+          <span class="btn-text">Search</span>
+          <kbd>⌘K</kbd>
+        </button>
+        <button class="theme-btn" id="theme-btn" aria-label="Toggle theme">
+          <i class="fas fa-sun light-icon" aria-hidden="true"></i>
+          <i class="fas fa-moon dark-icon" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ────────────────────────────────────────
+         HERO
+    ──────────────────────────────────────── -->
+  <section id="home" class="hero" aria-label="Introduction">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero-gradient" aria-hidden="true"></div>
+    <div class="container">
+      <div class="hero-grid">
+
+        <!-- Left: Text -->
+        <div class="hero-text">
+          <div class="hero-eyebrow reveal">
+            <span class="hero-badge-tag">FOUNDER @OPENSYNTAXHQ</span>
+            <span class="hero-location-tag"><i class="fas fa-location-dot"></i> Kochi, India</span>
+          </div>
+
+          <h1 class="hero-name reveal delay-1">
+            Samanuai <span class="hero-name-accent">A.</span>
+          </h1>
+
+          <p class="hero-role-lead reveal delay-2">
+            Full-Stack Developer &amp; CLI Architect
+          </p>
+
+          <p class="hero-desc reveal delay-3" id="hero-desc">
+            Architecting terminal-native TUI suites, developer platforms, and distributed systems in Go, TypeScript, Java, and Python. Engineered with clean architecture and zero shortcuts.
+          </p>
+
+          <div class="hero-cta-row reveal delay-4">
+            <a href="#projects" class="btn btn-primary" id="hero-cta-primary">
+              <i class="fas fa-arrow-down" aria-hidden="true"></i>
+              Explore Work
+            </a>
+            <a href="resume/resume.pdf" class="btn btn-ghost" download id="hero-resume-btn">
+              <i class="fas fa-download" aria-hidden="true"></i>
+              Resume
+            </a>
+            <div class="hero-social-inline" id="hero-social-row" role="list" aria-label="Social links"></div>
+          </div>
         </div>
-        <div class="loading-bar">
-          <div class="loading-progress"></div>
+
+        <!-- Right: Integrated Developer OS Workstation -->
+        <div class="hero-visual">
+          <div class="terminal-card hero-terminal-card tilt-card reveal delay-2" id="hero-terminal">
+            <!-- Window Titlebar -->
+            <div class="terminal-header">
+              <div class="terminal-dots" aria-hidden="true">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot amber"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-title">samanuai@OpenSyntaxHQ — samanuai.config.ts</div>
+              <div class="terminal-badge">TypeScript</div>
+            </div>
+
+            <!-- Profile Console Banner -->
+            <div class="terminal-profile-strip" id="profile-card">
+              <div class="term-avatar-wrap">
+                <img class="profile-avatar" id="profile-avatar" src="https://avatars.githubusercontent.com/u/83979018?v=4"
+                  alt="Samanuai avatar" loading="eager" />
+                <span class="avatar-status-dot" title="Active Committer"></span>
+              </div>
+              <div class="profile-info">
+                <div class="profile-name-row">
+                  <span class="profile-name" id="profile-name">Samanuai A</span>
+                  <span class="profile-badge-founder">Founder</span>
+                </div>
+                <div class="profile-handle" id="profile-handle">@night-slayer18 &nbsp;·&nbsp; @OpenSyntaxHQ</div>
+              </div>
+              <div class="terminal-stats-mini" id="profile-stats-row">
+                <div class="t-stat"><span class="t-stat-val" id="stat-repos">32</span><span class="t-stat-lbl">Repos</span></div>
+                <div class="t-stat"><span class="t-stat-val" id="stat-stars">56</span><span class="t-stat-lbl">Stars</span></div>
+                <div class="t-stat"><span class="t-stat-val" id="stat-forks">12</span><span class="t-stat-lbl">Forks</span></div>
+                <div class="t-stat streak"><span class="t-stat-val" id="stat-streak">274d</span><span class="t-stat-lbl">Streak 🔥</span></div>
+              </div>
+            </div>
+
+            <!-- Code Editor Body -->
+            <div class="terminal-body hero-code-body">
+              <pre class="code-pre" id="code-output" aria-label="Code snippet"></pre>
+            </div>
+
+            <!-- Terminal Footer -->
+            <div class="terminal-footer-bar">
+              <span class="term-foot-item"><i class="fas fa-check-circle" style="color:var(--green)"></i> Ready</span>
+              <span class="term-foot-item">UTF-8</span>
+              <span class="term-foot-item">night-slayer.tech</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="scroll-hint" aria-hidden="true">
+      <div class="scroll-mouse">
+        <div class="scroll-wheel"></div>
+      </div>
+      <span>scroll</span>
+    </div>
+  </section>
+
+  <div class="section-divider" role="separator"></div>
+
+  <!-- ────────────────────────────────────────
+         GITHUB & ORG STATS
+    ──────────────────────────────────────── -->
+  <section id="stats" class="section stats-section" aria-label="GitHub Statistics">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge reveal"><i class="fab fa-github" aria-hidden="true"></i> Live Ecosystem Stats</div>
+        <h2 class="section-title reveal delay-1">Engineering <span class="gradient-text">Dashboard</span></h2>
+        <p class="section-sub reveal delay-2" id="stats-sub">Live telemetry aggregated across <strong>night-slayer18</strong> and <strong>OpenSyntaxHQ</strong> repositories.</p>
+      </div>
+
+      <!-- Top stat cards -->
+      <div class="stats-grid" id="stats-grid" role="list" aria-label="GitHub statistics">
+        <div class="stat-card reveal delay-1" role="listitem">
+          <span class="stat-card-icon" aria-hidden="true"><i class="fas fa-code-branch"></i></span>
+          <div class="stat-card-value" id="sc-repos">32</div>
+          <div class="stat-card-label">Active Repositories</div>
+        </div>
+        <div class="stat-card reveal delay-2" role="listitem">
+          <span class="stat-card-icon" aria-hidden="true"><i class="fas fa-star"></i></span>
+          <div class="stat-card-value" id="sc-stars">56</div>
+          <div class="stat-card-label">Total Stars Earned</div>
+        </div>
+        <div class="stat-card reveal delay-3" role="listitem">
+          <span class="stat-card-icon" aria-hidden="true"><i class="fas fa-code-fork"></i></span>
+          <div class="stat-card-value" id="sc-forks">12</div>
+          <div class="stat-card-label">Community Forks</div>
+        </div>
+        <div class="stat-card reveal delay-4" role="listitem">
+          <span class="stat-card-icon" aria-hidden="true"><i class="fas fa-fire" style="color:var(--amber)"></i></span>
+          <div class="stat-card-value" id="sc-streak">274</div>
+          <div class="stat-card-label">Day Commit Streak 🔥</div>
+        </div>
+      </div>
+
+      <!-- Bottom grid -->
+      <div class="stats-bottom-grid">
+        <!-- Language bars -->
+        <div class="lang-bars reveal delay-1" id="lang-bars" style="grid-column: span 2;">
+          <div class="lang-bars-title"><i class="fas fa-chart-bar" aria-hidden="true"></i> Primary Technology Stack</div>
+          <div id="lang-bars-list" role="list" aria-label="Programming languages"></div>
         </div>
       </div>
     </div>
-    <nav class="navbar">
-      <div class="nav-container">
-        <a href="#home" class="nav-logo">
-          <span class="logo-bracket">&lt;</span>
-          <span class="logo-text" id="nav-logo-text">Loading...</span>
-          <span class="logo-bracket">/&gt;</span>
+  </section>
+
+  <div class="section-divider" role="separator"></div>
+
+  <!-- ────────────────────────────────────────
+         PROJECTS
+    ──────────────────────────────────────── -->
+  <section id="projects" class="section projects-section" aria-label="Projects">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge reveal"><i class="fas fa-folder-open" aria-hidden="true"></i> Open Source &amp; Systems</div>
+        <h2 class="section-title reveal delay-1">Featured <span class="gradient-text">Projects</span></h2>
+        <p class="section-sub reveal delay-2">High-impact CLI tools, TUI suites, developer platforms, and distributed systems from night-slayer18 &amp; OpenSyntaxHQ.</p>
+      </div>
+
+      <div class="projects-filter reveal delay-3" role="group" aria-label="Filter projects">
+        <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+        <button class="filter-btn" data-filter="OpenSyntaxHQ" aria-pressed="false"><i class="fas fa-cube" aria-hidden="true"></i> OpenSyntaxHQ</button>
+        <button class="filter-btn" data-filter="CLI" aria-pressed="false"><i class="fas fa-terminal" aria-hidden="true"></i> CLI &amp; TUI</button>
+        <button class="filter-btn" data-filter="TypeScript" aria-pressed="false">TypeScript</button>
+        <button class="filter-btn" data-filter="Go" aria-pressed="false">Go</button>
+        <button class="filter-btn" data-filter="Java" aria-pressed="false">Java / MCP</button>
+        <button class="filter-btn" data-filter="Python" aria-pressed="false">Python</button>
+      </div>
+
+      <div class="projects-grid" id="projects-grid" role="list" aria-label="Project list"></div>
+
+      <div class="projects-cta reveal">
+        <a href="https://github.com/night-slayer18" target="_blank" rel="noopener noreferrer" class="btn btn-ghost"
+          id="gh-all-link">
+          <i class="fab fa-github" aria-hidden="true"></i>
+          GitHub @night-slayer18
         </a>
-        <div class="nav-actions">
-          <button class="theme-toggle" aria-label="Toggle theme">
-            <i class="fas fa-sun light-icon"></i>
-            <i class="fas fa-moon dark-icon"></i>
-          </button>
-        </div>
+        <a href="https://github.com/OpenSyntaxHQ" target="_blank" rel="noopener noreferrer" class="btn btn-primary"
+          id="gh-org-link">
+          <i class="fas fa-cube" aria-hidden="true"></i>
+          Explore @OpenSyntaxHQ Org
+        </a>
       </div>
-    </nav>
-    <section id="home" class="hero">
-      <div class="hero-bg">
-        <canvas id="hero-canvas"></canvas>
+    </div>
+  </section>
+
+  <div class="section-divider" role="separator"></div>
+
+  <!-- ────────────────────────────────────────
+         CONNECT / CONTACT
+    ──────────────────────────────────────── -->
+  <section id="contact" class="section contact-section" aria-label="Contact">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge reveal"><i class="fas fa-satellite-dish" aria-hidden="true"></i> Connect</div>
+        <h2 class="section-title reveal delay-1">Let's <span class="gradient-text">Ship Together</span></h2>
+        <p class="section-sub reveal delay-2">Have a project, system architecture discussion, or open-source collaboration in mind?</p>
       </div>
-      <div class="container">
-        <div class="hero-content">
-          <div class="hero-text">
-            <p class="hero-greeting">
-              <span class="greeting-text" id="hero-greeting">Loading...</span>
-              <span class="terminal-cursor">|</span>
-            </p>
-            <h1 class="hero-title">
-              <span class="title-line" id="hero-title-prefix">Loading...</span>
-              <span class="title-name" id="hero-title-name">Loading...</span>
-              <span class="title-role" id="hero-title-role">Loading...</span>
-            </h1>
-            <p class="hero-description" id="hero-description">
-              Loading...
-            </p>
-            <div class="hero-cta">
-              <a href="#projects" class="btn btn-primary" id="hero-cta-link">
-                <span id="hero-cta-text">View My Work</span>
-                <i id="hero-cta-icon" class="fas fa-arrow-down"></i>
-              </a>
-              <a href="resume/resume.pdf" class="btn btn-secondary" download id="resume-link">
-                <i class="fas fa-download"></i>
-                <span>Resume</span>
-              </a>
+
+      <div class="contact-grid">
+        <!-- Terminal -->
+        <div class="contact-terminal reveal-left" id="contact-terminal">
+          <div class="terminal-header">
+            <div class="terminal-dots" aria-hidden="true">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot amber"></span>
+              <span class="terminal-dot green"></span>
             </div>
-            <div class="social-links" id="social-links"></div>
+            <div class="terminal-title">connect.sh</div>
           </div>
-          <div class="hero-visual">
-            <div class="code-editor">
-              <div class="editor-header">
-                <div class="editor-controls">
-                  <span class="control red"></span>
-                  <span class="control yellow"></span>
-                  <span class="control green"></span>
-                </div>
-                <div class="editor-title" id="code-editor-filename">main.ts</div>
-              </div>
-              <div class="editor-content">
-                <pre id="typing-code"><code class="language-typescript" id="code-editor-content"></code></pre>
-              </div>
+          <div class="contact-terminal-body" id="contact-term-body"></div>
+        </div>
+
+        <!-- Contact Links -->
+        <div class="contact-links-grid reveal-right" id="contact-links-grid" role="list" aria-label="Contact methods">
+          <a href="mailto:samanuaia257@gmail.com" class="contact-card" role="listitem">
+            <div class="contact-card-icon"><i class="fas fa-envelope" aria-hidden="true"></i></div>
+            <div class="contact-card-info">
+              <div class="contact-card-label">EMAIL</div>
+              <div class="contact-card-value">samanuaia257@gmail.com</div>
             </div>
-            <div class="editor-spacing"></div>
-            <div class="floating-elements" id="tech-icons"></div>
-          </div>
-        </div>
-      </div>
-      <div class="scroll-indicator">
-        <span>Scroll to explore</span>
-        <div class="mouse">
-          <div class="wheel"></div>
-        </div>
-      </div>
-    </section>
-    <section id="projects" class="projects">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Featured Projects</h2>
-          <p class="section-subtitle">
-            Open-source projects and tools I've built
-          </p>
-        </div>
-        <div class="projects-grid" id="projects-grid"></div>
-        <div class="projects-cta">
-          <a href="https://github.com/night-slayer18" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-            <i class="fab fa-github"></i>
-            <span>View All on GitHub</span>
+            <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+          </a>
+          <a href="https://github.com/night-slayer18" target="_blank" rel="noopener noreferrer" class="contact-card"
+            role="listitem">
+            <div class="contact-card-icon"><i class="fab fa-github" aria-hidden="true"></i></div>
+            <div class="contact-card-info">
+              <div class="contact-card-label">GITHUB</div>
+              <div class="contact-card-value">github.com/night-slayer18</div>
+            </div>
+            <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+          </a>
+          <a href="https://github.com/OpenSyntaxHQ" target="_blank" rel="noopener noreferrer" class="contact-card"
+            role="listitem">
+            <div class="contact-card-icon"><i class="fas fa-cube" aria-hidden="true"></i></div>
+            <div class="contact-card-info">
+              <div class="contact-card-label">ORGANIZATION</div>
+              <div class="contact-card-value">github.com/OpenSyntaxHQ</div>
+            </div>
+            <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/samanuaia257/" target="_blank" rel="noopener noreferrer"
+            class="contact-card" role="listitem">
+            <div class="contact-card-icon"><i class="fab fa-linkedin" aria-hidden="true"></i></div>
+            <div class="contact-card-info">
+              <div class="contact-card-label">LINKEDIN</div>
+              <div class="contact-card-value">in/samanuaia257</div>
+            </div>
+            <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
           </a>
         </div>
       </div>
-    </section>
-    <section id="contact" class="contact-minimal">
-      <div class="container">
-        <h2 class="section-title">Let's Connect</h2>
-        <p class="contact-subtitle" id="contact-subtitle">
-          Open to opportunities and collaborations
-        </p>
-        <div class="contact-links" id="contact-links"></div>
+    </div>
+  </section>
+
+  <!-- ────────────────────────────────────────
+         FOOTER
+    ──────────────────────────────────────── -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <a href="#home" class="footer-logo" aria-label="Back to top">
+          <span>&lt;</span>Samanuai<span>/&gt;</span>
+        </a>
+        <p class="footer-copy" id="footer-copy">© 2026 Samanuai A · Founder @OpenSyntaxHQ. Built with performance &amp; clean architecture.</p>
+        <div class="footer-social" id="footer-social" role="list" aria-label="Social links"></div>
       </div>
-    </section>
-    <footer class="footer-minimal">
-      <div class="container">
-        <div class="footer-content">
-          <p id="footer-copyright">© 2025 Samanuai. All rights reserved.</p>
-          <div class="footer-social" id="footer-social"></div>
-        </div>
+    </div>
+  </footer>
+
+  <!-- ────────────────────────────────────────
+         STATUS BAR
+    ──────────────────────────────────────── -->
+  <div class="status-bar" role="status" aria-label="Status information">
+    <div class="status-item status-brand">
+      <span class="status-logo-text">&lt;Samanuai/&gt;</span>
+    </div>
+    <div class="status-item">
+      <i class="fas fa-hammer" aria-hidden="true"></i>
+      <span>Founder @OpenSyntaxHQ</span>
+    </div>
+    <div class="status-item">
+      <i class="fas fa-location-dot" aria-hidden="true"></i>
+      <span>Kochi, India</span>
+    </div>
+    <div class="status-bar-right">
+      <div class="status-item">
+        <i class="fas fa-star" aria-hidden="true"></i>
+        <span id="status-stars-val">56 stars on GitHub</span>
       </div>
-    </footer>
-    <button class="back-to-top" aria-label="Back to top">
-      <i class="fas fa-chevron-up"></i>
-    </button>
-    <script src="js/config.js"></script>
-    <script src="js/script.js"></script>
-  </body>
+      <div class="status-item">
+        <i class="fas fa-clock" aria-hidden="true"></i>
+        <span id="status-clock" aria-live="off" aria-atomic="true"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────
+         COMMAND PALETTE
+    ──────────────────────────────────────── -->
+  <div class="cmd-overlay" id="cmd-overlay" aria-hidden="true" role="dialog" aria-label="Command palette">
+    <div class="cmd-modal">
+      <div class="cmd-input-wrap">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="text" class="cmd-input" id="cmd-input" placeholder="Type a command or search sections..."
+          aria-autocomplete="list" aria-controls="cmd-results" />
+        <span class="cmd-input-esc">ESC</span>
+      </div>
+      <div class="cmd-results" id="cmd-results" role="listbox" aria-label="Commands"></div>
+      <div class="cmd-footer">
+        <span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span>
+        <span><kbd>↵</kbd> select</span>
+        <span><kbd>ESC</kbd> close</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────
+         BACK TO TOP
+    ──────────────────────────────────────── -->
+  <button class="back-top" id="back-top" aria-label="Back to top">
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/terminal.js"></script>
+  <script src="js/script.js"></script>
+</body>
+
 </html>
