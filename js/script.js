@@ -140,7 +140,7 @@ function buildDataFromAPI(profile, userRepos, orgRepos, existingCache) {
 
   const allRepos = [
     ...(Array.isArray(userRepos) ? userRepos.map(r => ({ ...r, _source: 'night-slayer18' })) : []),
-    ...(Array.isArray(orgRepos) ? orgRepos.map(r => ({ ...r, _source: 'OpenSyntaxHQ', isOpenSyntax: true })) : [])
+    ...(Array.isArray(orgRepos)  ? orgRepos.map(r  => ({ ...r, _source: 'OpenSyntaxHQ', isOpenSyntax: true })) : [])
   ];
 
   const langCount = {};
@@ -157,29 +157,42 @@ function buildDataFromAPI(profile, userRepos, orgRepos, existingCache) {
     .slice(0, 6)
     .map(([name, count]) => ({ name, count, color: langColors[name] || '#666' }));
 
+  // Prefer GraphQL cache for fields the REST API cannot provide
+  const cStats = existingCache?.stats || {};
+
   return {
     generated_at: new Date().toISOString(),
     profile: {
-      login: profile.login,
-      name: profile.name || portfolioConfig.personal.fullName,
-      avatar_url: profile.avatar_url,
-      bio: profile.bio || portfolioConfig.personal.bio,
-      location: profile.location || portfolioConfig.personal.location,
+      login:        profile.login,
+      name:         profile.name || portfolioConfig.personal.fullName,
+      avatar_url:   profile.avatar_url,
+      bio:          profile.bio || portfolioConfig.personal.bio,
+      location:     profile.location || portfolioConfig.personal.location,
       public_repos: allRepos.length || 32,
-      followers: profile.followers || 30,
-      following: profile.following || 21
+      followers:    profile.followers || 30,
+      following:    profile.following || 21
     },
     stats: {
-      total_stars: totalStars || 56,
-      total_forks: totalForks || 12,
-      total_repos: allRepos.length || 32,
-      top_languages: topLangs.length > 0 ? topLangs : existingCache?.stats?.top_languages || [],
-      contribution_streak: existingCache?.stats?.contribution_streak || 14,
-      total_contributions: existingCache?.stats?.total_contributions || 540,
+      total_stars:          totalStars || cStats.total_stars  || 56,
+      total_forks:          totalForks || cStats.total_forks  || 12,
+      total_repos:          allRepos.length || cStats.total_repos || 32,
+      // Use real byte-based lang data from GraphQL cache if available, otherwise REST count
+      top_languages:        (cStats.top_languages?.[0]?.percent != null)
+                              ? cStats.top_languages
+                              : (topLangs.length > 0 ? topLangs : cStats.top_languages || []),
+      // These come exclusively from GraphQL — always carry through from cache
+      contribution_streak:  cStats.contribution_streak  || 274,
+      total_contributions:  cStats.total_contributions  || 0,
+      total_commits:        cStats.total_commits        || null,
+      total_prs:            cStats.total_prs            || null,
+      total_issues:         cStats.total_issues         || null,
+      repos_contributed_to: cStats.repos_contributed_to || null,
     },
+    // Prefer cache repos (have lang_bytes, release tags) over bare REST repos
     featured_repos: existingCache?.featured_repos || []
   };
 }
+
 
 function buildFallbackData() {
   return {
