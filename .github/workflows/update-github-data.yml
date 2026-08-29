@@ -2,9 +2,8 @@ name: Update GitHub Data Cache
 
 on:
   schedule:
-    # Runs every day at midnight UTC
-    - cron: '0 0 * * *'
-  workflow_dispatch: # Allows manual triggering
+    - cron: '0 0 * * *'   # daily at midnight UTC
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -16,153 +15,282 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Fetch GitHub data and update cache
+      - name: Fetch GitHub data via GraphQL and update cache
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_USERNAME: night-slayer18
           GITHUB_ORG: OpenSyntaxHQ
         run: |
           set -e
-
-          echo "Processing data with Python..."
+          echo "Fetching GitHub data via GraphQL..."
           python3 << 'PYEOF'
-          import json
-          import os
-          import subprocess
-          from datetime import datetime, timezone
+import json
+import os
+import subprocess
+from datetime import datetime, timezone
 
-          github_username = os.environ.get('GITHUB_USERNAME', 'night-slayer18')
-          github_org = os.environ.get('GITHUB_ORG', 'OpenSyntaxHQ')
-          token = os.environ.get('GITHUB_TOKEN', '')
+username = os.environ.get('GITHUB_USERNAME', 'night-slayer18')
+org_name = os.environ.get('GITHUB_ORG', 'OpenSyntaxHQ')
+token    = os.environ.get('GH_TOKEN', '')
 
-          headers = {'User-Agent': 'Portfolio-Cache-Updater'}
-          if token:
-              headers['Authorization'] = f"token {token}"
+if not token:
+    raise SystemExit("ERROR: GH_TOKEN is not set. Add GH_PAT to your repository secrets.")
 
-          def gh_get(endpoint):
-              cmd = ['curl', '-s']
-              if token:
-                  cmd += ['-H', f"Authorization: token {token}"]
-              cmd += ['-H', 'User-Agent: Portfolio-Cache-Updater', f"https://api.github.com/{endpoint}"]
-              res = subprocess.run(cmd, capture_output=True, text=True)
-              try:
-                  return json.loads(res.stdout)
-              except Exception:
-                  return None
+LANG_COLORS = {
+    'TypeScript': '#3178c6', 'JavaScript': '#f1e05a',
+    'Go':         '#00add8', 'Python':     '#3572A5',
+    'Java':       '#b07219', 'Shell':      '#89e051',
+    'Rust':       '#dea584', 'C':          '#555555',
+    'C++':        '#f34b7d', 'Ruby':       '#701516',
+    'HTML':       '#e34c26', 'CSS':        '#563d7c',
+    'Vue':        '#41b883', 'Swift':      '#ffac45',
+    'Kotlin':     '#7F52FF', 'PLpgSQL':    '#336791',
+}
 
-          profile = gh_get(f"users/{github_username}") or {}
-          user_repos = gh_get(f"users/{github_username}/repos?per_page=100&sort=updated") or []
-          org_repos = gh_get(f"orgs/{github_org}/repos?per_page=100&sort=updated") or []
+def graphql(query, variables=None):
+    payload = json.dumps({'query': query, 'variables': variables or {}})
+    cmd = [
+        'curl', '-s', '-X', 'POST',
+        '-H', f'Authorization: bearer {token}',
+        '-H', 'Content-Type: application/json',
+        '-H', 'User-Agent: Portfolio-Cache-Updater',
+        '-d', payload,
+        'https://api.github.com/graphql'
+    ]
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    data = json.loads(res.stdout)
+    if 'errors' in data:
+        raise RuntimeError(f"GraphQL errors: {data['errors']}")
+    return data['data']
 
-          if not isinstance(user_repos, list): user_repos = []
-          if not isinstance(org_repos, list): org_repos = []
-
-          # Tag origin
-          for r in user_repos:
-              r['_source'] = 'night-slayer18'
-          for r in org_repos:
-              r['_source'] = 'OpenSyntaxHQ'
-              r['isOpenSyntax'] = True
-
-          all_repos = user_repos + org_repos
-
-          lang_colors = {
-              'TypeScript': '#3178c6', 'JavaScript': '#f1e05a',
-              'Go': '#00add8', 'Python': '#3572A5', 'Java': '#b07219',
-              'Shell': '#89e051', 'Rust': '#dea584', 'C': '#555555',
-              'C++': '#f34b7d', 'Ruby': '#701516', 'HTML': '#e34c26',
-              'CSS': '#563d7c', 'Vue': '#41b883', 'Swift': '#ffac45',
-              'Kotlin': '#7F52FF', 'PLpgSQL': '#336791', 'SQL': '#336791'
+# ── Query 1: profile + personal repos + contribution calendar ──────────────
+USER_QUERY = """
+query($login: String!, $repoCount: Int!) {
+  user(login: $login) {
+    login
+    name
+    bio
+    company
+    location
+    avatarUrl
+    followers { totalCount }
+    following  { totalCount }
+    createdAt
+    repositories(
+      first: $repoCount
+      ownerAffiliations: [OWNER]
+      isFork: false
+      orderBy: { field: UPDATED_AT, direction: DESC }
+    ) {
+      nodes {
+        name
+        nameWithOwner
+        description
+        url
+        homepageUrl
+        stargazerCount
+        forkCount
+        isPrivate
+        primaryLanguage { name }
+        repositoryTopics(first: 10) { nodes { topic { name } } }
+        updatedAt
+      }
+    }
+    contributionsCollection {
+      contributionCalendar {
+        totalContributions
+        weeks {
+          contributionDays {
+            date
+            contributionCount
           }
+        }
+      }
+    }
+  }
+}
+"""
 
-          lang_count = {}
-          total_stars = 0
-          total_forks = 0
+# ── Query 2: org repos ─────────────────────────────────────────────────────
+ORG_QUERY = """
+query($org: String!, $repoCount: Int!) {
+  organization(login: $org) {
+    repositories(
+      first: $repoCount
+      isArchived: false
+      orderBy: { field: UPDATED_AT, direction: DESC }
+    ) {
+      nodes {
+        name
+        nameWithOwner
+        description
+        url
+        homepageUrl
+        stargazerCount
+        forkCount
+        isPrivate
+        isFork
+        primaryLanguage { name }
+        repositoryTopics(first: 10) { nodes { topic { name } } }
+        updatedAt
+      }
+    }
+  }
+}
+"""
 
-          for repo in all_repos:
-              if not repo.get('fork', False):
-                  lang = repo.get('language')
-                  if lang:
-                      lang_count[lang] = lang_count.get(lang, 0) + 1
-                  total_stars += repo.get('stargazers_count', 0)
-                  total_forks += repo.get('forks_count', 0)
+# ── Fetch user data ────────────────────────────────────────────────────────
+print(f"Fetching data for @{username}...")
+user_data = graphql(USER_QUERY, {'login': username, 'repoCount': 100})
+u = user_data['user']
 
-          top_languages = [
-              {'name': lang, 'count': count, 'color': lang_colors.get(lang, '#666')}
-              for lang, count in sorted(lang_count.items(), key=lambda x: -x[1])[:6]
-          ]
+profile = {
+    'login':      u['login'],
+    'name':       u['name'] or 'Samanuai A',
+    'avatar_url': u['avatarUrl'],
+    'bio':        u['bio'] or 'Founder @OpenSyntaxHQ',
+    'company':    u.get('company') or 'Founder @OpenSyntaxHQ',
+    'location':   u['location'] or 'Kochi, Kerala',
+    'followers':  u['followers']['totalCount'],
+    'following':  u['following']['totalCount'],
+    'created_at': u['createdAt'],
+}
 
-          # Select top repos
-          eligible = [r for r in all_repos if not r.get('fork') and r.get('description') and not r.get('name', '').startswith('.')]
-          eligible.sort(key=lambda r: (-r.get('stargazers_count', 0), -len(r.get('topics', []))))
+def parse_repo(r, source, is_opensyntax):
+    topics = [t['topic']['name'] for t in r['repositoryTopics']['nodes']]
+    return {
+        'name':             r['name'],
+        'full_name':        r['nameWithOwner'],
+        'description':      r['description'] or '',
+        'html_url':         r['url'],
+        'homepage':         r['homepageUrl'] or '',
+        'stargazers_count': r['stargazerCount'],
+        'forks_count':      r['forkCount'],
+        'language':         (r['primaryLanguage'] or {}).get('name', ''),
+        'topics':           topics[:5],
+        'updated_at':       r['updatedAt'],
+        '_source':          source,
+        'isOpenSyntax':     is_opensyntax,
+    }
 
-          featured_repos = []
-          seen_names = set()
-          for repo in eligible:
-              name = repo.get('name')
-              if name in seen_names: continue
-              seen_names.add(name)
-              is_opensyntax = repo.get('_source') == 'OpenSyntaxHQ' or 'opensyntax' in repo.get('topics', [])
-              featured_repos.append({
-                  'name': name,
-                  'full_name': repo.get('full_name', f"{github_username}/{name}"),
-                  'org': repo.get('_source', github_username),
-                  'description': repo.get('description', ''),
-                  'html_url': repo.get('html_url', f"https://github.com/{repo.get('full_name')}"),
-                  'homepage': repo.get('homepage') or '',
-                  'stargazers_count': repo.get('stargazers_count', 0),
-                  'forks_count': repo.get('forks_count', 0),
-                  'language': repo.get('language') or '',
-                  'topics': (repo.get('topics') or [])[:5],
-                  'updated_at': repo.get('updated_at', ''),
-                  'featured': repo.get('stargazers_count', 0) >= 5 or name == 'tweak',
-                  'isOpenSyntax': is_opensyntax
-              })
+personal_repos = [
+    parse_repo(r, username, False)
+    for r in u['repositories']['nodes']
+    if not r.get('isPrivate')
+]
+print(f"  Personal repos: {len(personal_repos)}")
 
-          # Read existing cache to preserve streak
-          existing_streak = 274
-          existing_contributions = 1420
-          cache_file = 'data/github-cache.json'
-          if os.path.exists(cache_file):
-              try:
-                  with open(cache_file) as f:
-                      old_data = json.load(f)
-                      existing_streak = old_data.get('stats', {}).get('contribution_streak', 274)
-                      existing_contributions = old_data.get('stats', {}).get('total_contributions', 1420)
-              except Exception:
-                  pass
+# ── Streak + contributions from calendar ───────────────────────────────────
+cal = u['contributionsCollection']['contributionCalendar']
+total_contributions = cal['totalContributions']
 
-          cache_data = {
-              'generated_at': datetime.now(timezone.utc).isoformat(),
-              'profile': {
-                  'login': profile.get('login', github_username),
-                  'name': profile.get('name', 'Samanuai A'),
-                  'avatar_url': profile.get('avatar_url', f"https://avatars.githubusercontent.com/u/83979018?v=4"),
-                  'bio': profile.get('bio', 'Founder @OpenSyntaxHQ'),
-                  'company': 'Founder @OpenSyntaxHQ',
-                  'location': profile.get('location', 'Kochi, Kerala 🇮🇳'),
-                  'public_repos': len([r for r in all_repos if not r.get('fork')]),
-                  'followers': profile.get('followers', 30),
-                  'following': profile.get('following', 21),
-                  'created_at': profile.get('created_at', '2021-05-10T18:14:03Z')
-              },
-              'stats': {
-                  'total_stars': total_stars,
-                  'total_forks': total_forks,
-                  'total_repos': len(all_repos),
-                  'top_languages': top_languages,
-                  'contribution_streak': existing_streak,
-                  'total_contributions': existing_contributions
-              },
-              'featured_repos': featured_repos[:12]
-          }
+all_days = []
+for week in cal['weeks']:
+    for day in week['contributionDays']:
+        all_days.append(day)
 
-          os.makedirs('data', exist_ok=True)
-          with open(cache_file, 'w') as f:
-              json.dump(cache_data, f, indent=2)
+all_days.sort(key=lambda d: d['date'], reverse=True)
+today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
 
-          print(f"Cache updated successfully with {len(all_repos)} repos from {github_username} and {github_org}!")
-          PYEOF
+streak = 0
+for day in all_days:
+    if day['date'] > today:
+        continue
+    if day['contributionCount'] > 0:
+        streak += 1
+    elif day['date'] == today:
+        continue  # day not over yet
+    else:
+        break
+
+contribution_streak = streak
+print(f"  Streak: {contribution_streak}d | Total contributions: {total_contributions}")
+
+# ── Fetch org repos ────────────────────────────────────────────────────────
+print(f"Fetching org repos for @{org_name}...")
+org_repos = []
+try:
+    org_data = graphql(ORG_QUERY, {'org': org_name, 'repoCount': 100})
+    org_repos = [
+        parse_repo(r, org_name, True)
+        for r in org_data['organization']['repositories']['nodes']
+        if not r.get('isPrivate') and not r.get('isFork')
+    ]
+    print(f"  Org repos: {len(org_repos)}")
+except Exception as e:
+    print(f"  Org repos skipped: {e}")
+
+# ── Merge + deduplicate ────────────────────────────────────────────────────
+seen = set()
+all_repos = []
+for r in personal_repos + org_repos:
+    if r['name'] not in seen:
+        seen.add(r['name'])
+        all_repos.append(r)
+
+profile['public_repos'] = len(all_repos)
+
+# ── Stats ──────────────────────────────────────────────────────────────────
+lang_count  = {}
+total_stars = 0
+total_forks = 0
+for r in all_repos:
+    total_stars += r['stargazers_count']
+    total_forks += r['forks_count']
+    lang = r['language']
+    if lang:
+        lang_count[lang] = lang_count.get(lang, 0) + 1
+
+top_languages = [
+    {'name': lang, 'count': cnt, 'color': LANG_COLORS.get(lang, '#666')}
+    for lang, cnt in sorted(lang_count.items(), key=lambda x: -x[1])[:6]
+]
+
+# ── Featured repos ─────────────────────────────────────────────────────────
+eligible = sorted(
+    [r for r in all_repos if r['description'] and not r['name'].startswith('.')],
+    key=lambda r: (-r['stargazers_count'], -len(r['topics']))
+)
+
+featured_repos = []
+for r in eligible[:12]:
+    featured_repos.append({
+        'name':             r['name'],
+        'full_name':        r['full_name'],
+        'org':              r['_source'],
+        'description':      r['description'],
+        'html_url':         r['html_url'],
+        'homepage':         r['homepage'],
+        'stargazers_count': r['stargazers_count'],
+        'forks_count':      r['forks_count'],
+        'language':         r['language'],
+        'topics':           r['topics'],
+        'updated_at':       r['updated_at'],
+        'featured':         r['stargazers_count'] >= 5 or r['name'] == 'tweak',
+        'isOpenSyntax':     r['isOpenSyntax'],
+    })
+
+# ── Write cache ────────────────────────────────────────────────────────────
+cache = {
+    'generated_at': datetime.now(timezone.utc).isoformat(),
+    'profile':      profile,
+    'stats': {
+        'total_stars':         total_stars,
+        'total_forks':         total_forks,
+        'total_repos':         len(all_repos),
+        'top_languages':       top_languages,
+        'contribution_streak': contribution_streak,
+        'total_contributions': total_contributions,
+    },
+    'featured_repos': featured_repos,
+}
+
+os.makedirs('data', exist_ok=True)
+with open('data/github-cache.json', 'w') as f:
+    json.dump(cache, f, indent=2)
+
+print(f"\nCache saved: {len(all_repos)} repos | {total_stars}★ | {total_forks}⑂ | streak={contribution_streak}d | contributions={total_contributions}")
+PYEOF
 
       - name: Commit and push changes
         run: |
@@ -175,3 +303,4 @@ jobs:
             git commit -s -m "chore(data): auto-update GitHub stats cache [skip ci]"
             git push
           fi
+
