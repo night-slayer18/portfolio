@@ -196,13 +196,17 @@ function buildFallbackData() {
       total_forks: 12,
       total_repos: 32,
       top_languages: [
-        { name: "TypeScript", count: 10, color: "#3178c6" },
-        { name: "Go", count: 6, color: "#00add8" },
-        { name: "Python", count: 4, color: "#3572A5" },
-        { name: "Java", count: 3, color: "#b07219" }
+        { name: 'TypeScript', count: 10, bytes: 180000, percent: 41.2, color: '#3178c6' },
+        { name: 'Go',         count: 6,  bytes: 95000,  percent: 21.7, color: '#00add8' },
+        { name: 'Python',     count: 4,  bytes: 60000,  percent: 13.7, color: '#3572A5' },
+        { name: 'Java',       count: 3,  bytes: 50000,  percent: 11.4, color: '#b07219' }
       ],
-      contribution_streak: 274,
-      total_contributions: 1420
+      contribution_streak:  274,
+      total_contributions:  1420,
+      total_commits:        null,
+      total_prs:            null,
+      total_issues:         null,
+      repos_contributed_to: null,
     },
     featured_repos: []
   };
@@ -249,41 +253,50 @@ function populateHero() {
 }
 
 function populateStats() {
-  const stats = app.githubData.stats;
+  const stats   = app.githubData.stats;
   const profile = app.githubData.profile;
 
-  // Animated counters
+  // Core animated counters
   animateCounter('sc-repos',  profile.public_repos || stats.total_repos || 32);
   animateCounter('sc-stars',  stats.total_stars || 56);
-  animateCounter('sc-forks',  stats.total_forks || 12);
   animateCounter('sc-streak', stats.contribution_streak || 274);
 
-  // Language bars
+  // New counters — only animate if data is available from GraphQL cache
+  if (stats.total_commits)  animateCounter('sc-commits', stats.total_commits);
+  if (stats.total_prs)      animateCounter('sc-prs',     stats.total_prs);
+  if (stats.total_issues)   animateCounter('sc-issues',  stats.total_issues);
+
+  // Language bars — use real byte % if available, otherwise fall back to repo count ratio
   const langList = document.getElementById('lang-bars-list');
-  if (!langList || !stats.top_languages || stats.top_languages.length === 0) return;
-  const langs = stats.top_languages;
-  const maxCount = langs[0]?.count || 1;
+  if (!langList || !stats.top_languages?.length) return;
+
+  const langs   = stats.top_languages;
+  const hasReal = langs[0]?.percent != null;  // real byte data from GraphQL
+  const maxVal  = hasReal
+    ? 100  // percent is already out of 100
+    : (langs[0]?.count || 1);
 
   langList.innerHTML = langs.map(lang => {
-    const pct = Math.round((lang.count / maxCount) * 100);
+    const pct   = hasReal ? lang.percent : Math.round((lang.count / maxVal) * 100);
+    const label = hasReal ? `${lang.percent}%` : `${lang.count} repos`;
     return `
       <div class="lang-bar-item" role="listitem">
         <span class="lang-bar-name">${lang.name}</span>
         <div class="lang-bar-track" aria-label="${lang.name}: ${pct}%">
           <div class="lang-bar-fill"
                data-width="${pct}"
-               style="background: ${lang.color || 'var(--cyan)'};"
+               style="background: ${lang.color || 'var(--cyan)'}; width: 0%;"
                role="progressbar"
                aria-valuenow="${pct}"
                aria-valuemin="0"
                aria-valuemax="100"></div>
         </div>
-        <span class="lang-bar-count">${lang.count} repos</span>
+        <span class="lang-bar-count">${label}</span>
       </div>
     `;
   }).join('');
 
-  // Animate bars when visible
+  // Animate bars on scroll into view
   const barsObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -339,6 +352,22 @@ function populateProjects() {
             <i class="fas fa-external-link-alt" aria-hidden="true"></i>
          </a>` : '';
 
+    // Release badge — only show if repo has a tagged release
+    const releaseBadge = repo.latest_release
+      ? `<span class="project-release-tag" title="Latest release">
+           <i class="fas fa-tag"></i> ${repo.latest_release}
+         </span>` : '';
+
+    // Lang bytes mini-bar — top 3 languages by size
+    const langBytesBar = (repo.lang_bytes?.length > 1)
+      ? `<div class="project-lang-bar" title="Language breakdown by bytes">
+           ${repo.lang_bytes.slice(0, 3).map(lb => {
+             const totalBytes = repo.lang_bytes.slice(0, 3).reduce((s, l) => s + l.size, 0) || 1;
+             const w = Math.round(lb.size / totalBytes * 100);
+             return `<span class="plb-seg" style="width:${w}%;background:${lb.color}" title="${lb.name}: ${w}%"></span>`;
+           }).join('')}
+         </div>` : '';
+
     const categoryData = [
       repo.language || '',
       isOpenSyntax ? 'OpenSyntaxHQ' : '',
@@ -359,6 +388,7 @@ function populateProjects() {
             <span class="project-window-dot max"></span>
           </div>
           ${badges ? `<div class="project-badges">${badges}</div>` : ''}
+          ${releaseBadge}
         </div>
         <div class="project-card-body">
           <h3 class="project-name">
@@ -369,6 +399,7 @@ function populateProjects() {
           </h3>
           <p class="project-desc">${repo.description || 'Developer toolchain & system component.'}</p>
         </div>
+        ${langBytesBar}
         ${topicsHTML ? `<div class="project-topics" role="list" aria-label="Topics">${topicsHTML}</div>` : ''}
         <div class="project-footer">
           <div class="project-lang">

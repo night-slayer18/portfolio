@@ -1074,7 +1074,7 @@ body.touch-device .cursor-ring {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--sp-4);
   margin-bottom: var(--sp-8);
 }
@@ -1374,6 +1374,43 @@ body.touch-device .cursor-ring {
 .project-window-dot.max {
   background: #28ca41;
 }
+
+/* Release tag badge */
+.project-release-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--cyan);
+  background: var(--cyan-glow);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* Language bytes mini-bar */
+.project-lang-bar {
+  display: flex;
+  height: 3px;
+  border-radius: 2px;
+  overflow: hidden;
+  gap: 1px;
+  margin: var(--sp-2) 0;
+}
+
+.plb-seg {
+  height: 100%;
+  border-radius: 1px;
+  transition: opacity var(--dur-md);
+}
+
+.project-card:hover .plb-seg {
+  opacity: 0.85;
+}
+
 
 .project-badges {
   display: flex;
