@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-08-29T04:40:16.022094+00:00",
+  "generated_at": "2026-08-29T15:46:30.578759+00:00",
   "profile": {
     "login": "night-slayer18",
     "name": "Samanuai A",
-    "avatar_url": "https://avatars.githubusercontent.com/u/83979018?v=4",
+    "avatar_url": "https://avatars.githubusercontent.com/u/83979018?u=e6113784834b4760b8b6a6b7c61ed403c3bd125a&v=4",
     "bio": "Founder @OpenSyntaxHQ ",
-    "company": "Founder @OpenSyntaxHQ",
+    "company": "TCS",
     "location": "Kochi, Kerala",
-    "public_repos": 30,
     "followers": 30,
-    "following": 21,
-    "created_at": "2021-05-10T18:14:03Z"
+    "following": 17,
+    "created_at": "2021-05-10T18:14:03Z",
+    "public_repos": 30
   },
   "stats": {
     "total_stars": 56,
     "total_forks": 12,
-    "total_repos": 32,
+    "total_repos": 30,
     "top_languages": [
       {
         "name": "TypeScript",
@@ -48,8 +48,8 @@
         "color": "#336791"
       }
     ],
-    "contribution_streak": 274,
-    "total_contributions": 1420
+    "contribution_streak": 277,
+    "total_contributions": 1822
   },
   "featured_repos": [
     {
@@ -83,11 +83,11 @@
       "forks_count": 1,
       "language": "Java",
       "topics": [
+        "graphql",
+        "kafka",
         "brokr",
         "developer-tools",
-        "graphql",
-        "java",
-        "kafka"
+        "java"
       ],
       "updated_at": "2025-12-13T13:08:31Z",
       "featured": false,
@@ -145,10 +145,10 @@
       "forks_count": 0,
       "language": "TypeScript",
       "topics": [
-        "community",
         "developer-tools",
         "open-source",
-        "opensyntax"
+        "opensyntax",
+        "community"
       ],
       "updated_at": "2026-01-30T18:21:55Z",
       "featured": false,
@@ -184,10 +184,10 @@
       "forks_count": 0,
       "language": "TypeScript",
       "topics": [
-        "gitgotchi",
-        "pet"
+        "pet",
+        "gitgotchi"
       ],
-      "updated_at": "2026-08-28T10:56:44Z",
+      "updated_at": "2026-08-29T06:43:52Z",
       "featured": false,
       "isOpenSyntax": false
     },
