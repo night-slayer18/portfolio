@@ -79,7 +79,7 @@ const portfolioConfig = {
       primary: { text: "View My Work", href: "#projects", icon: "fas fa-code-branch" },
       secondary: { text: "Resume", href: "resume/resume.pdf", icon: "fas fa-download" }
     },
-    codeSnippet: `// samanuai.config.ts
+    codeSnippet: `
         interface Architect {
           name:  string;
           role:  string;

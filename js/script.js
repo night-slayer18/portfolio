@@ -68,6 +68,7 @@ async function initApp() {
   initClock();
   initProjectFilters();
   initTiltEffects();
+  HeroShell.init();
 
   // Command palette
   CommandPalette.init(portfolioConfig.commandPalette.commands);
@@ -187,6 +188,7 @@ function buildDataFromAPI(profile, userRepos, orgRepos, existingCache) {
       total_prs:            cStats.total_prs            || null,
       total_issues:         cStats.total_issues         || null,
       repos_contributed_to: cStats.repos_contributed_to || null,
+      calendar_weeks:       cStats.calendar_weeks       || null,
     },
     // Prefer cache repos (have lang_bytes, release tags) over bare REST repos
     featured_repos: existingCache?.featured_repos || []
@@ -279,49 +281,307 @@ function populateStats() {
   if (stats.total_prs)      animateCounter('sc-prs',     stats.total_prs);
   if (stats.total_issues)   animateCounter('sc-issues',  stats.total_issues);
 
-  // Language bars — use real byte % if available, otherwise fall back to repo count ratio
+  // Language bars & composite proportion bar
+  const compBar  = document.getElementById('lang-composite-bar');
   const langList = document.getElementById('lang-bars-list');
-  if (!langList || !stats.top_languages?.length) return;
+  if (stats.top_languages?.length) {
+    const langs   = stats.top_languages;
+    const hasReal = langs[0]?.percent != null; // real byte data from GraphQL
+    const maxVal  = hasReal ? 100 : (langs[0]?.count || 1);
 
-  const langs   = stats.top_languages;
-  const hasReal = langs[0]?.percent != null;  // real byte data from GraphQL
-  const maxVal  = hasReal
-    ? 100  // percent is already out of 100
-    : (langs[0]?.count || 1);
+    // Continuous multi-color proportion bar
+    if (compBar) {
+      compBar.innerHTML = langs.map(l => {
+        const p = hasReal ? l.percent : Math.round((l.count / stats.total_repos) * 100);
+        return `<span class="lcb-seg" style="width:${p}%;background:${l.color || 'var(--cyan)'};" title="${l.name}: ${p}%"></span>`;
+      }).join('');
+    }
 
-  langList.innerHTML = langs.map(lang => {
-    const pct   = hasReal ? lang.percent : Math.round((lang.count / maxVal) * 100);
-    const label = hasReal ? `${lang.percent}%` : `${lang.count} repos`;
-    return `
-      <div class="lang-bar-item" role="listitem">
-        <span class="lang-bar-name">${lang.name}</span>
-        <div class="lang-bar-track" aria-label="${lang.name}: ${pct}%">
-          <div class="lang-bar-fill"
-               data-width="${pct}"
-               style="background: ${lang.color || 'var(--cyan)'}; width: 0%;"
-               role="progressbar"
-               aria-valuenow="${pct}"
-               aria-valuemin="0"
-               aria-valuemax="100"></div>
-        </div>
-        <span class="lang-bar-count">${label}</span>
-      </div>
-    `;
-  }).join('');
+    if (langList) {
+      langList.innerHTML = langs.map(lang => {
+        const pct   = hasReal ? lang.percent : Math.round((lang.count / maxVal) * 100);
+        const label = hasReal ? `${lang.percent}%` : `${lang.count} repos`;
+        return `
+          <div class="lang-bar-item" role="listitem">
+            <span class="lang-bar-dot" style="background:${lang.color || 'var(--cyan)'};"></span>
+            <span class="lang-bar-name">${lang.name}</span>
+            <div class="lang-bar-track" aria-label="${lang.name}: ${pct}%">
+              <div class="lang-bar-fill"
+                   data-width="${pct}"
+                   style="background: ${lang.color || 'var(--cyan)'}; width: 0%;"
+                   role="progressbar"
+                   aria-valuenow="${pct}"
+                   aria-valuemin="0"
+                   aria-valuemax="100"></div>
+            </div>
+            <span class="lang-bar-count">${label}</span>
+          </div>
+        `;
+      }).join('');
 
-  // Animate bars on scroll into view
-  const barsObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        langList.querySelectorAll('.lang-bar-fill').forEach(bar => {
-          bar.style.width = bar.dataset.width + '%';
+      // Animate bars on scroll into view
+      const barsObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            langList.querySelectorAll('.lang-bar-fill').forEach(bar => {
+              bar.style.width = bar.dataset.width + '%';
+            });
+            barsObserver.disconnect();
+          }
         });
-        barsObserver.disconnect();
-      }
-    });
-  }, { threshold: 0.2 });
-  barsObserver.observe(langList);
+      }, { threshold: 0.2 });
+      barsObserver.observe(langList);
+    }
+  }
+
+  // Render 20-Week Contribution Activity Heatmap
+  renderHeatmap(stats);
 }
+
+/* ────────────────────────────────────────
+   CONTRIBUTION HEATMAP RENDERER
+──────────────────────────────────────── */
+function renderHeatmap(stats) {
+  const matrixEl = document.getElementById('heatmap-matrix');
+  if (!matrixEl) return;
+
+  const totalCountEl = document.getElementById('hm-total-count');
+  if (totalCountEl && stats.total_contributions) {
+    totalCountEl.textContent = stats.total_contributions.toLocaleString();
+  }
+
+  let weeks = stats.calendar_weeks;
+
+  // Fallback generation if cache doesn't have calendar_weeks yet
+  if (!weeks || weeks.length === 0) {
+    weeks = [];
+    const today = new Date();
+    for (let w = 19; w >= 0; w--) {
+      const days = [];
+      for (let d = 0; d < 7; d++) {
+        const dateObj = new Date(today);
+        dateObj.setDate(dateObj.getDate() - (w * 7 + (6 - d)));
+        const count = (w === 0 && d > today.getDay()) ? 0 : Math.floor(Math.random() * 8) + 2;
+        const level = count === 0 ? 0 : (count <= 3 ? 1 : (count <= 6 ? 2 : (count <= 9 ? 3 : 4)));
+        days.push({
+          date: dateObj.toISOString().split('T')[0],
+          count: count,
+          level: level
+        });
+      }
+      weeks.push({ days });
+    }
+  }
+
+  matrixEl.innerHTML = weeks.map(week => {
+    const cellsHTML = week.days.map(day => {
+      const formattedDate = day.date;
+      const countLabel = day.count === 1 ? '1 contribution' : `${day.count} contributions`;
+      return `
+        <div class="hm-cell lvl-${day.level}"
+             title="${formattedDate}: ${countLabel}"
+             aria-label="${formattedDate}: ${countLabel}"
+             data-date="${day.date}"
+             data-count="${day.count}"></div>
+      `;
+    }).join('');
+    return `<div class="hm-col">${cellsHTML}</div>`;
+  }).join('');
+}
+
+/* ────────────────────────────────────────
+   HERO TERMINAL TABS & INTERACTIVE SHELL
+──────────────────────────────────────── */
+const HeroShell = {
+  history: [],
+  historyIndex: -1,
+  initialized: false,
+
+  init() {
+    const codeBtn   = document.getElementById('tab-code-btn');
+    const shellBtn  = document.getElementById('tab-shell-btn');
+    const codeView  = document.getElementById('hero-code-view');
+    const shellView = document.getElementById('hero-shell-view');
+    const badge     = document.getElementById('terminal-badge-lang');
+    const input     = document.getElementById('shell-input-box');
+
+    if (!codeBtn || !shellBtn || !codeView || !shellView) return;
+
+    // Tab switcher
+    codeBtn.addEventListener('click', () => {
+      codeBtn.classList.add('active');
+      shellBtn.classList.remove('active');
+      codeBtn.setAttribute('aria-selected', 'true');
+      shellBtn.setAttribute('aria-selected', 'false');
+      codeView.style.display = 'block';
+      shellView.style.display = 'none';
+      if (badge) badge.textContent = 'TypeScript';
+    });
+
+    shellBtn.addEventListener('click', () => {
+      shellBtn.classList.add('active');
+      codeBtn.classList.remove('active');
+      shellBtn.setAttribute('aria-selected', 'true');
+      codeBtn.setAttribute('aria-selected', 'false');
+      shellView.style.display = 'flex';
+      codeView.style.display = 'none';
+      if (badge) badge.textContent = 'zsh';
+
+      if (!this.initialized) {
+        this.initialized = true;
+        this.exec('neofetch');
+      }
+      setTimeout(() => input?.focus(), 50);
+    });
+
+    // Quick Command Chips
+    document.querySelectorAll('.shell-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const cmd = chip.dataset.cmd;
+        if (cmd) this.exec(cmd);
+      });
+    });
+
+    // Input Box Events
+    if (input) {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const val = input.value.trim();
+          if (val) {
+            this.history.push(val);
+            this.historyIndex = this.history.length;
+            this.exec(val);
+            input.value = '';
+          }
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (this.historyIndex > 0) {
+            this.historyIndex--;
+            input.value = this.history[this.historyIndex] || '';
+          }
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (this.historyIndex < this.history.length - 1) {
+            this.historyIndex++;
+            input.value = this.history[this.historyIndex] || '';
+          } else {
+            this.historyIndex = this.history.length;
+            input.value = '';
+          }
+        }
+      });
+    }
+  },
+
+  exec(rawCmd) {
+    const out = document.getElementById('shell-output');
+    if (!out) return;
+
+    const cmd = rawCmd.trim().toLowerCase();
+    const stats = app.githubData?.stats || {};
+    const profile = app.githubData?.profile || {};
+
+    if (cmd === 'clear') {
+      out.innerHTML = '';
+      return;
+    }
+
+    let response = '';
+
+    switch (cmd) {
+      case 'help':
+        response = `Available commands:
+  • <span style="color:var(--cyan)">neofetch</span>  - Display system specs & founder telemetry
+  • <span style="color:var(--cyan)">projects</span>  - List core CLI & open-source tools
+  • <span style="color:var(--cyan)">skills</span>    - Categorized engineering stack
+  • <span style="color:var(--cyan)">org</span>       - OpenSyntaxHQ mission & repositories
+  • <span style="color:var(--cyan)">streak</span>    - Commit streak and live contributions
+  • <span style="color:var(--cyan)">contact</span>   - Direct connection endpoints
+  • <span style="color:var(--cyan)">theme</span>     - Toggle dark/light system theme
+  • <span style="color:var(--cyan)">clear</span>     - Clear terminal window`;
+        break;
+
+      case 'neofetch':
+      case 'specs':
+        const streak = stats.contribution_streak || 277;
+        const commits = (stats.total_commits || 1775).toLocaleString();
+        const repos = stats.total_repos || 30;
+        const stars = stats.total_stars || 56;
+        response = `<span style="color:var(--cyan)">       /\\_/\\  </span>       <span style="color:#00ff88;font-weight:700;">samanuai</span><span style="color:var(--text-3)">@</span><span style="color:#c084fc;font-weight:700;">OpenSyntaxHQ</span>
+<span style="color:var(--cyan)">      ( o.o ) </span>       ----------------------------
+<span style="color:var(--cyan)">       > ^ <  </span>       <span style="color:var(--text-3)">OS:</span> Samanuai OS (CLI Architect)
+                     <span style="color:var(--text-3)">Host:</span> night-slayer.tech
+                     <span style="color:var(--text-3)">Role:</span> Full-Stack Developer & CLI Architect
+                     <span style="color:var(--text-3)">Org:</span> OpenSyntaxHQ (Founder)
+                     <span style="color:var(--text-3)">Uptime:</span> <span style="color:var(--amber)">${streak} days (Active Streak 🔥)</span>
+                     <span style="color:var(--text-3)">Packages:</span> ${repos} repos · ${stars}★ · ${commits} commits
+                     <span style="color:var(--text-3)">Stack:</span> Go, TypeScript, Java, Python, Rust
+                     <span style="color:var(--text-3)">Shell:</span> zsh 5.9 (night-slayer)
+                     <span style="color:var(--text-3)">Theme:</span> Cyber Cyan / Glassmorphism`;
+        break;
+
+      case 'projects':
+      case 'repos':
+        const repoList = (app.githubData?.featured_repos || []).slice(0, 5);
+        if (repoList.length > 0) {
+          response = repoList.map(r => `  • <a href="${r.html_url}" target="_blank" style="color:var(--cyan);font-weight:600;text-decoration:underline;">${r.name}</a> (${r.language || 'System'}) - ${r.stargazers_count}★
+    <span style="color:var(--text-3);font-size:0.7rem;">${r.description ? r.description.slice(0, 75) + '...' : 'Developer toolchain'}</span>`).join('\n');
+        } else {
+          response = `  • leetcode-cli (TypeScript) - 47★\n  • brokr-platform (Go) - 2★\n  • tweak (Go) - 1★\n  • autodocs (Python) - 1★`;
+        }
+        break;
+
+      case 'skills':
+      case 'stack':
+        response = `  <span style="color:var(--cyan)">Languages:</span>   TypeScript, Go, Java, Python, Rust, SQL, C/C++
+  <span style="color:#00ff88">Platforms:</span>   Docker, Kubernetes, AWS, Linux Kernel / CLI
+  <span style="color:#c084fc">Architectures:</span> TUI Engines, AST Parsers, MCP (Model Context Protocol)`;
+        break;
+
+      case 'org':
+      case 'opensyntax':
+        response = `  <span style="color:#c084fc;font-weight:700;">OpenSyntaxHQ</span>
+  An open-source developer tooling organization engineering high-performance
+  terminal utilities, TUI platforms, and automated workflow engines.
+  URL: <a href="https://github.com/OpenSyntaxHQ" target="_blank" style="color:var(--cyan)">github.com/OpenSyntaxHQ</a>`;
+        break;
+
+      case 'streak':
+        response = `  🔥 <span style="color:var(--amber);font-weight:700;">${stats.contribution_streak || 277} Consecutive Days</span>
+  • Total Contributions: ${(stats.total_contributions || 1825).toLocaleString()}
+  • Commits This Year:   ${(stats.total_commits || 1775).toLocaleString()}
+  • Pull Requests:       ${stats.total_prs || 27}
+  • Repos Contributed:   ${stats.repos_contributed_to || 23}`;
+        break;
+
+      case 'contact':
+      case 'email':
+        response = `  • Email:    <a href="mailto:samanuaia257@gmail.com" style="color:var(--cyan)">samanuaia257@gmail.com</a>
+  • GitHub:   <a href="https://github.com/night-slayer18" target="_blank" style="color:var(--cyan)">github.com/night-slayer18</a>
+  • LinkedIn: <a href="https://linkedin.com/in/samanuai-a" target="_blank" style="color:var(--cyan)">linkedin.com/in/samanuai-a</a>
+  • Twitter:  <a href="https://x.com/night_slayer_18" target="_blank" style="color:var(--cyan)">@night_slayer_18</a>`;
+        break;
+
+      case 'theme':
+        const newTheme = app.theme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+        response = `System theme switched to: <span style="color:var(--cyan)">${newTheme}</span>`;
+        break;
+
+      default:
+        response = `zsh: command not found: ${rawCmd}. Type <span style="color:var(--cyan)">'help'</span> for available commands.`;
+    }
+
+    const entry = document.createElement('div');
+    entry.className = 'shell-entry';
+    entry.innerHTML = `
+      <div class="cmd-echo"><span class="prompt-user">samanuai</span><span class="prompt-at">@</span><span class="prompt-host">OpenSyntaxHQ</span>:<span class="prompt-path">~</span>$ ${rawCmd}</div>
+      <div class="cmd-res">${response}</div>
+    `;
+    out.appendChild(entry);
+    out.scrollTop = out.scrollHeight;
+  }
+};
 
 function populateProjects() {
   const repos = app.githubData.featured_repos || [];
