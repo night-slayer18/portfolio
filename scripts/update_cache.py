@@ -45,6 +45,7 @@ def graphql(query, variables=None):
     return data['data']
 
 
+# ── Query 1: profile + personal repos (with language bytes + latest release) + contributions ──
 USER_QUERY = """
 query($login: String!, $repoCount: Int!) {
   user(login: $login) {
@@ -73,11 +74,22 @@ query($login: String!, $repoCount: Int!) {
         forkCount
         isPrivate
         primaryLanguage { name }
+        languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
+          edges {
+            size
+            node { name color }
+          }
+        }
         repositoryTopics(first: 10) { nodes { topic { name } } }
+        latestRelease { tagName publishedAt }
         updatedAt
       }
     }
     contributionsCollection {
+      totalCommitContributions
+      totalPullRequestContributions
+      totalIssueContributions
+      totalRepositoriesWithContributedCommits
       contributionCalendar {
         totalContributions
         weeks {
@@ -92,6 +104,7 @@ query($login: String!, $repoCount: Int!) {
 }
 """
 
+# ── Query 2: org repos (with language bytes + latest release) ──────────────
 ORG_QUERY = """
 query($org: String!, $repoCount: Int!) {
   organization(login: $org) {
@@ -111,7 +124,14 @@ query($org: String!, $repoCount: Int!) {
         isPrivate
         isFork
         primaryLanguage { name }
+        languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
+          edges {
+            size
+            node { name color }
+          }
+        }
         repositoryTopics(first: 10) { nodes { topic { name } } }
+        latestRelease { tagName publishedAt }
         updatedAt
       }
     }
@@ -122,6 +142,13 @@ query($org: String!, $repoCount: Int!) {
 
 def parse_repo(r, source, is_opensyntax):
     topics = [t['topic']['name'] for t in r['repositoryTopics']['nodes']]
+    # Language bytes breakdown for this repo
+    lang_bytes = [
+        {'name': e['node']['name'], 'size': e['size'], 'color': e['node']['color'] or LANG_COLORS.get(e['node']['name'], '#666')}
+        for e in r['languages']['edges']
+    ]
+    # Latest release tag
+    rel = r.get('latestRelease') or {}
     return {
         'name':             r['name'],
         'full_name':        r['nameWithOwner'],
@@ -131,13 +158,17 @@ def parse_repo(r, source, is_opensyntax):
         'stargazers_count': r['stargazerCount'],
         'forks_count':      r['forkCount'],
         'language':         (r['primaryLanguage'] or {}).get('name', ''),
+        'lang_bytes':       lang_bytes,
         'topics':           topics[:5],
+        'latest_release':   rel.get('tagName', ''),
+        'release_date':     rel.get('publishedAt', ''),
         'updated_at':       r['updatedAt'],
         '_source':          source,
         'isOpenSyntax':     is_opensyntax,
     }
 
 
+# ── Fetch user data ────────────────────────────────────────────────────────
 print('Fetching data for @' + username + '...')
 user_data = graphql(USER_QUERY, {'login': username, 'repoCount': 100})
 u = user_data['user']
@@ -161,9 +192,16 @@ personal_repos = [
 ]
 print('  Personal repos: ' + str(len(personal_repos)))
 
-cal = u['contributionsCollection']['contributionCalendar']
+# ── Contribution data ──────────────────────────────────────────────────────
+cc = u['contributionsCollection']
+cal = cc['contributionCalendar']
 total_contributions = cal['totalContributions']
+total_commits       = cc['totalCommitContributions']
+total_prs           = cc['totalPullRequestContributions']
+total_issues        = cc['totalIssueContributions']
+total_repos_contributed = cc['totalRepositoriesWithContributedCommits']
 
+# Streak: walk calendar backwards from today
 all_days = []
 for week in cal['weeks']:
     for day in week['contributionDays']:
@@ -179,13 +217,15 @@ for day in all_days:
     if day['contributionCount'] > 0:
         streak += 1
     elif day['date'] == today:
-        continue
+        continue  # day may not be over in UTC yet
     else:
         break
 
 contribution_streak = streak
-print('  Streak: ' + str(contribution_streak) + 'd | Contributions: ' + str(total_contributions))
+print('  Streak: ' + str(contribution_streak) + 'd')
+print('  Commits: ' + str(total_commits) + ' | PRs: ' + str(total_prs) + ' | Issues: ' + str(total_issues))
 
+# ── Fetch org repos ────────────────────────────────────────────────────────
 print('Fetching org repos for @' + org_name + '...')
 org_repos = []
 try:
@@ -199,6 +239,7 @@ try:
 except Exception as e:
     print('  Org repos skipped: ' + str(e))
 
+# ── Merge + deduplicate ────────────────────────────────────────────────────
 seen = set()
 all_repos = []
 for r in personal_repos + org_repos:
@@ -208,21 +249,38 @@ for r in personal_repos + org_repos:
 
 profile['public_repos'] = len(all_repos)
 
-lang_count  = {}
-total_stars = 0
-total_forks = 0
+# ── Aggregate stats ────────────────────────────────────────────────────────
+total_stars  = 0
+total_forks  = 0
+# Language bytes across all repos (for accurate stack breakdown)
+lang_bytes_total = {}
+# Repo count per language (for top_languages count field)
+lang_repo_count  = {}
+
 for r in all_repos:
     total_stars += r['stargazers_count']
     total_forks += r['forks_count']
+    for lb in r['lang_bytes']:
+        name = lb['name']
+        lang_bytes_total[name] = lang_bytes_total.get(name, 0) + lb['size']
     lang = r['language']
     if lang:
-        lang_count[lang] = lang_count.get(lang, 0) + 1
+        lang_repo_count[lang] = lang_repo_count.get(lang, 0) + 1
+
+total_bytes = sum(lang_bytes_total.values()) or 1
 
 top_languages = [
-    {'name': lang, 'count': cnt, 'color': LANG_COLORS.get(lang, '#666')}
-    for lang, cnt in sorted(lang_count.items(), key=lambda x: -x[1])[:6]
+    {
+        'name':       lang,
+        'count':      lang_repo_count.get(lang, 0),
+        'bytes':      lang_bytes_total[lang],
+        'percent':    round(lang_bytes_total[lang] / total_bytes * 100, 1),
+        'color':      LANG_COLORS.get(lang, '#666'),
+    }
+    for lang in sorted(lang_bytes_total, key=lambda l: -lang_bytes_total[l])[:8]
 ]
 
+# ── Featured repos ─────────────────────────────────────────────────────────
 eligible = sorted(
     [r for r in all_repos if r['description'] and not r['name'].startswith('.')],
     key=lambda r: (-r['stargazers_count'], -len(r['topics']))
@@ -239,7 +297,10 @@ featured_repos = [
         'stargazers_count': r['stargazers_count'],
         'forks_count':      r['forks_count'],
         'language':         r['language'],
+        'lang_bytes':       r['lang_bytes'][:4],
         'topics':           r['topics'],
+        'latest_release':   r['latest_release'],
+        'release_date':     r['release_date'],
         'updated_at':       r['updated_at'],
         'featured':         r['stargazers_count'] >= 5 or r['name'] == 'tweak',
         'isOpenSyntax':     r['isOpenSyntax'],
@@ -247,16 +308,21 @@ featured_repos = [
     for r in eligible[:12]
 ]
 
+# ── Write cache ────────────────────────────────────────────────────────────
 cache = {
     'generated_at': datetime.now(timezone.utc).isoformat(),
     'profile':      profile,
     'stats': {
-        'total_stars':         total_stars,
-        'total_forks':         total_forks,
-        'total_repos':         len(all_repos),
-        'top_languages':       top_languages,
-        'contribution_streak': contribution_streak,
-        'total_contributions': total_contributions,
+        'total_stars':              total_stars,
+        'total_forks':              total_forks,
+        'total_repos':              len(all_repos),
+        'top_languages':            top_languages,
+        'contribution_streak':      contribution_streak,
+        'total_contributions':      total_contributions,
+        'total_commits':            total_commits,
+        'total_prs':                total_prs,
+        'total_issues':             total_issues,
+        'repos_contributed_to':     total_repos_contributed,
     },
     'featured_repos': featured_repos,
 }
@@ -265,4 +331,4 @@ os.makedirs('data', exist_ok=True)
 with open('data/github-cache.json', 'w') as f:
     json.dump(cache, f, indent=2)
 
-print('\nDone: ' + str(len(all_repos)) + ' repos | ' + str(total_stars) + 'stars | streak=' + str(contribution_streak) + 'd | contributions=' + str(total_contributions))
+print('\nDone: ' + str(len(all_repos)) + ' repos | ' + str(total_stars) + ' stars | streak=' + str(contribution_streak) + 'd | contributions=' + str(total_contributions))
