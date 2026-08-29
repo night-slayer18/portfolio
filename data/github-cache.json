@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-29T15:46:30.578759+00:00",
+  "generated_at": "2026-08-29T15:57:21.636028+00:00",
   "profile": {
     "login": "night-slayer18",
     "name": "Samanuai A",
@@ -20,36 +20,66 @@
       {
         "name": "TypeScript",
         "count": 8,
+        "bytes": 2632885,
+        "percent": 35.7,
         "color": "#3178c6"
+      },
+      {
+        "name": "Java",
+        "count": 3,
+        "bytes": 1557778,
+        "percent": 21.1,
+        "color": "#b07219"
       },
       {
         "name": "Go",
         "count": 5,
+        "bytes": 999678,
+        "percent": 13.5,
         "color": "#00add8"
       },
       {
         "name": "Python",
         "count": 4,
+        "bytes": 679957,
+        "percent": 9.2,
         "color": "#3572A5"
       },
       {
-        "name": "Java",
-        "count": 3,
-        "color": "#b07219"
+        "name": "CSS",
+        "count": 1,
+        "bytes": 565308,
+        "percent": 7.7,
+        "color": "#563d7c"
+      },
+      {
+        "name": "HTML",
+        "count": 1,
+        "bytes": 382088,
+        "percent": 5.2,
+        "color": "#e34c26"
+      },
+      {
+        "name": "C",
+        "count": 1,
+        "bytes": 185182,
+        "percent": 2.5,
+        "color": "#555555"
       },
       {
         "name": "JavaScript",
         "count": 2,
+        "bytes": 183310,
+        "percent": 2.5,
         "color": "#f1e05a"
-      },
-      {
-        "name": "PLpgSQL",
-        "count": 1,
-        "color": "#336791"
       }
     ],
     "contribution_streak": 277,
-    "total_contributions": 1822
+    "total_contributions": 1825,
+    "total_commits": 1775,
+    "total_prs": 27,
+    "total_issues": 2,
+    "repos_contributed_to": 23
   },
   "featured_repos": [
     {
@@ -62,12 +92,31 @@
       "stargazers_count": 47,
       "forks_count": 10,
       "language": "TypeScript",
+      "lang_bytes": [
+        {
+          "name": "TypeScript",
+          "size": 759969,
+          "color": "#3178c6"
+        },
+        {
+          "name": "JavaScript",
+          "size": 4437,
+          "color": "#f1e05a"
+        },
+        {
+          "name": "Dockerfile",
+          "size": 844,
+          "color": "#384d54"
+        }
+      ],
       "topics": [
         "algorithms",
         "cli",
         "data-structures",
         "leetcode"
       ],
+      "latest_release": "v3.5.1",
+      "release_date": "2026-08-27T10:16:18Z",
       "updated_at": "2026-08-27T10:21:54Z",
       "featured": true,
       "isOpenSyntax": false
@@ -82,6 +131,28 @@
       "stargazers_count": 2,
       "forks_count": 1,
       "language": "Java",
+      "lang_bytes": [
+        {
+          "name": "Java",
+          "size": 1040974,
+          "color": "#b07219"
+        },
+        {
+          "name": "TypeScript",
+          "size": 939947,
+          "color": "#3178c6"
+        },
+        {
+          "name": "CSS",
+          "size": 13029,
+          "color": "#663399"
+        },
+        {
+          "name": "Dockerfile",
+          "size": 2310,
+          "color": "#384d54"
+        }
+      ],
       "topics": [
         "graphql",
         "kafka",
@@ -89,6 +160,8 @@
         "developer-tools",
         "java"
       ],
+      "latest_release": "",
+      "release_date": "",
       "updated_at": "2025-12-13T13:08:31Z",
       "featured": false,
       "isOpenSyntax": false
@@ -103,6 +176,28 @@
       "stargazers_count": 1,
       "forks_count": 0,
       "language": "Go",
+      "lang_bytes": [
+        {
+          "name": "Go",
+          "size": 232811,
+          "color": "#00ADD8"
+        },
+        {
+          "name": "Shell",
+          "size": 10153,
+          "color": "#89e051"
+        },
+        {
+          "name": "Makefile",
+          "size": 196,
+          "color": "#427819"
+        },
+        {
+          "name": "Dockerfile",
+          "size": 102,
+          "color": "#384d54"
+        }
+      ],
       "topics": [
         "cli",
         "cross-platform",
@@ -110,6 +205,8 @@
         "developer-tools",
         "devutils"
       ],
+      "latest_release": "v1.1.0",
+      "release_date": "2026-03-02T17:53:06Z",
       "updated_at": "2026-05-02T07:55:52Z",
       "featured": true,
       "isOpenSyntax": true
@@ -124,12 +221,21 @@
       "stargazers_count": 1,
       "forks_count": 0,
       "language": "JavaScript",
+      "lang_bytes": [
+        {
+          "name": "JavaScript",
+          "size": 9027,
+          "color": "#f1e05a"
+        }
+      ],
       "topics": [
         "javascript",
         "nodejs",
         "npx",
         "npx-card"
       ],
+      "latest_release": "",
+      "release_date": "",
       "updated_at": "2024-06-09T12:16:14Z",
       "featured": false,
       "isOpenSyntax": false
@@ -144,12 +250,31 @@
       "stargazers_count": 1,
       "forks_count": 0,
       "language": "TypeScript",
+      "lang_bytes": [
+        {
+          "name": "TypeScript",
+          "size": 73002,
+          "color": "#3178c6"
+        },
+        {
+          "name": "CSS",
+          "size": 18936,
+          "color": "#663399"
+        },
+        {
+          "name": "JavaScript",
+          "size": 559,
+          "color": "#f1e05a"
+        }
+      ],
       "topics": [
         "developer-tools",
         "open-source",
         "opensyntax",
         "community"
       ],
+      "latest_release": "",
+      "release_date": "",
       "updated_at": "2026-01-30T18:21:55Z",
       "featured": false,
       "isOpenSyntax": true
@@ -164,11 +289,35 @@
       "stargazers_count": 1,
       "forks_count": 0,
       "language": "TypeScript",
+      "lang_bytes": [
+        {
+          "name": "TypeScript",
+          "size": 349204,
+          "color": "#3178c6"
+        },
+        {
+          "name": "JavaScript",
+          "size": 18505,
+          "color": "#f1e05a"
+        },
+        {
+          "name": "CSS",
+          "size": 10720,
+          "color": "#663399"
+        },
+        {
+          "name": "HTML",
+          "size": 357,
+          "color": "#e34c26"
+        }
+      ],
       "topics": [
         "autodocs",
         "cli",
         "documentation-generator"
       ],
+      "latest_release": "v2.1.1",
+      "release_date": "2026-03-21T12:54:31Z",
       "updated_at": "2026-03-23T18:39:21Z",
       "featured": false,
       "isOpenSyntax": true
@@ -183,10 +332,24 @@
       "stargazers_count": 1,
       "forks_count": 0,
       "language": "TypeScript",
+      "lang_bytes": [
+        {
+          "name": "TypeScript",
+          "size": 43052,
+          "color": "#3178c6"
+        },
+        {
+          "name": "JavaScript",
+          "size": 70,
+          "color": "#f1e05a"
+        }
+      ],
       "topics": [
         "pet",
         "gitgotchi"
       ],
+      "latest_release": "v1.0.1",
+      "release_date": "2026-03-14T14:13:14Z",
       "updated_at": "2026-08-29T06:43:52Z",
       "featured": false,
       "isOpenSyntax": false
@@ -201,6 +364,23 @@
       "stargazers_count": 0,
       "forks_count": 0,
       "language": "Go",
+      "lang_bytes": [
+        {
+          "name": "Go",
+          "size": 515464,
+          "color": "#00ADD8"
+        },
+        {
+          "name": "Shell",
+          "size": 15203,
+          "color": "#89e051"
+        },
+        {
+          "name": "Makefile",
+          "size": 3044,
+          "color": "#427819"
+        }
+      ],
       "topics": [
         "bubbletea",
         "cli",
@@ -208,6 +388,8 @@
         "database-explorer",
         "go"
       ],
+      "latest_release": "",
+      "release_date": "",
       "updated_at": "2026-08-23T08:53:02Z",
       "featured": false,
       "isOpenSyntax": false
@@ -222,12 +404,21 @@
       "stargazers_count": 0,
       "forks_count": 1,
       "language": "Java",
+      "lang_bytes": [
+        {
+          "name": "Java",
+          "size": 451176,
+          "color": "#b07219"
+        }
+      ],
       "topics": [
         "dependency-graph",
         "maven",
         "mcp",
         "spring-boot"
       ],
+      "latest_release": "",
+      "release_date": "",
       "updated_at": "2026-05-19T16:27:00Z",
       "featured": false,
       "isOpenSyntax": false
@@ -242,12 +433,31 @@
       "stargazers_count": 0,
       "forks_count": 0,
       "language": "PLpgSQL",
+      "lang_bytes": [
+        {
+          "name": "PLpgSQL",
+          "size": 122517,
+          "color": "#336790"
+        },
+        {
+          "name": "JavaScript",
+          "size": 14314,
+          "color": "#f1e05a"
+        },
+        {
+          "name": "HTML",
+          "size": 952,
+          "color": "#e34c26"
+        }
+      ],
       "topics": [
         "plpgsql",
         "postgresql",
         "ui-framework",
         "web-framework"
       ],
+      "latest_release": "",
+      "release_date": "",
       "updated_at": "2025-12-30T15:43:09Z",
       "featured": false,
       "isOpenSyntax": false
@@ -262,12 +472,21 @@
       "stargazers_count": 0,
       "forks_count": 0,
       "language": "TypeScript",
+      "lang_bytes": [
+        {
+          "name": "TypeScript",
+          "size": 77818,
+          "color": "#3178c6"
+        }
+      ],
       "topics": [
         "cassandra",
         "mongodb",
         "mysql",
         "postgresql"
       ],
+      "latest_release": "v1.1.0",
+      "release_date": "2025-12-06T13:26:01Z",
       "updated_at": "2025-12-06T13:12:01Z",
       "featured": false,
       "isOpenSyntax": false
@@ -282,11 +501,35 @@
       "stargazers_count": 0,
       "forks_count": 0,
       "language": "Python",
+      "lang_bytes": [
+        {
+          "name": "Python",
+          "size": 425930,
+          "color": "#3572A5"
+        },
+        {
+          "name": "JavaScript",
+          "size": 25833,
+          "color": "#f1e05a"
+        },
+        {
+          "name": "CSS",
+          "size": 20384,
+          "color": "#663399"
+        },
+        {
+          "name": "HTML",
+          "size": 9590,
+          "color": "#e34c26"
+        }
+      ],
       "topics": [
         "cli",
         "git",
         "python"
       ],
+      "latest_release": "v1.3.0",
+      "release_date": "2025-10-19T06:29:27Z",
       "updated_at": "2025-11-14T18:34:14Z",
       "featured": false,
       "isOpenSyntax": false
