@@ -308,6 +308,22 @@ featured_repos = [
     for r in eligible[:12]
 ]
 
+# ── Contribution Calendar Matrix (Last 20 weeks) ───────────────────────────
+calendar_weeks = []
+for week in cal.get('weeks', [])[-20:]:
+    days = []
+    for day in week.get('contributionDays', []):
+        cnt = day.get('contributionCount', 0)
+        lvl = 0
+        if cnt > 0:
+            lvl = 1 if cnt <= 2 else (2 if cnt <= 5 else (3 if cnt <= 9 else 4))
+        days.append({
+            'date': day['date'],
+            'count': cnt,
+            'level': lvl
+        })
+    calendar_weeks.append({'days': days})
+
 # ── Write cache ────────────────────────────────────────────────────────────
 cache = {
     'generated_at': datetime.now(timezone.utc).isoformat(),
@@ -323,6 +339,7 @@ cache = {
         'total_prs':                total_prs,
         'total_issues':             total_issues,
         'repos_contributed_to':     total_repos_contributed,
+        'calendar_weeks':           calendar_weeks,
     },
     'featured_repos': featured_repos,
 }
