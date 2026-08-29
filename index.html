@@ -126,15 +126,23 @@
         <!-- Right: Integrated Developer OS Workstation -->
         <div class="hero-visual">
           <div class="terminal-card hero-terminal-card tilt-card reveal delay-2" id="hero-terminal">
-            <!-- Window Titlebar -->
+            <!-- Window Titlebar & Mode Tabs -->
             <div class="terminal-header">
               <div class="terminal-dots" aria-hidden="true">
                 <span class="terminal-dot red"></span>
                 <span class="terminal-dot amber"></span>
                 <span class="terminal-dot green"></span>
               </div>
-              <div class="terminal-title">samanuai@OpenSyntaxHQ — samanuai.config.ts</div>
-              <div class="terminal-badge">TypeScript</div>
+              <div class="terminal-mode-tabs" role="tablist" aria-label="Terminal views">
+                <button class="terminal-mode-tab active" id="tab-code-btn" role="tab" aria-selected="true" aria-controls="hero-code-view">
+                  <i class="fas fa-file-code"></i> samanuai.config.ts
+                </button>
+                <button class="terminal-mode-tab" id="tab-shell-btn" role="tab" aria-selected="false" aria-controls="hero-shell-view">
+                  <i class="fas fa-terminal"></i> zsh (interactive)
+                  <span class="shell-active-dot"></span>
+                </button>
+              </div>
+              <div class="terminal-badge" id="terminal-badge-lang">TypeScript</div>
             </div>
 
             <!-- Profile Console Banner -->
@@ -152,16 +160,32 @@
                 <div class="profile-handle" id="profile-handle">@night-slayer18 &nbsp;·&nbsp; @OpenSyntaxHQ</div>
               </div>
               <div class="terminal-stats-mini" id="profile-stats-row">
-                <div class="t-stat"><span class="t-stat-val" id="stat-repos">32</span><span class="t-stat-lbl">Repos</span></div>
+                <div class="t-stat"><span class="t-stat-val" id="stat-repos">30</span><span class="t-stat-lbl">Repos</span></div>
                 <div class="t-stat"><span class="t-stat-val" id="stat-stars">56</span><span class="t-stat-lbl">Stars</span></div>
-                <div class="t-stat"><span class="t-stat-val" id="stat-forks">12</span><span class="t-stat-lbl">Forks</span></div>
-                <div class="t-stat streak"><span class="t-stat-val" id="stat-streak">274d</span><span class="t-stat-lbl">Streak 🔥</span></div>
+                <div class="t-stat streak"><span class="t-stat-val" id="stat-streak">277d</span><span class="t-stat-lbl">Streak 🔥</span></div>
               </div>
             </div>
 
-            <!-- Code Editor Body -->
-            <div class="terminal-body hero-code-body">
+            <!-- Code Editor View (Tab 1) -->
+            <div class="terminal-body hero-code-body active-tab-view" id="hero-code-view" role="tabpanel">
               <pre class="code-pre" id="code-output" aria-label="Code snippet"></pre>
+            </div>
+
+            <!-- Interactive Shell View (Tab 2) -->
+            <div class="terminal-body hero-shell-body" id="hero-shell-view" role="tabpanel" style="display:none;">
+              <div class="shell-quick-cmds" aria-label="Quick Commands">
+                <span class="shell-quick-lbl">Quick:</span>
+                <button class="shell-chip" data-cmd="neofetch">neofetch</button>
+                <button class="shell-chip" data-cmd="skills">skills</button>
+                <button class="shell-chip" data-cmd="projects">projects</button>
+                <button class="shell-chip" data-cmd="org">org</button>
+                <button class="shell-chip" data-cmd="clear">clear</button>
+              </div>
+              <div class="shell-output-log" id="shell-output" aria-live="polite"></div>
+              <div class="shell-input-row">
+                <span class="shell-prompt"><span class="prompt-user">samanuai</span><span class="prompt-at">@</span><span class="prompt-host">OpenSyntaxHQ</span>:<span class="prompt-path">~</span>$</span>
+                <input type="text" class="shell-input" id="shell-input-box" autocomplete="off" spellcheck="false" placeholder="type 'help' or click a command..." aria-label="Terminal command input" />
+              </div>
             </div>
 
             <!-- Terminal Footer -->
@@ -198,11 +222,12 @@
         <p class="section-sub reveal delay-2" id="stats-sub">Live telemetry aggregated across <strong>night-slayer18</strong> and <strong>OpenSyntaxHQ</strong> repositories.</p>
       </div>
 
-      <!-- Top stat cards -->
+      <!-- Engineering Dashboard Bento Grid (3x3 Layout) -->
       <div class="stats-grid" id="stats-grid" role="list" aria-label="GitHub statistics">
+        <!-- Row 1: Core Metrics -->
         <div class="stat-card reveal delay-1" role="listitem">
           <span class="stat-card-icon" aria-hidden="true"><i class="fas fa-code-branch"></i></span>
-          <div class="stat-card-value" id="sc-repos">32</div>
+          <div class="stat-card-value" id="sc-repos">30</div>
           <div class="stat-card-label">Active Repositories</div>
         </div>
         <div class="stat-card reveal delay-2" role="listitem">
@@ -212,31 +237,61 @@
         </div>
         <div class="stat-card reveal delay-3" role="listitem">
           <span class="stat-card-icon" aria-hidden="true"><i class="fas fa-fire" style="color:var(--amber)"></i></span>
-          <div class="stat-card-value" id="sc-streak">274</div>
+          <div class="stat-card-value" id="sc-streak">277</div>
           <div class="stat-card-label">Day Commit Streak 🔥</div>
         </div>
+
+        <!-- Row 2: Contribution Metrics -->
         <div class="stat-card reveal delay-4" role="listitem">
           <span class="stat-card-icon" aria-hidden="true"><i class="fas fa-arrow-up-from-bracket" style="color:var(--cyan)"></i></span>
-          <div class="stat-card-value" id="sc-commits">—</div>
+          <div class="stat-card-value" id="sc-commits">1,775</div>
           <div class="stat-card-label">Commits This Year</div>
         </div>
         <div class="stat-card reveal delay-5" role="listitem">
           <span class="stat-card-icon" aria-hidden="true"><i class="fas fa-code-pull-request" style="color:#c084fc"></i></span>
-          <div class="stat-card-value" id="sc-prs">—</div>
+          <div class="stat-card-value" id="sc-prs">27</div>
           <div class="stat-card-label">Pull Requests</div>
         </div>
         <div class="stat-card reveal delay-1" role="listitem">
           <span class="stat-card-icon" aria-hidden="true"><i class="fas fa-circle-dot" style="color:var(--green)"></i></span>
-          <div class="stat-card-value" id="sc-issues">—</div>
+          <div class="stat-card-value" id="sc-issues">2</div>
           <div class="stat-card-label">Issues Opened</div>
         </div>
-      </div>
 
-      <!-- Bottom grid -->
-      <div class="stats-bottom-grid">
-        <!-- Language bars -->
-        <div class="lang-bars reveal delay-1" id="lang-bars" style="grid-column: span 2;">
-          <div class="lang-bars-title"><i class="fas fa-chart-bar" aria-hidden="true"></i> Primary Technology Stack</div>
+        <!-- Row 3: Heatmap (Tile 1) + Expanded Tech Stack (Tiles 2 & 3) -->
+        <div class="heatmap-card reveal delay-2" id="contribution-heatmap-card" role="listitem">
+          <div class="heatmap-header">
+            <div class="heatmap-title">
+              <i class="fas fa-calendar-days" aria-hidden="true"></i>
+              <span>Activity Matrix</span>
+            </div>
+            <div class="heatmap-meta">
+              <span class="heatmap-streak-badge"><i class="fas fa-bolt"></i> 277d Active</span>
+            </div>
+          </div>
+          <div class="heatmap-matrix-wrap">
+            <div id="heatmap-matrix" class="heatmap-matrix" role="grid" aria-label="GitHub contribution activity matrix"></div>
+          </div>
+          <div class="heatmap-footer">
+            <span class="heatmap-stat-pill"><strong id="hm-total-count">1,825</strong> contributions</span>
+            <div class="heatmap-legend" aria-hidden="true">
+              <span>Less</span>
+              <span class="hm-cell lvl-0"></span>
+              <span class="hm-cell lvl-1"></span>
+              <span class="hm-cell lvl-2"></span>
+              <span class="hm-cell lvl-3"></span>
+              <span class="hm-cell lvl-4"></span>
+              <span>More</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lang-bars reveal delay-3" id="lang-bars" role="listitem">
+          <div class="lang-bars-header">
+            <div class="lang-bars-title"><i class="fas fa-chart-bar" aria-hidden="true"></i> Primary Technology Stack (By Byte Size)</div>
+            <span class="lang-total-badge"><i class="fas fa-layer-group"></i> 8 Core Languages</span>
+          </div>
+          <div class="lang-composite-bar" id="lang-composite-bar" aria-label="Ecosystem language proportion bar"></div>
           <div id="lang-bars-list" role="list" aria-label="Programming languages"></div>
         </div>
       </div>
