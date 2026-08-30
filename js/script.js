@@ -91,18 +91,19 @@ async function initApp() {
    GITHUB DATA LOADER (Personal + OpenSyntaxHQ)
 ──────────────────────────────────────── */
 async function loadGitHubData() {
-  // 1. Try local cache first (fast, pre-aggregated personal + org data)
+  // 1. Try local cache first (fast, pre-aggregated personal + org data via GraphQL)
   try {
     const cacheRes = await fetch('data/github-cache.json');
     if (cacheRes.ok) {
       app.githubData = await cacheRes.json();
       console.log('[Portfolio] Loaded from cache:', app.githubData.generated_at);
+      return;
     }
   } catch (e) {
-    console.warn('[Portfolio] Cache fetch failed, trying live API', e);
+    console.warn('[Portfolio] Cache fetch failed, trying live API fallback', e);
   }
 
-  // 2. Try live GitHub API to refresh live numbers
+  // 2. Fallback to live GitHub API only if cache is unavailable
   try {
     const user = portfolioConfig.personal.githubUsername;
     const org = portfolioConfig.personal.githubOrg;
@@ -122,7 +123,7 @@ async function loadGitHubData() {
       console.log('[Portfolio] Live combined GitHub data loaded');
     }
   } catch (e) {
-    console.warn('[Portfolio] Live API unavailable or rate-limited, using cache');
+    console.warn('[Portfolio] Live API unavailable or rate-limited, using fallback');
   }
 
   if (!app.githubData) {
@@ -260,7 +261,7 @@ function populateHero() {
   if (socialEl) {
     socialEl.innerHTML = Object.values(cfg.social).map(s => `
       <a href="${s.url}" target="_blank" rel="noopener noreferrer"
-         class="hero-social-link" aria-label="${s.label}" role="listitem">
+         class="hero-social-link" aria-label="${s.label}">
         <i class="${s.icon}" aria-hidden="true"></i>
       </a>
     `).join('');
@@ -383,13 +384,14 @@ function renderHeatmap(stats) {
       const countLabel = day.count === 1 ? '1 contribution' : `${day.count} contributions`;
       return `
         <div class="hm-cell lvl-${day.level}"
+             role="gridcell"
              title="${formattedDate}: ${countLabel}"
              aria-label="${formattedDate}: ${countLabel}"
              data-date="${day.date}"
              data-count="${day.count}"></div>
       `;
     }).join('');
-    return `<div class="hm-col">${cellsHTML}</div>`;
+    return `<div class="hm-col" role="row">${cellsHTML}</div>`;
   }).join('');
 }
 
@@ -677,7 +679,7 @@ function populateProjects() {
           <p class="project-desc">${repo.description || 'Developer toolchain & system component.'}</p>
         </div>
         ${langBytesBar}
-        ${topicsHTML ? `<div class="project-topics" role="list" aria-label="Topics">${topicsHTML}</div>` : ''}
+        ${topicsHTML ? `<div class="project-topics">${topicsHTML}</div>` : ''}
         <div class="project-footer">
           <div class="project-lang">
             ${repo.language ? `<span class="lang-dot" style="background:${langColor}" aria-hidden="true"></span> ${repo.language}` : ''}
