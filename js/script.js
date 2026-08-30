@@ -238,7 +238,10 @@ function populateHero() {
   setText('profile-name',   data.profile.name || cfg.personal.fullName);
   setText('profile-handle', `@${data.profile.login} · @OpenSyntaxHQ`);
   setText('profile-bio',    data.profile.bio || cfg.personal.bio);
-  setAttr('profile-avatar', 'src', data.profile.avatar_url);
+  const avatarSrc = (data.profile.avatar_url && data.profile.avatar_url.includes('githubusercontent'))
+    ? (data.profile.avatar_url.includes('?') ? data.profile.avatar_url + '&s=96' : data.profile.avatar_url + '?s=96')
+    : data.profile.avatar_url;
+  setAttr('profile-avatar', 'src', avatarSrc);
   setAttr('profile-avatar', 'alt', `${data.profile.name} avatar`);
 
   // Profile mini-stats (32 Repos, 56 Stars, 12 Forks, 274d Streak)
@@ -305,11 +308,12 @@ function populateStats() {
           <div class="lang-bar-item" role="listitem">
             <span class="lang-bar-dot" style="background:${lang.color || 'var(--cyan)'};"></span>
             <span class="lang-bar-name">${lang.name}</span>
-            <div class="lang-bar-track" aria-label="${lang.name}: ${pct}%">
+            <div class="lang-bar-track">
               <div class="lang-bar-fill"
                    data-width="${pct}"
                    style="background: ${lang.color || 'var(--cyan)'}; width: 0%;"
                    role="progressbar"
+                   aria-label="${lang.name} codebase proportion (${pct}%)"
                    aria-valuenow="${pct}"
                    aria-valuemin="0"
                    aria-valuemax="100"></div>

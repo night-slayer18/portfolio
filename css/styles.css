@@ -3,9 +3,6 @@
    Terminal OS Portfolio — night-slayer.tech
    ============================================================ */
 
-/* ── Fonts ── */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
-
 /* ── Design Tokens ── */
 :root {
   /* Core Palette */
@@ -29,12 +26,12 @@
   --amber: #f59e0b;
   --red: #ef4444;
 
-  /* Text */
+  /* Text (WCAG AA Compliant Contrast) */
   --text-0: #f0f6fc;
-  --text-1: #c9d1d9;
-  --text-2: #8b949e;
-  --text-3: #484f58;
-  --text-muted: #30363d;
+  --text-1: #cbd5e1;
+  --text-2: #94a3b8;
+  --text-3: #7e8c9f;
+  --text-muted: #64748b;
 
   /* Borders */
   --border-0: rgba(0, 212, 255, 0.08);

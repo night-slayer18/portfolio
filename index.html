@@ -97,13 +97,25 @@
   }
   </script>
 
-  <!-- Fonts -->
+  <!-- Preconnect to CDN & Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://avatars.githubusercontent.com" crossorigin />
+
+  <!-- Non-blocking Fonts & Styles -->
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </noscript>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 
@@ -211,8 +223,8 @@
             <!-- Profile Console Banner -->
             <div class="terminal-profile-strip" id="profile-card">
               <div class="term-avatar-wrap">
-                <img class="profile-avatar" id="profile-avatar" src="https://avatars.githubusercontent.com/u/83979018?v=4"
-                  alt="Samanuai avatar" loading="eager" />
+                <img class="profile-avatar" id="profile-avatar" src="https://avatars.githubusercontent.com/u/83979018?v=4&s=96"
+                  alt="Samanuai avatar" width="44" height="44" loading="eager" />
                 <span class="avatar-status-dot" title="Active Committer"></span>
               </div>
               <div class="profile-info">
