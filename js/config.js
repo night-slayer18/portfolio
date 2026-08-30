@@ -121,16 +121,16 @@ const portfolioConfig = {
     og: {
       type: "website",
       url: "https://night-slayer.tech",
-      title: "Samanuai — Full-Stack Developer & CLI Architect",
-      description: "Founder @OpenSyntaxHQ. Building AI-powered tools, TUI suites, and developer infrastructure.",
-      image: "https://night-slayer.tech/images/og-image.jpg"
+      title: "Samanuai — Full-Stack Developer & CLI Architect | Founder @OpenSyntaxHQ",
+      description: "Founder @OpenSyntaxHQ. Building high-performance CLI/TUI suites, developer platforms, and distributed systems in Go, TypeScript, Java, and Python.",
+      image: "https://avatars.githubusercontent.com/u/83979018?v=4"
     },
     twitter: {
-      card: "summary_large_image",
+      card: "summary",
       url: "https://night-slayer.tech",
-      title: "Samanuai — Full-Stack Developer & CLI Architect",
-      description: "Founder @OpenSyntaxHQ. Building AI-powered tools, TUI suites, and developer infrastructure.",
-      image: "https://night-slayer.tech/images/og-image.jpg"
+      title: "Samanuai — Full-Stack Developer & CLI Architect | Founder @OpenSyntaxHQ",
+      description: "Founder @OpenSyntaxHQ. Building high-performance CLI/TUI suites, developer platforms, and distributed systems in Go, TypeScript, Java, and Python.",
+      image: "https://avatars.githubusercontent.com/u/83979018?v=4"
     }
   }
 };
