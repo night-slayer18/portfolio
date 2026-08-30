@@ -2,22 +2,129 @@
 
 > Founder @OpenSyntaxHQ | Full-Stack Developer & CLI Architect
 
-- Website: https://night-slayer.tech
-- GitHub: https://github.com/night-slayer18
-- Organization: https://github.com/OpenSyntaxHQ
-- LinkedIn: https://www.linkedin.com/in/samanuaia257/
-- Email: samanuaia257@gmail.com
-- Location: Kochi, Kerala, India
+- **Website**: https://night-slayer.tech
+- **GitHub Profile**: https://github.com/night-slayer18
+- **Organization**: https://github.com/OpenSyntaxHQ
+- **LinkedIn**: https://www.linkedin.com/in/samanuaia257/
+- **Email**: samanuaia257@gmail.com
+- **Location**: Kochi, Kerala
+- **Telemetry Updated**: 2026-08-30T09:36:59.561296+00:00
 
-## Summary
-Samanuai A is an open-source software engineer, systems architect, and the founder of OpenSyntaxHQ. He specializes in designing and building high-performance CLI/TUI developer toolchains, AI-assisted development platforms, Model Context Protocol (MCP) servers, and scalable cloud systems.
+---
 
-## Primary Technology Stack
-- **Languages**: TypeScript, Go, Java (OpenJDK / Spring Boot), Python, Rust, SQL, C/C++
-- **Domain Specializations**: CLI & TUI Architecture, Terminal User Interfaces, AST Code Parsers, MCP Servers, Distributed Event Streams (Apache Kafka), Docker & Containerization
+## Executive Summary
+Samanuai A is an open-source software engineer, systems architect, and the founder of OpenSyntaxHQ. He specializes in designing and building high-performance CLI/TUI developer toolchains, AI-assisted development platforms, Model Context Protocol (MCP) servers, and scalable distributed systems in Go, TypeScript, Java, and Python.
 
-## Core Projects & Repositories
-- **leetcode-cli** (TypeScript): Full-featured terminal CLI for competitive programming and LeetCode problem workflows.
-- **tweak** (Go): High-performance developer utility toolchain.
-- **brokr-platform** (Go): Distributed trading and broker integration platform.
-- **OpenSyntaxHQ**: Open-source organization building modern terminal developer tooling and automated workflow engines.
+---
+
+## Live Engineering Telemetry (Auto-Aggregated)
+- **Active Commit Streak**: 278 consecutive days 🔥
+- **Total Contributions (Past Year)**: 1,840
+- **Total Commits**: 1,790
+- **Pull Requests Merged/Opened**: 27
+- **Total Repositories Aggregated**: 30
+- **Total Stars Earned**: 56★
+- **Total Community Forks**: 12⑂
+- **Repositories Contributed To**: 23
+
+---
+
+## Primary Technology Stack (By Verified Code Byte Volume)
+- **TypeScript**: 35.5% of codebase (2.51 MB across 8 repositories)
+- **Java**: 21.0% of codebase (1.49 MB across 3 repositories)
+- **Go**: 13.5% of codebase (0.95 MB across 5 repositories)
+- **Python**: 9.3% of codebase (0.65 MB across 4 repositories)
+- **CSS**: 7.7% of codebase (0.55 MB across 1 repositories)
+- **HTML**: 5.2% of codebase (0.37 MB across 1 repositories)
+- **JavaScript**: 2.6% of codebase (0.19 MB across 2 repositories)
+- **C**: 2.5% of codebase (0.18 MB across 1 repositories)
+
+### Core Technical Competencies & Specializations
+- **CLI & TUI Architecture**: Terminal user interface frameworks, keyboard-driven navigation engines, ANSI/VT100 rendering, and POSIX terminal toolchains.
+- **Model Context Protocol (MCP) & AI Tooling**: Developing custom MCP servers, AI development workflows, and autonomous developer assistance tools.
+- **Distributed Systems & Event Streams**: Apache Kafka pipelines, resilient microservice architectures, and high-throughput backend services.
+- **Languages**: TypeScript, Go (Golang), Java (OpenJDK / Spring Boot), Python, Rust, SQL, C/C++.
+
+---
+
+## OpenSyntaxHQ Organization Tooling
+### [tweak](https://github.com/OpenSyntaxHQ/tweak) [Latest: v1.1.0]
+- **Language**: Go
+- **Stars**: 1★ | **Forks**: 0
+- **Description**: Fast CLI + TUI for text processing: encoding, hashing, transforms, and more.
+- **Topics**: cli, cross-platform, crypto, developer-tools, devutils
+
+### [OpenSyntaxHQ](https://github.com/OpenSyntaxHQ/OpenSyntaxHQ)
+- **Language**: TypeScript
+- **Stars**: 1★ | **Forks**: 0
+- **Description**: Engineer-first open source tools and reference implementations for building scalable, maintainable software.
+- **Topics**: developer-tools, open-source, opensyntax, community
+
+### [autodocs](https://github.com/OpenSyntaxHQ/autodocs) [Latest: v2.1.1]
+- **Language**: TypeScript
+- **Stars**: 1★ | **Forks**: 0
+- **Description**: Engineer-first documentation generator that turns your TypeScript code into beautiful, interactive docs.
+- **Topics**: autodocs, cli, documentation-generator
+
+---
+
+## Featured Personal Projects & CLI Toolchains
+### [leetcode-cli](https://github.com/night-slayer18/leetcode-cli) [Latest: v3.5.1]
+- **Language**: TypeScript
+- **Stars**: 47★ | **Forks**: 10
+- **Description**: A powerful command-line interface (CLI) tool for LeetCode, enabling developers to fetch coding problems, submit solutions, manage accounts, and streamline competitive programming workflows directly from the terminal.
+- **Topics**: algorithms, cli, data-structures, leetcode
+
+### [brokr-platform](https://github.com/night-slayer18/brokr-platform)
+- **Language**: Java
+- **Stars**: 2★ | **Forks**: 1
+- **Description**: Multi-tenant Kafka management platform with Spring Boot backend and GraphQL API
+- **Topics**: graphql, kafka, brokr, developer-tools, java
+
+### [npx_card](https://github.com/night-slayer18/npx_card)
+- **Language**: JavaScript
+- **Stars**: 1★ | **Forks**: 0
+- **Description**: A personalised npx card
+- **Topics**: javascript, nodejs, npx, npx-card
+
+### [gitgotchi](https://github.com/night-slayer18/gitgotchi) [Latest: v1.0.1]
+- **Language**: TypeScript
+- **Stars**: 1★ | **Forks**: 0
+- **Description**: GitGotchi — a playful virtual pet that reflects your GitHub activity, turning commits, issues, and PRs into actions that grow and care for your Gotchi.
+- **Topics**: pet, gitgotchi
+
+### [runtime](https://github.com/night-slayer18/runtime)
+- **Language**: Go
+- **Stars**: 0★ | **Forks**: 0
+- **Description**: A family of keyboard-first, terminal-native developer TUIs built with Go and Bubble Tea (Grid, Prism, Pulse, Strata, and Vault) in a Go workspace monorepo.
+- **Topics**: bubbletea, cli, csv-viewer, database-explorer, go
+
+### [spring-specter-mcp](https://github.com/night-slayer18/spring-specter-mcp)
+- **Language**: Java
+- **Stars**: 0★ | **Forks**: 1
+- **Description**: Spring-Specter MCP is a Spring Boot–based Model Context Protocol server that builds a runtime-aware graph of Java/Spring applications for architecture analysis, observability, governance, and AI-assisted remediation.
+- **Topics**: dependency-graph, maven, mcp, spring-boot
+
+### [HSQL](https://github.com/night-slayer18/HSQL)
+- **Language**: PLpgSQL
+- **Stars**: 0★ | **Forks**: 0
+- **Description**: 🐘 HSQL(HyperText Structured Query Language): PostgreSQL is your browser. Render UI with SQL, not JS. Because databases should do everything.
+- **Topics**: plpgsql, postgresql, ui-framework, web-framework
+
+### [multibridge](https://github.com/night-slayer18/multibridge) [Latest: v1.1.0]
+- **Language**: TypeScript
+- **Stars**: 0★ | **Forks**: 0
+- **Description**: MultiBridge is a multi-tenant database connection manager that supports PostgreSQL, MySQL, MongoDB, and Cassandra. It provides utilities for managing tenant-specific database connections and executing queries in a tenant-aware context.
+- **Topics**: cassandra, mongodb, mysql, postgresql
+
+### [ugit](https://github.com/night-slayer18/ugit) [Latest: v1.3.0]
+- **Language**: Python
+- **Stars**: 0★ | **Forks**: 0
+- **Description**: A minimal Git implementation in Python demonstrating core version control concepts including object storage, staging, and commit history.
+- **Topics**: cli, git, python
+
+---
+
+## Raw Structured Telemetry
+For raw JSON telemetry feeds for AI models, visit:
+`https://night-slayer.tech/data/github-cache.json`
