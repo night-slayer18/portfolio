@@ -348,4 +348,133 @@ os.makedirs('data', exist_ok=True)
 with open('data/github-cache.json', 'w') as f:
     json.dump(cache, f, indent=2)
 
+# ── Auto-generate llms.txt with live telemetry and complete data ───────────
+def generate_llms_txt(data):
+    p = data['profile']
+    s = data['stats']
+    repos = data['featured_repos']
+
+    # Language breakdown string
+    lang_lines = []
+    for l in s.get('top_languages', []):
+        mb = round(l.get('bytes', 0) / (1024 * 1024), 2)
+        lang_lines.append(f"- **{l['name']}**: {l.get('percent', 0)}% of codebase ({mb} MB across {l.get('count', 0)} repositories)")
+    langs_str = "\n".join(lang_lines)
+
+    # OpenSyntaxHQ Repositories
+    org_repos = [r for r in repos if r.get('isOpenSyntax')]
+    org_lines = []
+    for r in org_repos:
+        rel_str = f" [Latest: {r['latest_release']}]" if r.get('latest_release') else ""
+        topics = ", ".join(r.get('topics', []))
+        org_lines.append(f"### [{r['name']}]({r['html_url']}){rel_str}\n- **Language**: {r.get('language') or 'System'}\n- **Stars**: {r.get('stargazers_count', 0)}★ | **Forks**: {r.get('forks_count', 0)}\n- **Description**: {r.get('description', 'Developer toolchain')}\n- **Topics**: {topics or 'systems, developer-tooling'}")
+    org_str = "\n\n".join(org_lines) if org_lines else "- OpenSyntaxHQ public tooling repositories"
+
+    # Personal Repositories
+    pers_repos = [r for r in repos if not r.get('isOpenSyntax')]
+    pers_lines = []
+    for r in pers_repos:
+        rel_str = f" [Latest: {r['latest_release']}]" if r.get('latest_release') else ""
+        topics = ", ".join(r.get('topics', []))
+        pers_lines.append(f"### [{r['name']}]({r['html_url']}){rel_str}\n- **Language**: {r.get('language') or 'System'}\n- **Stars**: {r.get('stargazers_count', 0)}★ | **Forks**: {r.get('forks_count', 0)}\n- **Description**: {r.get('description', 'Developer toolchain')}\n- **Topics**: {topics or 'cli, developer-tools'}")
+    pers_str = "\n\n".join(pers_lines) if pers_lines else "- Personal CLI and systems projects"
+
+    content = f"""# Samanuai A ({p.get('login', 'night-slayer18')})
+
+> Founder @{org_name} | Full-Stack Developer & CLI Architect
+
+- **Website**: https://night-slayer.tech
+- **GitHub Profile**: https://github.com/{p.get('login', 'night-slayer18')}
+- **Organization**: https://github.com/{org_name}
+- **LinkedIn**: https://www.linkedin.com/in/samanuaia257/
+- **Email**: samanuaia257@gmail.com
+- **Location**: {p.get('location', 'Kochi, Kerala, India')}
+- **Telemetry Updated**: {data.get('generated_at', datetime.now(timezone.utc).isoformat())}
+
+---
+
+## Executive Summary
+Samanuai A is an open-source software engineer, systems architect, and the founder of OpenSyntaxHQ. He specializes in designing and building high-performance CLI/TUI developer toolchains, AI-assisted development platforms, Model Context Protocol (MCP) servers, and scalable distributed systems in Go, TypeScript, Java, and Python.
+
+---
+
+## Live Engineering Telemetry (Auto-Aggregated)
+- **Active Commit Streak**: {s.get('contribution_streak', 277)} consecutive days 🔥
+- **Total Contributions (Past Year)**: {s.get('total_contributions', 1825):,}
+- **Total Commits**: {s.get('total_commits', 1775):,}
+- **Pull Requests Merged/Opened**: {s.get('total_prs', 27)}
+- **Total Repositories Aggregated**: {s.get('total_repos', 30)}
+- **Total Stars Earned**: {s.get('total_stars', 56)}★
+- **Total Community Forks**: {s.get('total_forks', 12)}⑂
+- **Repositories Contributed To**: {s.get('repos_contributed_to', 23)}
+
+---
+
+## Primary Technology Stack (By Verified Code Byte Volume)
+{langs_str}
+
+### Core Technical Competencies & Specializations
+- **CLI & TUI Architecture**: Terminal user interface frameworks, keyboard-driven navigation engines, ANSI/VT100 rendering, and POSIX terminal toolchains.
+- **Model Context Protocol (MCP) & AI Tooling**: Developing custom MCP servers, AI development workflows, and autonomous developer assistance tools.
+- **Distributed Systems & Event Streams**: Apache Kafka pipelines, resilient microservice architectures, and high-throughput backend services.
+- **Languages**: TypeScript, Go (Golang), Java (OpenJDK / Spring Boot), Python, Rust, SQL, C/C++.
+
+---
+
+## OpenSyntaxHQ Organization Tooling
+{org_str}
+
+---
+
+## Featured Personal Projects & CLI Toolchains
+{pers_str}
+
+---
+
+## Raw Structured Telemetry
+For raw JSON telemetry feeds for AI models, visit:
+`https://night-slayer.tech/data/github-cache.json`
+"""
+
+    with open('llms.txt', 'w') as f:
+        f.write(content)
+    print("Auto-generated live llms.txt successfully.")
+
+def generate_sitemap():
+    today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+    content = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Main Developer Workstation & Portfolio -->
+  <url>
+    <loc>https://night-slayer.tech/</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- AI Agent & LLM Crawling Index -->
+  <url>
+    <loc>https://night-slayer.tech/llms.txt</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Public Structured JSON Telemetry Feed -->
+  <url>
+    <loc>https://night-slayer.tech/data/github-cache.json</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>
+"""
+    with open('sitemap.xml', 'w') as f:
+        f.write(content.strip() + "\n")
+    print(f"Auto-generated sitemap.xml with live lastmod: {today}")
+
+generate_llms_txt(cache)
+generate_sitemap()
+
 print('\nDone: ' + str(len(all_repos)) + ' repos | ' + str(total_stars) + ' stars | streak=' + str(contribution_streak) + 'd | contributions=' + str(total_contributions))
+
