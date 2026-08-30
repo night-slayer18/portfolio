@@ -349,8 +349,8 @@ const ContactTerminal = {
     const lines = [
       { type: 'prompt', cmd: 'connect --platform email',    out: personal.email },
       { type: 'prompt', cmd: 'connect --platform github',   out: `github.com/${personal.githubUsername}` },
+      { type: 'prompt', cmd: 'connect --platform org',      out: `github.com/${personal.githubOrg || 'OpenSyntaxHQ'}` },
       { type: 'prompt', cmd: 'connect --platform linkedin', out: 'linkedin.com/in/samanuaia257' },
-      { type: 'prompt', cmd: 'status --check availability', out: `[ OK ] ${personal.status}` },
     ];
 
     container.innerHTML = lines.flatMap((l, i) => [
