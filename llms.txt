@@ -1,0 +1,23 @@
+# Samanuai A (night-slayer18)
+
+> Founder @OpenSyntaxHQ | Full-Stack Developer & CLI Architect
+
+- Website: https://night-slayer.tech
+- GitHub: https://github.com/night-slayer18
+- Organization: https://github.com/OpenSyntaxHQ
+- LinkedIn: https://www.linkedin.com/in/samanuaia257/
+- Email: samanuaia257@gmail.com
+- Location: Kochi, Kerala, India
+
+## Summary
+Samanuai A is an open-source software engineer, systems architect, and the founder of OpenSyntaxHQ. He specializes in designing and building high-performance CLI/TUI developer toolchains, AI-assisted development platforms, Model Context Protocol (MCP) servers, and scalable cloud systems.
+
+## Primary Technology Stack
+- **Languages**: TypeScript, Go, Java (OpenJDK / Spring Boot), Python, Rust, SQL, C/C++
+- **Domain Specializations**: CLI & TUI Architecture, Terminal User Interfaces, AST Code Parsers, MCP Servers, Distributed Event Streams (Apache Kafka), Docker & Containerization
+
+## Core Projects & Repositories
+- **leetcode-cli** (TypeScript): Full-featured terminal CLI for competitive programming and LeetCode problem workflows.
+- **tweak** (Go): High-performance developer utility toolchain.
+- **brokr-platform** (Go): Distributed trading and broker integration platform.
+- **OpenSyntaxHQ**: Open-source organization building modern terminal developer tooling and automated workflow engines.
