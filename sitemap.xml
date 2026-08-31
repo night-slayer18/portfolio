@@ -3,7 +3,7 @@
   <!-- Main Developer Workstation & Portfolio -->
   <url>
     <loc>https://night-slayer.tech/</loc>
-    <lastmod>2026-08-30</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -11,7 +11,7 @@
   <!-- AI Agent & LLM Crawling Index -->
   <url>
     <loc>https://night-slayer.tech/llms.txt</loc>
-    <lastmod>2026-08-30</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -19,7 +19,7 @@
   <!-- Public Structured JSON Telemetry Feed -->
   <url>
     <loc>https://night-slayer.tech/data/github-cache.json</loc>
-    <lastmod>2026-08-30</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
