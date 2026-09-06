@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05T01:56:04.095023+00:00",
+  "generated_at": "2026-09-06T01:51:00.756341+00:00",
   "profile": {
     "login": "night-slayer18",
     "name": "Samanuai A",
@@ -13,8 +13,8 @@
     "public_repos": 30
   },
   "stats": {
-    "total_stars": 57,
-    "total_forks": 12,
+    "total_stars": 58,
+    "total_forks": 13,
     "total_repos": 30,
     "top_languages": [
       {
@@ -74,52 +74,13 @@
         "color": "#555555"
       }
     ],
-    "contribution_streak": 283,
-    "total_contributions": 1861,
-    "total_commits": 1811,
+    "contribution_streak": 284,
+    "total_contributions": 1864,
+    "total_commits": 1814,
     "total_prs": 27,
     "total_issues": 2,
     "repos_contributed_to": 23,
     "calendar_weeks": [
-      {
-        "days": [
-          {
-            "date": "2026-04-19",
-            "count": 2,
-            "level": 1
-          },
-          {
-            "date": "2026-04-20",
-            "count": 16,
-            "level": 4
-          },
-          {
-            "date": "2026-04-21",
-            "count": 5,
-            "level": 2
-          },
-          {
-            "date": "2026-04-22",
-            "count": 2,
-            "level": 1
-          },
-          {
-            "date": "2026-04-23",
-            "count": 2,
-            "level": 1
-          },
-          {
-            "date": "2026-04-24",
-            "count": 2,
-            "level": 1
-          },
-          {
-            "date": "2026-04-25",
-            "count": 2,
-            "level": 1
-          }
-        ]
-      },
       {
         "days": [
           {
@@ -856,6 +817,15 @@
           },
           {
             "date": "2026-09-05",
+            "count": 3,
+            "level": 2
+          }
+        ]
+      },
+      {
+        "days": [
+          {
+            "date": "2026-09-06",
             "count": 0,
             "level": 0
           }
@@ -871,8 +841,8 @@
       "description": "A powerful command-line interface (CLI) tool for LeetCode, enabling developers to fetch coding problems, submit solutions, manage accounts, and streamline competitive programming workflows directly from the terminal.",
       "html_url": "https://github.com/night-slayer18/leetcode-cli",
       "homepage": "https://night-slayer18.github.io/leetcode-cli/",
-      "stargazers_count": 48,
-      "forks_count": 10,
+      "stargazers_count": 49,
+      "forks_count": 11,
       "language": "TypeScript",
       "lang_bytes": [
         {
@@ -899,7 +869,7 @@
       ],
       "latest_release": "v3.5.1",
       "release_date": "2026-08-27T10:16:18Z",
-      "updated_at": "2026-09-04T12:20:14Z",
+      "updated_at": "2026-09-05T07:13:45Z",
       "featured": true,
       "isOpenSyntax": false
     },
@@ -1132,7 +1102,7 @@
       ],
       "latest_release": "v1.0.1",
       "release_date": "2026-03-14T14:13:14Z",
-      "updated_at": "2026-09-04T04:02:20Z",
+      "updated_at": "2026-09-05T03:58:24Z",
       "featured": false,
       "isOpenSyntax": false
     },
