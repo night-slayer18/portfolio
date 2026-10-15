@@ -8,7 +8,7 @@
 - **LinkedIn**: https://www.linkedin.com/in/samanuaia257/
 - **Email**: samanuaia257@gmail.com
 - **Location**: Kochi, Kerala
-- **Telemetry Updated**: 2026-10-14T02:38:03.832333+00:00
+- **Telemetry Updated**: 2026-10-15T02:18:11.667628+00:00
 
 ---
 
@@ -18,21 +18,21 @@ Samanuai A is an open-source software engineer, systems architect, and the found
 ---
 
 ## Live Engineering Telemetry (Auto-Aggregated)
-- **Active Commit Streak**: 322 consecutive days 🔥
-- **Total Contributions (Past Year)**: 1,903
-- **Total Commits**: 1,856
-- **Pull Requests Merged/Opened**: 24
+- **Active Commit Streak**: 323 consecutive days 🔥
+- **Total Contributions (Past Year)**: 1,913
+- **Total Commits**: 1,865
+- **Pull Requests Merged/Opened**: 25
 - **Total Repositories Aggregated**: 30
-- **Total Stars Earned**: 63★
+- **Total Stars Earned**: 64★
 - **Total Community Forks**: 16⑂
 - **Repositories Contributed To**: 22
 
 ---
 
 ## Primary Technology Stack (By Verified Code Byte Volume)
-- **TypeScript**: 35.6% of codebase (2.52 MB across 8 repositories)
-- **Java**: 21.0% of codebase (1.49 MB across 3 repositories)
-- **Go**: 13.5% of codebase (0.95 MB across 5 repositories)
+- **TypeScript**: 35.7% of codebase (2.53 MB across 8 repositories)
+- **Java**: 20.9% of codebase (1.49 MB across 3 repositories)
+- **Go**: 13.4% of codebase (0.95 MB across 5 repositories)
 - **Python**: 9.2% of codebase (0.65 MB across 4 repositories)
 - **CSS**: 7.7% of codebase (0.55 MB across 1 repositories)
 - **HTML**: 5.2% of codebase (0.37 MB across 1 repositories)
@@ -69,9 +69,9 @@ Samanuai A is an open-source software engineer, systems architect, and the found
 ---
 
 ## Featured Personal Projects & CLI Toolchains
-### [leetcode-cli](https://github.com/night-slayer18/leetcode-cli) [Latest: v3.5.2]
+### [leetcode-cli](https://github.com/night-slayer18/leetcode-cli) [Latest: v3.6.0]
 - **Language**: TypeScript
-- **Stars**: 54★ | **Forks**: 14
+- **Stars**: 55★ | **Forks**: 14
 - **Description**: A powerful command-line interface (CLI) tool for LeetCode, enabling developers to fetch coding problems, submit solutions, manage accounts, and streamline competitive programming workflows directly from the terminal.
 - **Topics**: algorithms, cli, data-structures, leetcode
 
