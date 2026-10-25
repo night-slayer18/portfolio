@@ -8,7 +8,7 @@
 - **LinkedIn**: https://www.linkedin.com/in/samanuaia257/
 - **Email**: samanuaia257@gmail.com
 - **Location**: Kochi, Kerala
-- **Telemetry Updated**: 2026-10-24T02:26:50.149355+00:00
+- **Telemetry Updated**: 2026-10-25T02:13:53.071494+00:00
 
 ---
 
@@ -18,10 +18,10 @@ Samanuai A is an open-source software engineer, systems architect, and the found
 ---
 
 ## Live Engineering Telemetry (Auto-Aggregated)
-- **Active Commit Streak**: 332 consecutive days 🔥
-- **Total Contributions (Past Year)**: 1,947
-- **Total Commits**: 1,898
-- **Pull Requests Merged/Opened**: 26
+- **Active Commit Streak**: 333 consecutive days 🔥
+- **Total Contributions (Past Year)**: 1,957
+- **Total Commits**: 1,906
+- **Pull Requests Merged/Opened**: 28
 - **Total Repositories Aggregated**: 30
 - **Total Stars Earned**: 64★
 - **Total Community Forks**: 16⑂
@@ -69,7 +69,7 @@ Samanuai A is an open-source software engineer, systems architect, and the found
 ---
 
 ## Featured Personal Projects & CLI Toolchains
-### [leetcode-cli](https://github.com/night-slayer18/leetcode-cli) [Latest: v3.6.1]
+### [leetcode-cli](https://github.com/night-slayer18/leetcode-cli) [Latest: v3.6.2]
 - **Language**: TypeScript
 - **Stars**: 55★ | **Forks**: 14
 - **Description**: A powerful command-line interface (CLI) tool for LeetCode, enabling developers to fetch coding problems, submit solutions, manage accounts, and streamline competitive programming workflows directly from the terminal.

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-24T02:26:50.149355+00:00",
+  "generated_at": "2026-10-25T02:13:53.071494+00:00",
   "profile": {
     "login": "night-slayer18",
     "name": "Samanuai A",
@@ -20,7 +20,7 @@
       {
         "name": "TypeScript",
         "count": 8,
-        "bytes": 2662028,
+        "bytes": 2663449,
         "percent": 35.8,
         "color": "#3178c6"
       },
@@ -74,52 +74,13 @@
         "color": "#555555"
       }
     ],
-    "contribution_streak": 332,
-    "total_contributions": 1947,
-    "total_commits": 1898,
-    "total_prs": 26,
+    "contribution_streak": 333,
+    "total_contributions": 1957,
+    "total_commits": 1906,
+    "total_prs": 28,
     "total_issues": 1,
     "repos_contributed_to": 22,
     "calendar_weeks": [
-      {
-        "days": [
-          {
-            "date": "2026-06-07",
-            "count": 27,
-            "level": 4
-          },
-          {
-            "date": "2026-06-08",
-            "count": 2,
-            "level": 1
-          },
-          {
-            "date": "2026-06-09",
-            "count": 2,
-            "level": 1
-          },
-          {
-            "date": "2026-06-10",
-            "count": 2,
-            "level": 1
-          },
-          {
-            "date": "2026-06-11",
-            "count": 2,
-            "level": 1
-          },
-          {
-            "date": "2026-06-12",
-            "count": 2,
-            "level": 1
-          },
-          {
-            "date": "2026-06-13",
-            "count": 2,
-            "level": 1
-          }
-        ]
-      },
       {
         "days": [
           {
@@ -856,6 +817,15 @@
           },
           {
             "date": "2026-10-24",
+            "count": 10,
+            "level": 4
+          }
+        ]
+      },
+      {
+        "days": [
+          {
+            "date": "2026-10-25",
             "count": 0,
             "level": 0
           }
@@ -877,7 +847,7 @@
       "lang_bytes": [
         {
           "name": "TypeScript",
-          "size": 789112,
+          "size": 790533,
           "color": "#3178c6"
         },
         {
@@ -897,9 +867,9 @@
         "data-structures",
         "leetcode"
       ],
-      "latest_release": "v3.6.1",
-      "release_date": "2026-10-22T07:08:23Z",
-      "updated_at": "2026-10-22T07:07:14Z",
+      "latest_release": "v3.6.2",
+      "release_date": "2026-10-24T03:51:43Z",
+      "updated_at": "2026-10-24T03:48:17Z",
       "featured": true,
       "isOpenSyntax": false
     },
@@ -1132,7 +1102,7 @@
       ],
       "latest_release": "v1.0.1",
       "release_date": "2026-03-14T14:13:14Z",
-      "updated_at": "2026-10-23T04:18:30Z",
+      "updated_at": "2026-10-24T04:09:25Z",
       "featured": false,
       "isOpenSyntax": false
     },
