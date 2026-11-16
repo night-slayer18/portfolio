@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T03:44:45.509881+00:00",
+  "generated_at": "2026-11-16T03:45:15.073248+00:00",
   "profile": {
     "login": "night-slayer18",
     "name": "Samanuai A",
@@ -13,14 +13,14 @@
     "public_repos": 30
   },
   "stats": {
-    "total_stars": 66,
+    "total_stars": 67,
     "total_forks": 16,
     "total_repos": 30,
     "top_languages": [
       {
         "name": "TypeScript",
         "count": 8,
-        "bytes": 2663449,
+        "bytes": 2665917,
         "percent": 35.8,
         "color": "#3178c6"
       },
@@ -74,12 +74,12 @@
         "color": "#555555"
       }
     ],
-    "contribution_streak": 354,
-    "total_contributions": 1979,
-    "total_commits": 1930,
-    "total_prs": 28,
+    "contribution_streak": 355,
+    "total_contributions": 1955,
+    "total_commits": 1906,
+    "total_prs": 29,
     "total_issues": 1,
-    "repos_contributed_to": 22,
+    "repos_contributed_to": 21,
     "calendar_weeks": [
       {
         "days": [
@@ -826,6 +826,11 @@
         "days": [
           {
             "date": "2026-11-15",
+            "count": 9,
+            "level": 3
+          },
+          {
+            "date": "2026-11-16",
             "count": 0,
             "level": 0
           }
@@ -841,13 +846,13 @@
       "description": "A powerful command-line interface (CLI) tool for LeetCode, enabling developers to fetch coding problems, submit solutions, manage accounts, and streamline competitive programming workflows directly from the terminal.",
       "html_url": "https://github.com/night-slayer18/leetcode-cli",
       "homepage": "https://night-slayer18.github.io/leetcode-cli/",
-      "stargazers_count": 57,
+      "stargazers_count": 58,
       "forks_count": 14,
       "language": "TypeScript",
       "lang_bytes": [
         {
           "name": "TypeScript",
-          "size": 790533,
+          "size": 793001,
           "color": "#3178c6"
         },
         {
@@ -867,9 +872,9 @@
         "data-structures",
         "leetcode"
       ],
-      "latest_release": "v3.6.2",
-      "release_date": "2026-10-24T03:51:43Z",
-      "updated_at": "2026-11-05T11:17:16Z",
+      "latest_release": "v3.6.3",
+      "release_date": "2026-11-15T11:58:20Z",
+      "updated_at": "2026-11-15T14:41:38Z",
       "featured": true,
       "isOpenSyntax": false
     },
