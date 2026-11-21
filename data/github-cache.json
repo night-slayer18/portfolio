@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T04:49:22.588869+00:00",
+  "generated_at": "2026-11-21T04:43:51.883963+00:00",
   "profile": {
     "login": "night-slayer18",
     "name": "Samanuai A",
@@ -10,53 +10,53 @@
     "followers": 30,
     "following": 16,
     "created_at": "2021-05-10T18:14:03Z",
-    "public_repos": 30
+    "public_repos": 31
   },
   "stats": {
     "total_stars": 68,
     "total_forks": 16,
-    "total_repos": 30,
+    "total_repos": 31,
     "top_languages": [
       {
         "name": "TypeScript",
         "count": 8,
         "bytes": 2665917,
-        "percent": 35.8,
+        "percent": 34.6,
         "color": "#3178c6"
       },
       {
         "name": "Java",
         "count": 3,
         "bytes": 1557778,
-        "percent": 20.9,
+        "percent": 20.2,
         "color": "#b07219"
       },
       {
         "name": "Go",
         "count": 5,
         "bytes": 999678,
-        "percent": 13.4,
+        "percent": 13.0,
         "color": "#00add8"
       },
       {
         "name": "Python",
-        "count": 4,
-        "bytes": 686110,
-        "percent": 9.2,
+        "count": 5,
+        "bytes": 907691,
+        "percent": 11.8,
         "color": "#3572A5"
       },
       {
         "name": "CSS",
         "count": 1,
         "bytes": 571482,
-        "percent": 7.7,
+        "percent": 7.4,
         "color": "#563d7c"
       },
       {
         "name": "HTML",
         "count": 1,
-        "bytes": 389292,
-        "percent": 5.2,
+        "bytes": 420333,
+        "percent": 5.5,
         "color": "#e34c26"
       },
       {
@@ -70,13 +70,13 @@
         "name": "C",
         "count": 1,
         "bytes": 185182,
-        "percent": 2.5,
+        "percent": 2.4,
         "color": "#555555"
       }
     ],
-    "contribution_streak": 359,
-    "total_contributions": 2027,
-    "total_commits": 1976,
+    "contribution_streak": 360,
+    "total_contributions": 2030,
+    "total_commits": 1979,
     "total_prs": 29,
     "total_issues": 1,
     "repos_contributed_to": 22,
@@ -851,6 +851,11 @@
           },
           {
             "date": "2026-11-20",
+            "count": 3,
+            "level": 2
+          },
+          {
+            "date": "2026-11-21",
             "count": 0,
             "level": 0
           }

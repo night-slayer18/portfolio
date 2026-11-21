@@ -8,7 +8,7 @@
 - **LinkedIn**: https://www.linkedin.com/in/samanuaia257/
 - **Email**: samanuaia257@gmail.com
 - **Location**: Kochi, Kerala
-- **Telemetry Updated**: 2026-11-20T04:49:22.588869+00:00
+- **Telemetry Updated**: 2026-11-21T04:43:51.883963+00:00
 
 ---
 
@@ -18,11 +18,11 @@ Samanuai A is an open-source software engineer, systems architect, and the found
 ---
 
 ## Live Engineering Telemetry (Auto-Aggregated)
-- **Active Commit Streak**: 359 consecutive days 🔥
-- **Total Contributions (Past Year)**: 2,027
-- **Total Commits**: 1,976
+- **Active Commit Streak**: 360 consecutive days 🔥
+- **Total Contributions (Past Year)**: 2,030
+- **Total Commits**: 1,979
 - **Pull Requests Merged/Opened**: 29
-- **Total Repositories Aggregated**: 30
+- **Total Repositories Aggregated**: 31
 - **Total Stars Earned**: 68★
 - **Total Community Forks**: 16⑂
 - **Repositories Contributed To**: 22
@@ -30,14 +30,14 @@ Samanuai A is an open-source software engineer, systems architect, and the found
 ---
 
 ## Primary Technology Stack (By Verified Code Byte Volume)
-- **TypeScript**: 35.8% of codebase (2.54 MB across 8 repositories)
-- **Java**: 20.9% of codebase (1.49 MB across 3 repositories)
-- **Go**: 13.4% of codebase (0.95 MB across 5 repositories)
-- **Python**: 9.2% of codebase (0.65 MB across 4 repositories)
-- **CSS**: 7.7% of codebase (0.55 MB across 1 repositories)
-- **HTML**: 5.2% of codebase (0.37 MB across 1 repositories)
+- **TypeScript**: 34.6% of codebase (2.54 MB across 8 repositories)
+- **Java**: 20.2% of codebase (1.49 MB across 3 repositories)
+- **Go**: 13.0% of codebase (0.95 MB across 5 repositories)
+- **Python**: 11.8% of codebase (0.87 MB across 5 repositories)
+- **CSS**: 7.4% of codebase (0.55 MB across 1 repositories)
+- **HTML**: 5.5% of codebase (0.4 MB across 1 repositories)
 - **JavaScript**: 2.6% of codebase (0.19 MB across 2 repositories)
-- **C**: 2.5% of codebase (0.18 MB across 1 repositories)
+- **C**: 2.4% of codebase (0.18 MB across 1 repositories)
 
 ### Core Technical Competencies & Specializations
 - **CLI & TUI Architecture**: Terminal user interface frameworks, keyboard-driven navigation engines, ANSI/VT100 rendering, and POSIX terminal toolchains.
